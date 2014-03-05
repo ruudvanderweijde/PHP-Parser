@@ -1,19 +1,22 @@
 <?php
+
+namespace Rascal;
+
 require '../bootstrap.php';
 ini_set('xdebug.max_nesting_level', 2000);
 
 $classNames = array();
 $abstractClassNames = array();
 
-class GenerateCode extends PHPParser_NodeVisitorAbstract
+class GenerateCode extends PhpParser_NodeVisitorAbstract
 {
-  public function enterNode(PHPParser_Node $node) {
+  public function enterNode(PhpParser_Node $node) {
     global $classNames;
     global $abstractClassNames;
-    if ($node instanceof PHPParser_Node_Stmt_Class) {
+    if ($node instanceof PhpParser_Node_Stmt_Class) {
       if ($node->isAbstract) {
 	    array_push($abstractClassNames,$node->name);
-      } else if ($node->name !== "PHPParser_Node_Expr") {
+      } else if ($node->name !== "PhpParser_Node_Expr") {
       	// See below for why this is filtered...
 	    array_push($classNames,$node->name);
       }
@@ -21,13 +24,13 @@ class GenerateCode extends PHPParser_NodeVisitorAbstract
   }
 }
 
-$parser = new PHPParser_Parser(new PHPParser_Lexer);
-$visitor = new PHPParser_NodeTraverser;
+$parser = new PhpParser_Parser(new PhpParser_Lexer);
+$visitor = new PhpParser_NodeTraverser;
 $rvis = new GenerateCode;
 $visitor->addVisitor($rvis);
-$dumper = new PHPParser_NodeDumper;
+$dumper = new PhpParser_NodeDumper;
 
-$startdir = '../PHPParser/Node';
+$startdir = '../PhpParser/Node';
 
 foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($startdir), RecursiveIteratorIterator::CHILD_FIRST & RecursiveIteratorIterator::LEAVES_ONLY) as $file) {
   if (!preg_match('~\.php$~', $file)) {
@@ -39,33 +42,33 @@ foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($startdir)
   try {
     $stmts = $parser->parse($inputCode);
     $stmts = $visitor->traverse($stmts);
-  } catch (PHPParser_Error $e) {
+  } catch (PhpParser_Error $e) {
     echo 'Parse Error: ', $e->getMessage();
   }
 }
 
-$enterNodeCalls = "\tpublic function enterNode(PHPParser_Node \$node)\n\t{\n";
-$leaveNodeCalls = "\tpublic function leaveNode(PHPParser_Node \$node)\n\t{\n";
-$printNodeCalls = "\tpublic function pprint(PHPParser_Node \$node)\n\t{\n";
+$enterNodeCalls = "\tpublic function enterNode(PhpParser_Node \$node)\n\t{\n";
+$leaveNodeCalls = "\tpublic function leaveNode(PhpParser_Node \$node)\n\t{\n";
+$printNodeCalls = "\tpublic function pprint(PhpParser_Node \$node)\n\t{\n";
 $defaultEnters = "";
 $defaultLeaves = "";
 $defaultPrints = "";
 $ifcEnters = "";
 $ifcLeaves = "";
-$ifcPrints = "\tpublic function pprint(PHPParser_Node \$node);\n";
+$ifcPrints = "\tpublic function pprint(PhpParser_Node \$node);\n";
 
 $firstPass = true;
 
 // TODO: This is not elegant, but, since Scalar extends Expr, these are going
-// in the file in the wrong order. This just forces PHPParser_Node_Expr to be
+// in the file in the wrong order. This just forces PhpParser_Node_Expr to be
 // the last class handled. The better fix would be to compute the inherits
 // relation and base the order on this instead. 
-array_push($classNames, "PHPParser_Node_Expr");
+array_push($classNames, "PhpParser_Node_Expr");
 
 foreach($classNames as $className) {
   $callName = $className;
-  if (!(FALSE === strpos($className,'PHPParser_Node_'))) {
-    $callName = substr($className,strlen('PHPParser_Node_'));
+  if (!(FALSE === strpos($className,'PhpParser_Node_'))) {
+    $callName = substr($className,strlen('PhpParser_Node_'));
     if (!(FALSE === strpos($callName,'_'))) {
       $nameParts = strtok(strrev($callName), "_");
       $callName = "";
@@ -101,7 +104,7 @@ $printNodeCalls .= "\n\t}";
 
 $usefulProp = "\tprivate \$visitor = null;\n";
 $usefulConstructor = "\tpublic function UsefulVisitor(IVisitor \$v)\n\t{\n\t\t\$this->visitor = \$v;\n\t}\n";
-$baseVisitorCode = "<?php\nrequire_once('IVisitor.php');\n\nclass UsefulVisitor extends PHPParser_NodeVisitorAbstract\n{\n{$usefulProp}\n{$usefulConstructor}\n{$enterNodeCalls}\n{$leaveNodeCalls}\n}\n?>";
+$baseVisitorCode = "<?php\nrequire_once('IVisitor.php');\n\nclass UsefulVisitor extends PhpParser_NodeVisitorAbstract\n{\n{$usefulProp}\n{$usefulConstructor}\n{$enterNodeCalls}\n{$leaveNodeCalls}\n}\n?>";
 $usefulVisitorInterface = "<?php\ninterface IVisitor\n{\n{$ifcEnters}\n{$ifcLeaves}\n}\n?>";
 $usefulPrinterInterface = "<?php\ninterface IPrinter\n{\n{$ifcPrints}\n}\n?>";
 $usefulBaseVisitor = "<?php\nclass BaseVisitor implements IVisitor\n{\n{$defaultEnters}\n{$defaultLeaves}\n}\n?>";

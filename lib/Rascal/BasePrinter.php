@@ -1,871 +1,874 @@
 <?php
+
+namespace Rascal;
+
 class BasePrinter implements IPrinter
 {
-	public function pprint(PHPParser_Node $node)
+	public function pprint(\PhpParser\Node $node)
 	{
-		if ($node instanceof PHPParser_Node_Arg) {
+		if ($node instanceof \PhpParser\Node\Arg) {
 			return $this->pprintArg($node);
-		} elseif ($node instanceof PHPParser_Node_Const) {
+		} elseif ($node instanceof \PhpParser\Node\Const_) {
 			return $this->pprintConst($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Array) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Array_) {
 			return $this->pprintArrayExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_ArrayDimFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ArrayDimFetch) {
 			return $this->pprintArrayDimFetchExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_ArrayItem) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ArrayItem) {
 			return $this->pprintArrayItemExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Assign) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Assign) {
 			return $this->pprintAssignExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_AssignBitwiseAnd) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignBitwiseAnd) {
 			return $this->pprintAssignBitwiseAndExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_AssignBitwiseOr) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignBitwiseOr) {
 			return $this->pprintAssignBitwiseOrExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_AssignBitwiseXor) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignBitwiseXor) {
 			return $this->pprintAssignBitwiseXorExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_AssignConcat) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignConcat) {
 			return $this->pprintAssignConcatExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_AssignDiv) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignDiv) {
 			return $this->pprintAssignDivExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_AssignMinus) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignMinus) {
 			return $this->pprintAssignMinusExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_AssignMod) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignMod) {
 			return $this->pprintAssignModExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_AssignMul) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignMul) {
 			return $this->pprintAssignMulExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_AssignPlus) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignPlus) {
 			return $this->pprintAssignPlusExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_AssignRef) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignRef) {
 			return $this->pprintAssignRefExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_AssignShiftLeft) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignShiftLeft) {
 			return $this->pprintAssignShiftLeftExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_AssignShiftRight) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignShiftRight) {
 			return $this->pprintAssignShiftRightExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_BitwiseAnd) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\BitwiseAnd) {
 			return $this->pprintBitwiseAndExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_BitwiseNot) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\BitwiseNot) {
 			return $this->pprintBitwiseNotExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_BitwiseOr) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\BitwiseOr) {
 			return $this->pprintBitwiseOrExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_BitwiseXor) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\BitwiseXor) {
 			return $this->pprintBitwiseXorExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_BooleanAnd) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\BooleanAnd) {
 			return $this->pprintBooleanAndExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_BooleanNot) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\BooleanNot) {
 			return $this->pprintBooleanNotExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_BooleanOr) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\BooleanOr) {
 			return $this->pprintBooleanOrExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Cast_Array) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Array_) {
 			return $this->pprintArrayCastExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Cast_Bool) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Bool) {
 			return $this->pprintBoolCastExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Cast_Double) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Double) {
 			return $this->pprintDoubleCastExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Cast_Int) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Int) {
 			return $this->pprintIntCastExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Cast_Object) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Object) {
 			return $this->pprintObjectCastExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Cast_String) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\String) {
 			return $this->pprintStringCastExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Cast_Unset) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Unset_) {
 			return $this->pprintUnsetCastExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Cast) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast) {
 			return $this->pprintCastExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_ClassConstFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ClassConstFetch) {
 			return $this->pprintClassConstFetchExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Clone) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Clone_) {
 			return $this->pprintCloneExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Closure) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Closure) {
 			return $this->pprintClosureExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_ClosureUse) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ClosureUse) {
 			return $this->pprintClosureUseExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Concat) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Concat) {
 			return $this->pprintConcatExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_ConstFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ConstFetch) {
 			return $this->pprintConstFetchExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Div) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Div) {
 			return $this->pprintDivExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Empty) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Empty_) {
 			return $this->pprintEmptyExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Equal) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Equal) {
 			return $this->pprintEqualExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_ErrorSuppress) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ErrorSuppress) {
 			return $this->pprintErrorSuppressExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Eval) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Eval_) {
 			return $this->pprintEvalExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Exit) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Exit_) {
 			return $this->pprintExitExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_FuncCall) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\FuncCall) {
 			return $this->pprintFuncCallExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Greater) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Greater) {
 			return $this->pprintGreaterExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_GreaterOrEqual) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\GreaterOrEqual) {
 			return $this->pprintGreaterOrEqualExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Identical) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Identical) {
 			return $this->pprintIdenticalExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Include) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Include_) {
 			return $this->pprintIncludeExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Instanceof) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Instanceof_) {
 			return $this->pprintInstanceofExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Isset) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Isset_) {
 			return $this->pprintIssetExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_List) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\List_) {
 			return $this->pprintListExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_LogicalAnd) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\LogicalAnd) {
 			return $this->pprintLogicalAndExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_LogicalOr) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\LogicalOr) {
 			return $this->pprintLogicalOrExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_LogicalXor) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\LogicalXor) {
 			return $this->pprintLogicalXorExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_MethodCall) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\MethodCall) {
 			return $this->pprintMethodCallExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Minus) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Minus) {
 			return $this->pprintMinusExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Mod) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Mod) {
 			return $this->pprintModExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Mul) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Mul) {
 			return $this->pprintMulExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_New) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\New_) {
 			return $this->pprintNewExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_NotEqual) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\NotEqual) {
 			return $this->pprintNotEqualExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_NotIdentical) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\NotIdentical) {
 			return $this->pprintNotIdenticalExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Plus) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Plus) {
 			return $this->pprintPlusExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_PostDec) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PostDec) {
 			return $this->pprintPostDecExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_PostInc) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PostInc) {
 			return $this->pprintPostIncExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_PreDec) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PreDec) {
 			return $this->pprintPreDecExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_PreInc) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PreInc) {
 			return $this->pprintPreIncExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Print) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Print_) {
 			return $this->pprintPrintExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_PropertyFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PropertyFetch) {
 			return $this->pprintPropertyFetchExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_ShellExec) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ShellExec) {
 			return $this->pprintShellExecExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_ShiftLeft) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ShiftLeft) {
 			return $this->pprintShiftLeftExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_ShiftRight) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ShiftRight) {
 			return $this->pprintShiftRightExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Smaller) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Smaller) {
 			return $this->pprintSmallerExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_SmallerOrEqual) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\SmallerOrEqual) {
 			return $this->pprintSmallerOrEqualExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_StaticCall) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\StaticCall) {
 			return $this->pprintStaticCallExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_StaticPropertyFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\StaticPropertyFetch) {
 			return $this->pprintStaticPropertyFetchExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Ternary) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Ternary) {
 			return $this->pprintTernaryExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_UnaryMinus) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\UnaryMinus) {
 			return $this->pprintUnaryMinusExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_UnaryPlus) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\UnaryPlus) {
 			return $this->pprintUnaryPlusExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Variable) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Variable) {
 			return $this->pprintVariableExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Expr_Yield) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Yield_) {
 			return $this->pprintYieldExpr($node);
-		} elseif ($node instanceof PHPParser_Node_Name_FullyQualified) {
+		} elseif ($node instanceof \PhpParser\Node\Name\FullyQualified) {
 			return $this->pprintFullyQualifiedName($node);
-		} elseif ($node instanceof PHPParser_Node_Name_Relative) {
+		} elseif ($node instanceof \PhpParser\Node\Name\Relative) {
 			return $this->pprintRelativeName($node);
-		} elseif ($node instanceof PHPParser_Node_Name) {
+		} elseif ($node instanceof \PhpParser\Node\Name) {
 			return $this->pprintName($node);
-		} elseif ($node instanceof PHPParser_Node_Param) {
+		} elseif ($node instanceof \PhpParser\Node\Param) {
 			return $this->pprintParam($node);
-		} elseif ($node instanceof PHPParser_Node_Scalar_ClassConst) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\ClassConst) {
 			return $this->pprintClassConstScalar($node);
-		} elseif ($node instanceof PHPParser_Node_Scalar_DirConst) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\DirConst) {
 			return $this->pprintDirConstScalar($node);
-		} elseif ($node instanceof PHPParser_Node_Scalar_DNumber) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\DNumber) {
 			return $this->pprintDNumberScalar($node);
-		} elseif ($node instanceof PHPParser_Node_Scalar_Encapsed) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\Encapsed) {
 			return $this->pprintEncapsedScalar($node);
-		} elseif ($node instanceof PHPParser_Node_Scalar_FileConst) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\FileConst) {
 			return $this->pprintFileConstScalar($node);
-		} elseif ($node instanceof PHPParser_Node_Scalar_FuncConst) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\FuncConst) {
 			return $this->pprintFuncConstScalar($node);
-		} elseif ($node instanceof PHPParser_Node_Scalar_LineConst) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\LineConst) {
 			return $this->pprintLineConstScalar($node);
-		} elseif ($node instanceof PHPParser_Node_Scalar_LNumber) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\LNumber) {
 			return $this->pprintLNumberScalar($node);
-		} elseif ($node instanceof PHPParser_Node_Scalar_MethodConst) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MethodConst) {
 			return $this->pprintMethodConstScalar($node);
-		} elseif ($node instanceof PHPParser_Node_Scalar_NSConst) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\NSConst) {
 			return $this->pprintNSConstScalar($node);
-		} elseif ($node instanceof PHPParser_Node_Scalar_String) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\String) {
 			return $this->pprintStringScalar($node);
-		} elseif ($node instanceof PHPParser_Node_Scalar_TraitConst) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\TraitConst) {
 			return $this->pprintTraitConstScalar($node);
-		} elseif ($node instanceof PHPParser_Node_Scalar) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar) {
 			return $this->pprintScalar($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Break) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Break_) {
 			return $this->pprintBreakStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Case) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Case_) {
 			return $this->pprintCaseStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Catch) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Catch_) {
 			return $this->pprintCatchStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Class) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Class_) {
 			return $this->pprintClassStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_ClassConst) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\ClassConst) {
 			return $this->pprintClassConstStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_ClassMethod) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\ClassMethod) {
 			return $this->pprintClassMethodStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Const) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Const_) {
 			return $this->pprintConstStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Continue) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Continue_) {
 			return $this->pprintContinueStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Declare) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Declare_) {
 			return $this->pprintDeclareStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_DeclareDeclare) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\DeclareDeclare) {
 			return $this->pprintDeclareDeclareStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Do) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Do_) {
 			return $this->pprintDoStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Echo) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Echo_) {
 			return $this->pprintEchoStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Else) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Else_) {
 			return $this->pprintElseStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_ElseIf) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\ElseIf_) {
 			return $this->pprintElseIfStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Expr) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Expr) {
 			return $this->pprintExprStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_For) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\For_) {
 			return $this->pprintForStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Foreach) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Foreach_) {
 			return $this->pprintForeachStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Function) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Function_) {
 			return $this->pprintFunctionStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Global) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Global_) {
 			return $this->pprintGlobalStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Goto) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Goto_) {
 			return $this->pprintGotoStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_HaltCompiler) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\HaltCompiler) {
 			return $this->pprintHaltCompilerStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_If) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\If_) {
 			return $this->pprintIfStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_InlineHTML) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\InlineHTML) {
 			return $this->pprintInlineHTMLStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Interface) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Interface_) {
 			return $this->pprintInterfaceStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Label) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Label) {
 			return $this->pprintLabelStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Namespace) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
 			return $this->pprintNamespaceStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Property) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Property) {
 			return $this->pprintPropertyStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_PropertyProperty) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\PropertyProperty) {
 			return $this->pprintPropertyPropertyStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Return) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Return_) {
 			return $this->pprintReturnStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Static) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Static_) {
 			return $this->pprintStaticStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_StaticVar) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\StaticVar) {
 			return $this->pprintStaticVarStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Switch) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Switch_) {
 			return $this->pprintSwitchStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Throw) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Throw_) {
 			return $this->pprintThrowStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Trait) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Trait_) {
 			return $this->pprintTraitStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_TraitUse) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TraitUse) {
 			return $this->pprintTraitUseStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_TraitUseAdaptation_Alias) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TraitUseAdaptation\Alias) {
 			return $this->pprintAliasTraitUseAdaptationStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_TraitUseAdaptation_Precedence) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TraitUseAdaptation\Precedence) {
 			return $this->pprintPrecedenceTraitUseAdaptationStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_TraitUseAdaptation) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TraitUseAdaptation) {
 			return $this->pprintTraitUseAdaptationStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_TryCatch) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TryCatch) {
 			return $this->pprintTryCatchStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Unset) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Unset_) {
 			return $this->pprintUnsetStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_Use) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Use_) {
 			return $this->pprintUseStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_UseUse) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\UseUse) {
 			return $this->pprintUseUseStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt_While) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\While_) {
 			return $this->pprintWhileStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Stmt) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt) {
 			return $this->pprintStmt($node);
-		} elseif ($node instanceof PHPParser_Node_Expr) {
+		} elseif ($node instanceof \PhpParser\Node\Expr) {
 			return $this->pprintExpr($node);
 		}
 	}
-	public function pprintArg(PHPParser_Node_Arg $node)
+	public function pprintArg(\PhpParser\Node\Arg $node)
 	{
 		return "";
 	}
-	public function pprintConst(PHPParser_Node_Const $node)
+	public function pprintConst(\PhpParser\Node\Const_ $node)
 	{
 		return "";
 	}
-	public function pprintArrayExpr(PHPParser_Node_Expr_Array $node)
+	public function pprintArrayExpr(\PhpParser\Node\Expr\Array_ $node)
 	{
 		return "";
 	}
-	public function pprintArrayDimFetchExpr(PHPParser_Node_Expr_ArrayDimFetch $node)
+	public function pprintArrayDimFetchExpr(\PhpParser\Node\Expr\ArrayDimFetch $node)
 	{
 		return "";
 	}
-	public function pprintArrayItemExpr(PHPParser_Node_Expr_ArrayItem $node)
+	public function pprintArrayItemExpr(\PhpParser\Node\Expr\ArrayItem $node)
 	{
 		return "";
 	}
-	public function pprintAssignExpr(PHPParser_Node_Expr_Assign $node)
+	public function pprintAssignExpr(\PhpParser\Node\Expr\Assign $node)
 	{
 		return "";
 	}
-	public function pprintAssignBitwiseAndExpr(PHPParser_Node_Expr_AssignBitwiseAnd $node)
+	public function pprintAssignBitwiseAndExpr(\PhpParser\Node\Expr\AssignBitwiseAnd $node)
 	{
 		return "";
 	}
-	public function pprintAssignBitwiseOrExpr(PHPParser_Node_Expr_AssignBitwiseOr $node)
+	public function pprintAssignBitwiseOrExpr(\PhpParser\Node\Expr\AssignBitwiseOr $node)
 	{
 		return "";
 	}
-	public function pprintAssignBitwiseXorExpr(PHPParser_Node_Expr_AssignBitwiseXor $node)
+	public function pprintAssignBitwiseXorExpr(\PhpParser\Node\Expr\AssignBitwiseXor $node)
 	{
 		return "";
 	}
-	public function pprintAssignConcatExpr(PHPParser_Node_Expr_AssignConcat $node)
+	public function pprintAssignConcatExpr(\PhpParser\Node\Expr\AssignConcat $node)
 	{
 		return "";
 	}
-	public function pprintAssignDivExpr(PHPParser_Node_Expr_AssignDiv $node)
+	public function pprintAssignDivExpr(\PhpParser\Node\Expr\AssignDiv $node)
 	{
 		return "";
 	}
-	public function pprintAssignMinusExpr(PHPParser_Node_Expr_AssignMinus $node)
+	public function pprintAssignMinusExpr(\PhpParser\Node\Expr\AssignMinus $node)
 	{
 		return "";
 	}
-	public function pprintAssignModExpr(PHPParser_Node_Expr_AssignMod $node)
+	public function pprintAssignModExpr(\PhpParser\Node\Expr\AssignMod $node)
 	{
 		return "";
 	}
-	public function pprintAssignMulExpr(PHPParser_Node_Expr_AssignMul $node)
+	public function pprintAssignMulExpr(\PhpParser\Node\Expr\AssignMul $node)
 	{
 		return "";
 	}
-	public function pprintAssignPlusExpr(PHPParser_Node_Expr_AssignPlus $node)
+	public function pprintAssignPlusExpr(\PhpParser\Node\Expr\AssignPlus $node)
 	{
 		return "";
 	}
-	public function pprintAssignRefExpr(PHPParser_Node_Expr_AssignRef $node)
+	public function pprintAssignRefExpr(\PhpParser\Node\Expr\AssignRef $node)
 	{
 		return "";
 	}
-	public function pprintAssignShiftLeftExpr(PHPParser_Node_Expr_AssignShiftLeft $node)
+	public function pprintAssignShiftLeftExpr(\PhpParser\Node\Expr\AssignShiftLeft $node)
 	{
 		return "";
 	}
-	public function pprintAssignShiftRightExpr(PHPParser_Node_Expr_AssignShiftRight $node)
+	public function pprintAssignShiftRightExpr(\PhpParser\Node\Expr\AssignShiftRight $node)
 	{
 		return "";
 	}
-	public function pprintBitwiseAndExpr(PHPParser_Node_Expr_BitwiseAnd $node)
+	public function pprintBitwiseAndExpr(\PhpParser\Node\Expr\BitwiseAnd $node)
 	{
 		return "";
 	}
-	public function pprintBitwiseNotExpr(PHPParser_Node_Expr_BitwiseNot $node)
+	public function pprintBitwiseNotExpr(\PhpParser\Node\Expr\BitwiseNot $node)
 	{
 		return "";
 	}
-	public function pprintBitwiseOrExpr(PHPParser_Node_Expr_BitwiseOr $node)
+	public function pprintBitwiseOrExpr(\PhpParser\Node\Expr\BitwiseOr $node)
 	{
 		return "";
 	}
-	public function pprintBitwiseXorExpr(PHPParser_Node_Expr_BitwiseXor $node)
+	public function pprintBitwiseXorExpr(\PhpParser\Node\Expr\BitwiseXor $node)
 	{
 		return "";
 	}
-	public function pprintBooleanAndExpr(PHPParser_Node_Expr_BooleanAnd $node)
+	public function pprintBooleanAndExpr(\PhpParser\Node\Expr\BooleanAnd $node)
 	{
 		return "";
 	}
-	public function pprintBooleanNotExpr(PHPParser_Node_Expr_BooleanNot $node)
+	public function pprintBooleanNotExpr(\PhpParser\Node\Expr\BooleanNot $node)
 	{
 		return "";
 	}
-	public function pprintBooleanOrExpr(PHPParser_Node_Expr_BooleanOr $node)
+	public function pprintBooleanOrExpr(\PhpParser\Node\Expr\BooleanOr $node)
 	{
 		return "";
 	}
-	public function pprintArrayCastExpr(PHPParser_Node_Expr_Cast_Array $node)
+	public function pprintArrayCastExpr(\PhpParser\Node\Expr\Cast\Array_ $node)
 	{
 		return "";
 	}
-	public function pprintBoolCastExpr(PHPParser_Node_Expr_Cast_Bool $node)
+	public function pprintBoolCastExpr(\PhpParser\Node\Expr\Cast\Bool $node)
 	{
 		return "";
 	}
-	public function pprintDoubleCastExpr(PHPParser_Node_Expr_Cast_Double $node)
+	public function pprintDoubleCastExpr(\PhpParser\Node\Expr\Cast\Double $node)
 	{
 		return "";
 	}
-	public function pprintIntCastExpr(PHPParser_Node_Expr_Cast_Int $node)
+	public function pprintIntCastExpr(\PhpParser\Node\Expr\Cast\Int $node)
 	{
 		return "";
 	}
-	public function pprintObjectCastExpr(PHPParser_Node_Expr_Cast_Object $node)
+	public function pprintObjectCastExpr(\PhpParser\Node\Expr\Cast\Object $node)
 	{
 		return "";
 	}
-	public function pprintStringCastExpr(PHPParser_Node_Expr_Cast_String $node)
+	public function pprintStringCastExpr(\PhpParser\Node\Expr\Cast\String $node)
 	{
 		return "";
 	}
-	public function pprintUnsetCastExpr(PHPParser_Node_Expr_Cast_Unset $node)
+	public function pprintUnsetCastExpr(\PhpParser\Node\Expr\Cast\Unset_ $node)
 	{
 		return "";
 	}
-	public function pprintCastExpr(PHPParser_Node_Expr_Cast $node)
+	public function pprintCastExpr(\PhpParser\Node\Expr\Cast $node)
 	{
 		return "";
 	}
-	public function pprintClassConstFetchExpr(PHPParser_Node_Expr_ClassConstFetch $node)
+	public function pprintClassConstFetchExpr(\PhpParser\Node\Expr\ClassConstFetch $node)
 	{
 		return "";
 	}
-	public function pprintCloneExpr(PHPParser_Node_Expr_Clone $node)
+	public function pprintCloneExpr(\PhpParser\Node\Expr\Clone_ $node)
 	{
 		return "";
 	}
-	public function pprintClosureExpr(PHPParser_Node_Expr_Closure $node)
+	public function pprintClosureExpr(\PhpParser\Node\Expr\Closure $node)
 	{
 		return "";
 	}
-	public function pprintClosureUseExpr(PHPParser_Node_Expr_ClosureUse $node)
+	public function pprintClosureUseExpr(\PhpParser\Node\Expr\ClosureUse $node)
 	{
 		return "";
 	}
-	public function pprintConcatExpr(PHPParser_Node_Expr_Concat $node)
+	public function pprintConcatExpr(\PhpParser\Node\Expr\Concat $node)
 	{
 		return "";
 	}
-	public function pprintConstFetchExpr(PHPParser_Node_Expr_ConstFetch $node)
+	public function pprintConstFetchExpr(\PhpParser\Node\Expr\ConstFetch $node)
 	{
 		return "";
 	}
-	public function pprintDivExpr(PHPParser_Node_Expr_Div $node)
+	public function pprintDivExpr(\PhpParser\Node\Expr\Div $node)
 	{
 		return "";
 	}
-	public function pprintEmptyExpr(PHPParser_Node_Expr_Empty $node)
+	public function pprintEmptyExpr(\PhpParser\Node\Expr\Empty_ $node)
 	{
 		return "";
 	}
-	public function pprintEqualExpr(PHPParser_Node_Expr_Equal $node)
+	public function pprintEqualExpr(\PhpParser\Node\Expr\Equal $node)
 	{
 		return "";
 	}
-	public function pprintErrorSuppressExpr(PHPParser_Node_Expr_ErrorSuppress $node)
+	public function pprintErrorSuppressExpr(\PhpParser\Node\Expr\ErrorSuppress $node)
 	{
 		return "";
 	}
-	public function pprintEvalExpr(PHPParser_Node_Expr_Eval $node)
+	public function pprintEvalExpr(\PhpParser\Node\Expr\Eval_ $node)
 	{
 		return "";
 	}
-	public function pprintExitExpr(PHPParser_Node_Expr_Exit $node)
+	public function pprintExitExpr(\PhpParser\Node\Expr\Exit_ $node)
 	{
 		return "";
 	}
-	public function pprintFuncCallExpr(PHPParser_Node_Expr_FuncCall $node)
+	public function pprintFuncCallExpr(\PhpParser\Node\Expr\FuncCall $node)
 	{
 		return "";
 	}
-	public function pprintGreaterExpr(PHPParser_Node_Expr_Greater $node)
+	public function pprintGreaterExpr(\PhpParser\Node\Expr\Greater $node)
 	{
 		return "";
 	}
-	public function pprintGreaterOrEqualExpr(PHPParser_Node_Expr_GreaterOrEqual $node)
+	public function pprintGreaterOrEqualExpr(\PhpParser\Node\Expr\GreaterOrEqual $node)
 	{
 		return "";
 	}
-	public function pprintIdenticalExpr(PHPParser_Node_Expr_Identical $node)
+	public function pprintIdenticalExpr(\PhpParser\Node\Expr\Identical $node)
 	{
 		return "";
 	}
-	public function pprintIncludeExpr(PHPParser_Node_Expr_Include $node)
+	public function pprintIncludeExpr(\PhpParser\Node\Expr\Include_ $node)
 	{
 		return "";
 	}
-	public function pprintInstanceofExpr(PHPParser_Node_Expr_Instanceof $node)
+	public function pprintInstanceofExpr(\PhpParser\Node\Expr\Instanceof_ $node)
 	{
 		return "";
 	}
-	public function pprintIssetExpr(PHPParser_Node_Expr_Isset $node)
+	public function pprintIssetExpr(\PhpParser\Node\Expr\Isset_ $node)
 	{
 		return "";
 	}
-	public function pprintListExpr(PHPParser_Node_Expr_List $node)
+	public function pprintListExpr(\PhpParser\Node\Expr\List_ $node)
 	{
 		return "";
 	}
-	public function pprintLogicalAndExpr(PHPParser_Node_Expr_LogicalAnd $node)
+	public function pprintLogicalAndExpr(\PhpParser\Node\Expr\LogicalAnd $node)
 	{
 		return "";
 	}
-	public function pprintLogicalOrExpr(PHPParser_Node_Expr_LogicalOr $node)
+	public function pprintLogicalOrExpr(\PhpParser\Node\Expr\LogicalOr $node)
 	{
 		return "";
 	}
-	public function pprintLogicalXorExpr(PHPParser_Node_Expr_LogicalXor $node)
+	public function pprintLogicalXorExpr(\PhpParser\Node\Expr\LogicalXor $node)
 	{
 		return "";
 	}
-	public function pprintMethodCallExpr(PHPParser_Node_Expr_MethodCall $node)
+	public function pprintMethodCallExpr(\PhpParser\Node\Expr\MethodCall $node)
 	{
 		return "";
 	}
-	public function pprintMinusExpr(PHPParser_Node_Expr_Minus $node)
+	public function pprintMinusExpr(\PhpParser\Node\Expr\Minus $node)
 	{
 		return "";
 	}
-	public function pprintModExpr(PHPParser_Node_Expr_Mod $node)
+	public function pprintModExpr(\PhpParser\Node\Expr\Mod $node)
 	{
 		return "";
 	}
-	public function pprintMulExpr(PHPParser_Node_Expr_Mul $node)
+	public function pprintMulExpr(\PhpParser\Node\Expr\Mul $node)
 	{
 		return "";
 	}
-	public function pprintNewExpr(PHPParser_Node_Expr_New $node)
+	public function pprintNewExpr(\PhpParser\Node\Expr\New_ $node)
 	{
 		return "";
 	}
-	public function pprintNotEqualExpr(PHPParser_Node_Expr_NotEqual $node)
+	public function pprintNotEqualExpr(\PhpParser\Node\Expr\NotEqual $node)
 	{
 		return "";
 	}
-	public function pprintNotIdenticalExpr(PHPParser_Node_Expr_NotIdentical $node)
+	public function pprintNotIdenticalExpr(\PhpParser\Node\Expr\NotIdentical $node)
 	{
 		return "";
 	}
-	public function pprintPlusExpr(PHPParser_Node_Expr_Plus $node)
+	public function pprintPlusExpr(\PhpParser\Node\Expr\Plus $node)
 	{
 		return "";
 	}
-	public function pprintPostDecExpr(PHPParser_Node_Expr_PostDec $node)
+	public function pprintPostDecExpr(\PhpParser\Node\Expr\PostDec $node)
 	{
 		return "";
 	}
-	public function pprintPostIncExpr(PHPParser_Node_Expr_PostInc $node)
+	public function pprintPostIncExpr(\PhpParser\Node\Expr\PostInc $node)
 	{
 		return "";
 	}
-	public function pprintPreDecExpr(PHPParser_Node_Expr_PreDec $node)
+	public function pprintPreDecExpr(\PhpParser\Node\Expr\PreDec $node)
 	{
 		return "";
 	}
-	public function pprintPreIncExpr(PHPParser_Node_Expr_PreInc $node)
+	public function pprintPreIncExpr(\PhpParser\Node\Expr\PreInc $node)
 	{
 		return "";
 	}
-	public function pprintPrintExpr(PHPParser_Node_Expr_Print $node)
+	public function pprintPrintExpr(\PhpParser\Node\Expr\Print_ $node)
 	{
 		return "";
 	}
-	public function pprintPropertyFetchExpr(PHPParser_Node_Expr_PropertyFetch $node)
+	public function pprintPropertyFetchExpr(\PhpParser\Node\Expr\PropertyFetch $node)
 	{
 		return "";
 	}
-	public function pprintShellExecExpr(PHPParser_Node_Expr_ShellExec $node)
+	public function pprintShellExecExpr(\PhpParser\Node\Expr\ShellExec $node)
 	{
 		return "";
 	}
-	public function pprintShiftLeftExpr(PHPParser_Node_Expr_ShiftLeft $node)
+	public function pprintShiftLeftExpr(\PhpParser\Node\Expr\ShiftLeft $node)
 	{
 		return "";
 	}
-	public function pprintShiftRightExpr(PHPParser_Node_Expr_ShiftRight $node)
+	public function pprintShiftRightExpr(\PhpParser\Node\Expr\ShiftRight $node)
 	{
 		return "";
 	}
-	public function pprintSmallerExpr(PHPParser_Node_Expr_Smaller $node)
+	public function pprintSmallerExpr(\PhpParser\Node\Expr\Smaller $node)
 	{
 		return "";
 	}
-	public function pprintSmallerOrEqualExpr(PHPParser_Node_Expr_SmallerOrEqual $node)
+	public function pprintSmallerOrEqualExpr(\PhpParser\Node\Expr\SmallerOrEqual $node)
 	{
 		return "";
 	}
-	public function pprintStaticCallExpr(PHPParser_Node_Expr_StaticCall $node)
+	public function pprintStaticCallExpr(\PhpParser\Node\Expr\StaticCall $node)
 	{
 		return "";
 	}
-	public function pprintStaticPropertyFetchExpr(PHPParser_Node_Expr_StaticPropertyFetch $node)
+	public function pprintStaticPropertyFetchExpr(\PhpParser\Node\Expr\StaticPropertyFetch $node)
 	{
 		return "";
 	}
-	public function pprintTernaryExpr(PHPParser_Node_Expr_Ternary $node)
+	public function pprintTernaryExpr(\PhpParser\Node\Expr\Ternary $node)
 	{
 		return "";
 	}
-	public function pprintUnaryMinusExpr(PHPParser_Node_Expr_UnaryMinus $node)
+	public function pprintUnaryMinusExpr(\PhpParser\Node\Expr\UnaryMinus $node)
 	{
 		return "";
 	}
-	public function pprintUnaryPlusExpr(PHPParser_Node_Expr_UnaryPlus $node)
+	public function pprintUnaryPlusExpr(\PhpParser\Node\Expr\UnaryPlus $node)
 	{
 		return "";
 	}
-	public function pprintVariableExpr(PHPParser_Node_Expr_Variable $node)
+	public function pprintVariableExpr(\PhpParser\Node\Expr\Variable $node)
 	{
 		return "";
 	}
-	public function pprintYieldExpr(PHPParser_Node_Expr_Yield $node)
+	public function pprintYieldExpr(\PhpParser\Node\Expr\Yield_ $node)
 	{
 		return "";
 	}
-	public function pprintFullyQualifiedName(PHPParser_Node_Name_FullyQualified $node)
+	public function pprintFullyQualifiedName(\PhpParser\Node\Name\FullyQualified $node)
 	{
 		return "";
 	}
-	public function pprintRelativeName(PHPParser_Node_Name_Relative $node)
+	public function pprintRelativeName(\PhpParser\Node\Name\Relative $node)
 	{
 		return "";
 	}
-	public function pprintName(PHPParser_Node_Name $node)
+	public function pprintName(\PhpParser\Node\Name $node)
 	{
 		return "";
 	}
-	public function pprintParam(PHPParser_Node_Param $node)
+	public function pprintParam(\PhpParser\Node\Param $node)
 	{
 		return "";
 	}
-	public function pprintClassConstScalar(PHPParser_Node_Scalar_ClassConst $node)
+	public function pprintClassConstScalar(\PhpParser\Node\Scalar\ClassConst $node)
 	{
 		return "";
 	}
-	public function pprintDirConstScalar(PHPParser_Node_Scalar_DirConst $node)
+	public function pprintDirConstScalar(\PhpParser\Node\Scalar\DirConst $node)
 	{
 		return "";
 	}
-	public function pprintDNumberScalar(PHPParser_Node_Scalar_DNumber $node)
+	public function pprintDNumberScalar(\PhpParser\Node\Scalar\DNumber $node)
 	{
 		return "";
 	}
-	public function pprintEncapsedScalar(PHPParser_Node_Scalar_Encapsed $node)
+	public function pprintEncapsedScalar(\PhpParser\Node\Scalar\Encapsed $node)
 	{
 		return "";
 	}
-	public function pprintFileConstScalar(PHPParser_Node_Scalar_FileConst $node)
+	public function pprintFileConstScalar(\PhpParser\Node\Scalar\FileConst $node)
 	{
 		return "";
 	}
-	public function pprintFuncConstScalar(PHPParser_Node_Scalar_FuncConst $node)
+	public function pprintFuncConstScalar(\PhpParser\Node\Scalar\FuncConst $node)
 	{
 		return "";
 	}
-	public function pprintLineConstScalar(PHPParser_Node_Scalar_LineConst $node)
+	public function pprintLineConstScalar(\PhpParser\Node\Scalar\LineConst $node)
 	{
 		return "";
 	}
-	public function pprintLNumberScalar(PHPParser_Node_Scalar_LNumber $node)
+	public function pprintLNumberScalar(\PhpParser\Node\Scalar\LNumber $node)
 	{
 		return "";
 	}
-	public function pprintMethodConstScalar(PHPParser_Node_Scalar_MethodConst $node)
+	public function pprintMethodConstScalar(\PhpParser\Node\Scalar\MethodConst $node)
 	{
 		return "";
 	}
-	public function pprintNSConstScalar(PHPParser_Node_Scalar_NSConst $node)
+	public function pprintNSConstScalar(\PhpParser\Node\Scalar\NSConst $node)
 	{
 		return "";
 	}
-	public function pprintStringScalar(PHPParser_Node_Scalar_String $node)
+	public function pprintStringScalar(\PhpParser\Node\Scalar\String $node)
 	{
 		return "";
 	}
-	public function pprintTraitConstScalar(PHPParser_Node_Scalar_TraitConst $node)
+	public function pprintTraitConstScalar(\PhpParser\Node\Scalar\TraitConst $node)
 	{
 		return "";
 	}
-	public function pprintScalar(PHPParser_Node_Scalar $node)
+	public function pprintScalar(\PhpParser\Node\Scalar $node)
 	{
 		return "";
 	}
-	public function pprintBreakStmt(PHPParser_Node_Stmt_Break $node)
+	public function pprintBreakStmt(\PhpParser\Node\Stmt\Break_ $node)
 	{
 		return "";
 	}
-	public function pprintCaseStmt(PHPParser_Node_Stmt_Case $node)
+	public function pprintCaseStmt(\PhpParser\Node\Stmt\Case_ $node)
 	{
 		return "";
 	}
-	public function pprintCatchStmt(PHPParser_Node_Stmt_Catch $node)
+	public function pprintCatchStmt(\PhpParser\Node\Stmt\Catch_ $node)
 	{
 		return "";
 	}
-	public function pprintClassStmt(PHPParser_Node_Stmt_Class $node)
+	public function pprintClassStmt(\PhpParser\Node\Stmt\Class_ $node)
 	{
 		return "";
 	}
-	public function pprintClassConstStmt(PHPParser_Node_Stmt_ClassConst $node)
+	public function pprintClassConstStmt(\PhpParser\Node\Stmt\ClassConst $node)
 	{
 		return "";
 	}
-	public function pprintClassMethodStmt(PHPParser_Node_Stmt_ClassMethod $node)
+	public function pprintClassMethodStmt(\PhpParser\Node\Stmt\ClassMethod $node)
 	{
 		return "";
 	}
-	public function pprintConstStmt(PHPParser_Node_Stmt_Const $node)
+	public function pprintConstStmt(\PhpParser\Node\Stmt\Const_ $node)
 	{
 		return "";
 	}
-	public function pprintContinueStmt(PHPParser_Node_Stmt_Continue $node)
+	public function pprintContinueStmt(\PhpParser\Node\Stmt\Continue_ $node)
 	{
 		return "";
 	}
-	public function pprintDeclareStmt(PHPParser_Node_Stmt_Declare $node)
+	public function pprintDeclareStmt(\PhpParser\Node\Stmt\Declare_ $node)
 	{
 		return "";
 	}
-	public function pprintDeclareDeclareStmt(PHPParser_Node_Stmt_DeclareDeclare $node)
+	public function pprintDeclareDeclareStmt(\PhpParser\Node\Stmt\DeclareDeclare $node)
 	{
 		return "";
 	}
-	public function pprintDoStmt(PHPParser_Node_Stmt_Do $node)
+	public function pprintDoStmt(\PhpParser\Node\Stmt\Do_ $node)
 	{
 		return "";
 	}
-	public function pprintEchoStmt(PHPParser_Node_Stmt_Echo $node)
+	public function pprintEchoStmt(\PhpParser\Node\Stmt\Echo_ $node)
 	{
 		return "";
 	}
-	public function pprintElseStmt(PHPParser_Node_Stmt_Else $node)
+	public function pprintElseStmt(\PhpParser\Node\Stmt\Else_ $node)
 	{
 		return "";
 	}
-	public function pprintElseIfStmt(PHPParser_Node_Stmt_ElseIf $node)
+	public function pprintElseIfStmt(\PhpParser\Node\Stmt\ElseIf_ $node)
 	{
 		return "";
 	}
-	public function pprintExprStmt(PHPParser_Node_Stmt_Expr $node)
+	public function pprintExprStmt(\PhpParser\Node\Stmt\Expr $node)
 	{
 		return "";
 	}
-	public function pprintForStmt(PHPParser_Node_Stmt_For $node)
+	public function pprintForStmt(\PhpParser\Node\Stmt\For_ $node)
 	{
 		return "";
 	}
-	public function pprintForeachStmt(PHPParser_Node_Stmt_Foreach $node)
+	public function pprintForeachStmt(\PhpParser\Node\Stmt\Foreach_ $node)
 	{
 		return "";
 	}
-	public function pprintFunctionStmt(PHPParser_Node_Stmt_Function $node)
+	public function pprintFunctionStmt(\PhpParser\Node\Stmt\Function_ $node)
 	{
 		return "";
 	}
-	public function pprintGlobalStmt(PHPParser_Node_Stmt_Global $node)
+	public function pprintGlobalStmt(\PhpParser\Node\Stmt\Global_ $node)
 	{
 		return "";
 	}
-	public function pprintGotoStmt(PHPParser_Node_Stmt_Goto $node)
+	public function pprintGotoStmt(\PhpParser\Node\Stmt\Goto_ $node)
 	{
 		return "";
 	}
-	public function pprintHaltCompilerStmt(PHPParser_Node_Stmt_HaltCompiler $node)
+	public function pprintHaltCompilerStmt(\PhpParser\Node\Stmt\HaltCompiler $node)
 	{
 		return "";
 	}
-	public function pprintIfStmt(PHPParser_Node_Stmt_If $node)
+	public function pprintIfStmt(\PhpParser\Node\Stmt\If_ $node)
 	{
 		return "";
 	}
-	public function pprintInlineHTMLStmt(PHPParser_Node_Stmt_InlineHTML $node)
+	public function pprintInlineHTMLStmt(\PhpParser\Node\Stmt\InlineHTML $node)
 	{
 		return "";
 	}
-	public function pprintInterfaceStmt(PHPParser_Node_Stmt_Interface $node)
+	public function pprintInterfaceStmt(\PhpParser\Node\Stmt\Interface_ $node)
 	{
 		return "";
 	}
-	public function pprintLabelStmt(PHPParser_Node_Stmt_Label $node)
+	public function pprintLabelStmt(\PhpParser\Node\Stmt\Label $node)
 	{
 		return "";
 	}
-	public function pprintNamespaceStmt(PHPParser_Node_Stmt_Namespace $node)
+	public function pprintNamespaceStmt(\PhpParser\Node\Stmt\Namespace_ $node)
 	{
 		return "";
 	}
-	public function pprintPropertyStmt(PHPParser_Node_Stmt_Property $node)
+	public function pprintPropertyStmt(\PhpParser\Node\Stmt\Property $node)
 	{
 		return "";
 	}
-	public function pprintPropertyPropertyStmt(PHPParser_Node_Stmt_PropertyProperty $node)
+	public function pprintPropertyPropertyStmt(\PhpParser\Node\Stmt\PropertyProperty $node)
 	{
 		return "";
 	}
-	public function pprintReturnStmt(PHPParser_Node_Stmt_Return $node)
+	public function pprintReturnStmt(\PhpParser\Node\Stmt\Return_ $node)
 	{
 		return "";
 	}
-	public function pprintStaticStmt(PHPParser_Node_Stmt_Static $node)
+	public function pprintStaticStmt(\PhpParser\Node\Stmt\Static_ $node)
 	{
 		return "";
 	}
-	public function pprintStaticVarStmt(PHPParser_Node_Stmt_StaticVar $node)
+	public function pprintStaticVarStmt(\PhpParser\Node\Stmt\StaticVar $node)
 	{
 		return "";
 	}
-	public function pprintSwitchStmt(PHPParser_Node_Stmt_Switch $node)
+	public function pprintSwitchStmt(\PhpParser\Node\Stmt\Switch_ $node)
 	{
 		return "";
 	}
-	public function pprintThrowStmt(PHPParser_Node_Stmt_Throw $node)
+	public function pprintThrowStmt(\PhpParser\Node\Stmt\Throw_ $node)
 	{
 		return "";
 	}
-	public function pprintTraitStmt(PHPParser_Node_Stmt_Trait $node)
+	public function pprintTraitStmt(\PhpParser\Node\Stmt\Trait_ $node)
 	{
 		return "";
 	}
-	public function pprintTraitUseStmt(PHPParser_Node_Stmt_TraitUse $node)
+	public function pprintTraitUseStmt(\PhpParser\Node\Stmt\TraitUse $node)
 	{
 		return "";
 	}
-	public function pprintAliasTraitUseAdaptationStmt(PHPParser_Node_Stmt_TraitUseAdaptation_Alias $node)
+	public function pprintAliasTraitUseAdaptationStmt(\PhpParser\Node\Stmt\TraitUseAdaptation\Alias $node)
 	{
 		return "";
 	}
-	public function pprintPrecedenceTraitUseAdaptationStmt(PHPParser_Node_Stmt_TraitUseAdaptation_Precedence $node)
+	public function pprintPrecedenceTraitUseAdaptationStmt(\PhpParser\Node\Stmt\TraitUseAdaptation\Precedence $node)
 	{
 		return "";
 	}
-	public function pprintTraitUseAdaptationStmt(PHPParser_Node_Stmt_TraitUseAdaptation $node)
+	public function pprintTraitUseAdaptationStmt(\PhpParser\Node\Stmt\TraitUseAdaptation $node)
 	{
 		return "";
 	}
-	public function pprintTryCatchStmt(PHPParser_Node_Stmt_TryCatch $node)
+	public function pprintTryCatchStmt(\PhpParser\Node\Stmt\TryCatch $node)
 	{
 		return "";
 	}
-	public function pprintUnsetStmt(PHPParser_Node_Stmt_Unset $node)
+	public function pprintUnsetStmt(\PhpParser\Node\Stmt\Unset_ $node)
 	{
 		return "";
 	}
-	public function pprintUseStmt(PHPParser_Node_Stmt_Use $node)
+	public function pprintUseStmt(\PhpParser\Node\Stmt\Use_ $node)
 	{
 		return "";
 	}
-	public function pprintUseUseStmt(PHPParser_Node_Stmt_UseUse $node)
+	public function pprintUseUseStmt(\PhpParser\Node\Stmt\UseUse $node)
 	{
 		return "";
 	}
-	public function pprintWhileStmt(PHPParser_Node_Stmt_While $node)
+	public function pprintWhileStmt(\PhpParser\Node\Stmt\While_ $node)
 	{
 		return "";
 	}
-	public function pprintStmt(PHPParser_Node_Stmt $node)
+	public function pprintStmt(\PhpParser\Node\Stmt $node)
 	{
 		return "";
 	}
-	public function pprintExpr(PHPParser_Node_Expr $node)
+	public function pprintExpr(\PhpParser\Node\Expr $node)
 	{
 		return "";
 	}
