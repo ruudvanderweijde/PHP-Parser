@@ -21,16 +21,7 @@ class Autoloader
     * @param string $class A class name.
     */
     static public function autoload($class) {
-        if (0 === strpos($class, 'Rascal\\')) {
-            if (false !== strpos($class, 'PhpParser_')) {
-                if (isset(self::$oldToNewMap[$class])) {
-                    self::registerLegacyAliases();
-                }
-            } else {
-                $fileName = dirname(__DIR__) . '/' . rtrim(strtr($class, '\\', '/'), '_') . '.php';
-                require $fileName;
-            }
-        } else if (0 === strpos($class, 'PhpParser\\')) {
+        if (0 === strpos($class, 'PhpParser\\') || 0 === strpos($class, 'Rascal\\')) {
             $fileName = dirname(__DIR__) . '/' . rtrim(strtr($class, '\\', '/'), '_') . '.php';
             require $fileName;
         } else if (0 === strpos($class, 'PHPParser_')) {
