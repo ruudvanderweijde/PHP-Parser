@@ -1,10 +1,7 @@
 <?php
-
 namespace Rascal;
 
-require_once('IVisitor.php');
-
-class UsefulVisitor extends PhpParser_NodeVisitorAbstract
+class UsefulVisitor extends \PhpParser\NodeVisitorAbstract
 {
 	private $visitor = null;
 
@@ -13,587 +10,595 @@ class UsefulVisitor extends PhpParser_NodeVisitorAbstract
 		$this->visitor = $v;
 	}
 
-	public function enterNode(PhpParser_Node $node)
+	public function enterNode(\PhpParser\Node $node)
 	{
-		if ($node instanceof PhpParser_Node_Arg) {
+		if ($node instanceof \PhpParser\Node\Arg) {
 			return $this->visitor->enterArg($node);
-		} elseif ($node instanceof PhpParser_Node_Const) {
+		} elseif ($node instanceof \PhpParser\Node\Const_) {
 			return $this->visitor->enterConst($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Array) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Array_) {
 			return $this->visitor->enterArrayExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ArrayDimFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ArrayDimFetch) {
 			return $this->visitor->enterArrayDimFetchExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ArrayItem) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ArrayItem) {
 			return $this->visitor->enterArrayItemExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Assign) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Assign) {
 			return $this->visitor->enterAssignExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignBitwiseAnd) {
-			return $this->visitor->enterAssignBitwiseAndExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignBitwiseOr) {
-			return $this->visitor->enterAssignBitwiseOrExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignBitwiseXor) {
-			return $this->visitor->enterAssignBitwiseXorExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignConcat) {
-			return $this->visitor->enterAssignConcatExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignDiv) {
-			return $this->visitor->enterAssignDivExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignMinus) {
-			return $this->visitor->enterAssignMinusExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignMod) {
-			return $this->visitor->enterAssignModExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignMul) {
-			return $this->visitor->enterAssignMulExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignPlus) {
-			return $this->visitor->enterAssignPlusExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignRef) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\BitwiseAnd) {
+			return $this->visitor->enterBitwiseAndAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\BitwiseOr) {
+			return $this->visitor->enterBitwiseOrAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\BitwiseXor) {
+			return $this->visitor->enterBitwiseXorAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Concat) {
+			return $this->visitor->enterConcatAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Div) {
+			return $this->visitor->enterDivAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Minus) {
+			return $this->visitor->enterMinusAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Mod) {
+			return $this->visitor->enterModAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Mul) {
+			return $this->visitor->enterMulAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Plus) {
+			return $this->visitor->enterPlusAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\ShiftLeft) {
+			return $this->visitor->enterShiftLeftAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\ShiftRight) {
+			return $this->visitor->enterShiftRightAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp) {
+			return $this->visitor->enterAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignRef) {
 			return $this->visitor->enterAssignRefExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignShiftLeft) {
-			return $this->visitor->enterAssignShiftLeftExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignShiftRight) {
-			return $this->visitor->enterAssignShiftRightExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BitwiseAnd) {
-			return $this->visitor->enterBitwiseAndExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BitwiseNot) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BitwiseAnd) {
+			return $this->visitor->enterBitwiseAndBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BitwiseOr) {
+			return $this->visitor->enterBitwiseOrBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BitwiseXor) {
+			return $this->visitor->enterBitwiseXorBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BooleanAnd) {
+			return $this->visitor->enterBooleanAndBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BooleanOr) {
+			return $this->visitor->enterBooleanOrBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Concat) {
+			return $this->visitor->enterConcatBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Div) {
+			return $this->visitor->enterDivBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Equal) {
+			return $this->visitor->enterEqualBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Greater) {
+			return $this->visitor->enterGreaterBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\GreaterOrEqual) {
+			return $this->visitor->enterGreaterOrEqualBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Identical) {
+			return $this->visitor->enterIdenticalBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\LogicalAnd) {
+			return $this->visitor->enterLogicalAndBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\LogicalOr) {
+			return $this->visitor->enterLogicalOrBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\LogicalXor) {
+			return $this->visitor->enterLogicalXorBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Minus) {
+			return $this->visitor->enterMinusBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Mod) {
+			return $this->visitor->enterModBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Mul) {
+			return $this->visitor->enterMulBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\NotEqual) {
+			return $this->visitor->enterNotEqualBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\NotIdentical) {
+			return $this->visitor->enterNotIdenticalBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Plus) {
+			return $this->visitor->enterPlusBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\ShiftLeft) {
+			return $this->visitor->enterShiftLeftBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\ShiftRight) {
+			return $this->visitor->enterShiftRightBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Smaller) {
+			return $this->visitor->enterSmallerBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\SmallerOrEqual) {
+			return $this->visitor->enterSmallerOrEqualBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp) {
+			return $this->visitor->enterBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BitwiseNot) {
 			return $this->visitor->enterBitwiseNotExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BitwiseOr) {
-			return $this->visitor->enterBitwiseOrExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BitwiseXor) {
-			return $this->visitor->enterBitwiseXorExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BooleanAnd) {
-			return $this->visitor->enterBooleanAndExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BooleanNot) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\BooleanNot) {
 			return $this->visitor->enterBooleanNotExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BooleanOr) {
-			return $this->visitor->enterBooleanOrExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_Array) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Array_) {
 			return $this->visitor->enterArrayCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_Bool) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Bool) {
 			return $this->visitor->enterBoolCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_Double) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Double) {
 			return $this->visitor->enterDoubleCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_Int) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Int) {
 			return $this->visitor->enterIntCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_Object) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Object) {
 			return $this->visitor->enterObjectCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_String) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\String) {
 			return $this->visitor->enterStringCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_Unset) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Unset_) {
 			return $this->visitor->enterUnsetCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast) {
 			return $this->visitor->enterCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ClassConstFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ClassConstFetch) {
 			return $this->visitor->enterClassConstFetchExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Clone) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Clone_) {
 			return $this->visitor->enterCloneExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Closure) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Closure) {
 			return $this->visitor->enterClosureExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ClosureUse) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ClosureUse) {
 			return $this->visitor->enterClosureUseExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Concat) {
-			return $this->visitor->enterConcatExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ConstFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ConstFetch) {
 			return $this->visitor->enterConstFetchExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Div) {
-			return $this->visitor->enterDivExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Empty) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Empty_) {
 			return $this->visitor->enterEmptyExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Equal) {
-			return $this->visitor->enterEqualExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ErrorSuppress) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ErrorSuppress) {
 			return $this->visitor->enterErrorSuppressExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Eval) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Eval_) {
 			return $this->visitor->enterEvalExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Exit) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Exit_) {
 			return $this->visitor->enterExitExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_FuncCall) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\FuncCall) {
 			return $this->visitor->enterFuncCallExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Greater) {
-			return $this->visitor->enterGreaterExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_GreaterOrEqual) {
-			return $this->visitor->enterGreaterOrEqualExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Identical) {
-			return $this->visitor->enterIdenticalExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Include) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Include_) {
 			return $this->visitor->enterIncludeExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Instanceof) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Instanceof_) {
 			return $this->visitor->enterInstanceofExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Isset) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Isset_) {
 			return $this->visitor->enterIssetExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_List) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\List_) {
 			return $this->visitor->enterListExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_LogicalAnd) {
-			return $this->visitor->enterLogicalAndExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_LogicalOr) {
-			return $this->visitor->enterLogicalOrExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_LogicalXor) {
-			return $this->visitor->enterLogicalXorExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_MethodCall) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\MethodCall) {
 			return $this->visitor->enterMethodCallExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Minus) {
-			return $this->visitor->enterMinusExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Mod) {
-			return $this->visitor->enterModExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Mul) {
-			return $this->visitor->enterMulExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_New) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\New_) {
 			return $this->visitor->enterNewExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_NotEqual) {
-			return $this->visitor->enterNotEqualExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_NotIdentical) {
-			return $this->visitor->enterNotIdenticalExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Plus) {
-			return $this->visitor->enterPlusExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_PostDec) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PostDec) {
 			return $this->visitor->enterPostDecExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_PostInc) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PostInc) {
 			return $this->visitor->enterPostIncExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_PreDec) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PreDec) {
 			return $this->visitor->enterPreDecExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_PreInc) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PreInc) {
 			return $this->visitor->enterPreIncExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Print) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Print_) {
 			return $this->visitor->enterPrintExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_PropertyFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PropertyFetch) {
 			return $this->visitor->enterPropertyFetchExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ShellExec) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ShellExec) {
 			return $this->visitor->enterShellExecExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ShiftLeft) {
-			return $this->visitor->enterShiftLeftExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ShiftRight) {
-			return $this->visitor->enterShiftRightExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Smaller) {
-			return $this->visitor->enterSmallerExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_SmallerOrEqual) {
-			return $this->visitor->enterSmallerOrEqualExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_StaticCall) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\StaticCall) {
 			return $this->visitor->enterStaticCallExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_StaticPropertyFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\StaticPropertyFetch) {
 			return $this->visitor->enterStaticPropertyFetchExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Ternary) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Ternary) {
 			return $this->visitor->enterTernaryExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_UnaryMinus) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\UnaryMinus) {
 			return $this->visitor->enterUnaryMinusExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_UnaryPlus) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\UnaryPlus) {
 			return $this->visitor->enterUnaryPlusExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Variable) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Variable) {
 			return $this->visitor->enterVariableExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Yield) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Yield_) {
 			return $this->visitor->enterYieldExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Name_FullyQualified) {
+		} elseif ($node instanceof \PhpParser\Node\Name\FullyQualified) {
 			return $this->visitor->enterFullyQualifiedName($node);
-		} elseif ($node instanceof PhpParser_Node_Name_Relative) {
+		} elseif ($node instanceof \PhpParser\Node\Name\Relative) {
 			return $this->visitor->enterRelativeName($node);
-		} elseif ($node instanceof PhpParser_Node_Name) {
+		} elseif ($node instanceof \PhpParser\Node\Name) {
 			return $this->visitor->enterName($node);
-		} elseif ($node instanceof PhpParser_Node_Param) {
+		} elseif ($node instanceof \PhpParser\Node\Param) {
 			return $this->visitor->enterParam($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_ClassConst) {
-			return $this->visitor->enterClassConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_DirConst) {
-			return $this->visitor->enterDirConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_DNumber) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\DNumber) {
 			return $this->visitor->enterDNumberScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_Encapsed) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\Encapsed) {
 			return $this->visitor->enterEncapsedScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_FileConst) {
-			return $this->visitor->enterFileConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_FuncConst) {
-			return $this->visitor->enterFuncConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_LineConst) {
-			return $this->visitor->enterLineConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_LNumber) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\LNumber) {
 			return $this->visitor->enterLNumberScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_MethodConst) {
-			return $this->visitor->enterMethodConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_NSConst) {
-			return $this->visitor->enterNSConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_String) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Class_) {
+			return $this->visitor->enterClassMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Dir) {
+			return $this->visitor->enterDirMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\File) {
+			return $this->visitor->enterFileMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Function_) {
+			return $this->visitor->enterFunctionMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Line) {
+			return $this->visitor->enterLineMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Method) {
+			return $this->visitor->enterMethodMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Namespace_) {
+			return $this->visitor->enterNamespaceMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Trait_) {
+			return $this->visitor->enterTraitMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst) {
+			return $this->visitor->enterMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\String) {
 			return $this->visitor->enterStringScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_TraitConst) {
-			return $this->visitor->enterTraitConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar) {
 			return $this->visitor->enterScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Break) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Break_) {
 			return $this->visitor->enterBreakStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Case) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Case_) {
 			return $this->visitor->enterCaseStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Catch) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Catch_) {
 			return $this->visitor->enterCatchStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Class) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Class_) {
 			return $this->visitor->enterClassStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_ClassConst) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\ClassConst) {
 			return $this->visitor->enterClassConstStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_ClassMethod) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\ClassMethod) {
 			return $this->visitor->enterClassMethodStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Const) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Const_) {
 			return $this->visitor->enterConstStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Continue) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Continue_) {
 			return $this->visitor->enterContinueStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Declare) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Declare_) {
 			return $this->visitor->enterDeclareStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_DeclareDeclare) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\DeclareDeclare) {
 			return $this->visitor->enterDeclareDeclareStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Do) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Do_) {
 			return $this->visitor->enterDoStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Echo) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Echo_) {
 			return $this->visitor->enterEchoStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Else) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Else_) {
 			return $this->visitor->enterElseStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_ElseIf) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\ElseIf_) {
 			return $this->visitor->enterElseIfStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Expr) {
-			return $this->visitor->enterExprStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_For) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\For_) {
 			return $this->visitor->enterForStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Foreach) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Foreach_) {
 			return $this->visitor->enterForeachStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Function) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Function_) {
 			return $this->visitor->enterFunctionStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Global) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Global_) {
 			return $this->visitor->enterGlobalStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Goto) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Goto_) {
 			return $this->visitor->enterGotoStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_HaltCompiler) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\HaltCompiler) {
 			return $this->visitor->enterHaltCompilerStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_If) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\If_) {
 			return $this->visitor->enterIfStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_InlineHTML) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\InlineHTML) {
 			return $this->visitor->enterInlineHTMLStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Interface) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Interface_) {
 			return $this->visitor->enterInterfaceStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Label) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Label) {
 			return $this->visitor->enterLabelStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Namespace) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
 			return $this->visitor->enterNamespaceStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Property) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Property) {
 			return $this->visitor->enterPropertyStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_PropertyProperty) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\PropertyProperty) {
 			return $this->visitor->enterPropertyPropertyStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Return) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Return_) {
 			return $this->visitor->enterReturnStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Static) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Static_) {
 			return $this->visitor->enterStaticStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_StaticVar) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\StaticVar) {
 			return $this->visitor->enterStaticVarStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Switch) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Switch_) {
 			return $this->visitor->enterSwitchStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Throw) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Throw_) {
 			return $this->visitor->enterThrowStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Trait) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Trait_) {
 			return $this->visitor->enterTraitStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_TraitUse) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TraitUse) {
 			return $this->visitor->enterTraitUseStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_TraitUseAdaptation_Alias) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TraitUseAdaptation\Alias) {
 			return $this->visitor->enterAliasTraitUseAdaptationStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_TraitUseAdaptation_Precedence) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TraitUseAdaptation\Precedence) {
 			return $this->visitor->enterPrecedenceTraitUseAdaptationStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_TraitUseAdaptation) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TraitUseAdaptation) {
 			return $this->visitor->enterTraitUseAdaptationStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_TryCatch) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TryCatch) {
 			return $this->visitor->enterTryCatchStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Unset) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Unset_) {
 			return $this->visitor->enterUnsetStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Use) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Use_) {
 			return $this->visitor->enterUseStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_UseUse) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\UseUse) {
 			return $this->visitor->enterUseUseStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_While) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\While_) {
 			return $this->visitor->enterWhileStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt) {
 			return $this->visitor->enterStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Expr) {
+		} elseif ($node instanceof \PhpParser\Node\Expr) {
 			return $this->visitor->enterExpr($node);
 		}
 	}
-	public function leaveNode(PhpParser_Node $node)
+	public function leaveNode(\PhpParser\Node $node)
 	{
-		if ($node instanceof PhpParser_Node_Arg) {
+		if ($node instanceof \PhpParser\Node\Arg) {
 			return $this->visitor->leaveArg($node);
-		} elseif ($node instanceof PhpParser_Node_Const) {
+		} elseif ($node instanceof \PhpParser\Node\Const_) {
 			return $this->visitor->leaveConst($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Array) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Array_) {
 			return $this->visitor->leaveArrayExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ArrayDimFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ArrayDimFetch) {
 			return $this->visitor->leaveArrayDimFetchExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ArrayItem) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ArrayItem) {
 			return $this->visitor->leaveArrayItemExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Assign) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Assign) {
 			return $this->visitor->leaveAssignExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignBitwiseAnd) {
-			return $this->visitor->leaveAssignBitwiseAndExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignBitwiseOr) {
-			return $this->visitor->leaveAssignBitwiseOrExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignBitwiseXor) {
-			return $this->visitor->leaveAssignBitwiseXorExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignConcat) {
-			return $this->visitor->leaveAssignConcatExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignDiv) {
-			return $this->visitor->leaveAssignDivExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignMinus) {
-			return $this->visitor->leaveAssignMinusExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignMod) {
-			return $this->visitor->leaveAssignModExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignMul) {
-			return $this->visitor->leaveAssignMulExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignPlus) {
-			return $this->visitor->leaveAssignPlusExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignRef) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\BitwiseAnd) {
+			return $this->visitor->leaveBitwiseAndAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\BitwiseOr) {
+			return $this->visitor->leaveBitwiseOrAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\BitwiseXor) {
+			return $this->visitor->leaveBitwiseXorAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Concat) {
+			return $this->visitor->leaveConcatAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Div) {
+			return $this->visitor->leaveDivAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Minus) {
+			return $this->visitor->leaveMinusAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Mod) {
+			return $this->visitor->leaveModAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Mul) {
+			return $this->visitor->leaveMulAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Plus) {
+			return $this->visitor->leavePlusAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\ShiftLeft) {
+			return $this->visitor->leaveShiftLeftAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\ShiftRight) {
+			return $this->visitor->leaveShiftRightAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp) {
+			return $this->visitor->leaveAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignRef) {
 			return $this->visitor->leaveAssignRefExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignShiftLeft) {
-			return $this->visitor->leaveAssignShiftLeftExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_AssignShiftRight) {
-			return $this->visitor->leaveAssignShiftRightExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BitwiseAnd) {
-			return $this->visitor->leaveBitwiseAndExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BitwiseNot) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BitwiseAnd) {
+			return $this->visitor->leaveBitwiseAndBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BitwiseOr) {
+			return $this->visitor->leaveBitwiseOrBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BitwiseXor) {
+			return $this->visitor->leaveBitwiseXorBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BooleanAnd) {
+			return $this->visitor->leaveBooleanAndBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BooleanOr) {
+			return $this->visitor->leaveBooleanOrBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Concat) {
+			return $this->visitor->leaveConcatBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Div) {
+			return $this->visitor->leaveDivBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Equal) {
+			return $this->visitor->leaveEqualBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Greater) {
+			return $this->visitor->leaveGreaterBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\GreaterOrEqual) {
+			return $this->visitor->leaveGreaterOrEqualBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Identical) {
+			return $this->visitor->leaveIdenticalBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\LogicalAnd) {
+			return $this->visitor->leaveLogicalAndBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\LogicalOr) {
+			return $this->visitor->leaveLogicalOrBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\LogicalXor) {
+			return $this->visitor->leaveLogicalXorBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Minus) {
+			return $this->visitor->leaveMinusBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Mod) {
+			return $this->visitor->leaveModBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Mul) {
+			return $this->visitor->leaveMulBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\NotEqual) {
+			return $this->visitor->leaveNotEqualBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\NotIdentical) {
+			return $this->visitor->leaveNotIdenticalBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Plus) {
+			return $this->visitor->leavePlusBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\ShiftLeft) {
+			return $this->visitor->leaveShiftLeftBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\ShiftRight) {
+			return $this->visitor->leaveShiftRightBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Smaller) {
+			return $this->visitor->leaveSmallerBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\SmallerOrEqual) {
+			return $this->visitor->leaveSmallerOrEqualBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp) {
+			return $this->visitor->leaveBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BitwiseNot) {
 			return $this->visitor->leaveBitwiseNotExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BitwiseOr) {
-			return $this->visitor->leaveBitwiseOrExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BitwiseXor) {
-			return $this->visitor->leaveBitwiseXorExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BooleanAnd) {
-			return $this->visitor->leaveBooleanAndExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BooleanNot) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\BooleanNot) {
 			return $this->visitor->leaveBooleanNotExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_BooleanOr) {
-			return $this->visitor->leaveBooleanOrExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_Array) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Array_) {
 			return $this->visitor->leaveArrayCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_Bool) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Bool) {
 			return $this->visitor->leaveBoolCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_Double) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Double) {
 			return $this->visitor->leaveDoubleCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_Int) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Int) {
 			return $this->visitor->leaveIntCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_Object) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Object) {
 			return $this->visitor->leaveObjectCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_String) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\String) {
 			return $this->visitor->leaveStringCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast_Unset) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Unset_) {
 			return $this->visitor->leaveUnsetCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Cast) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Cast) {
 			return $this->visitor->leaveCastExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ClassConstFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ClassConstFetch) {
 			return $this->visitor->leaveClassConstFetchExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Clone) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Clone_) {
 			return $this->visitor->leaveCloneExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Closure) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Closure) {
 			return $this->visitor->leaveClosureExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ClosureUse) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ClosureUse) {
 			return $this->visitor->leaveClosureUseExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Concat) {
-			return $this->visitor->leaveConcatExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ConstFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ConstFetch) {
 			return $this->visitor->leaveConstFetchExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Div) {
-			return $this->visitor->leaveDivExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Empty) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Empty_) {
 			return $this->visitor->leaveEmptyExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Equal) {
-			return $this->visitor->leaveEqualExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ErrorSuppress) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ErrorSuppress) {
 			return $this->visitor->leaveErrorSuppressExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Eval) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Eval_) {
 			return $this->visitor->leaveEvalExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Exit) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Exit_) {
 			return $this->visitor->leaveExitExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_FuncCall) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\FuncCall) {
 			return $this->visitor->leaveFuncCallExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Greater) {
-			return $this->visitor->leaveGreaterExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_GreaterOrEqual) {
-			return $this->visitor->leaveGreaterOrEqualExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Identical) {
-			return $this->visitor->leaveIdenticalExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Include) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Include_) {
 			return $this->visitor->leaveIncludeExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Instanceof) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Instanceof_) {
 			return $this->visitor->leaveInstanceofExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Isset) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Isset_) {
 			return $this->visitor->leaveIssetExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_List) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\List_) {
 			return $this->visitor->leaveListExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_LogicalAnd) {
-			return $this->visitor->leaveLogicalAndExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_LogicalOr) {
-			return $this->visitor->leaveLogicalOrExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_LogicalXor) {
-			return $this->visitor->leaveLogicalXorExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_MethodCall) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\MethodCall) {
 			return $this->visitor->leaveMethodCallExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Minus) {
-			return $this->visitor->leaveMinusExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Mod) {
-			return $this->visitor->leaveModExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Mul) {
-			return $this->visitor->leaveMulExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_New) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\New_) {
 			return $this->visitor->leaveNewExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_NotEqual) {
-			return $this->visitor->leaveNotEqualExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_NotIdentical) {
-			return $this->visitor->leaveNotIdenticalExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Plus) {
-			return $this->visitor->leavePlusExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_PostDec) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PostDec) {
 			return $this->visitor->leavePostDecExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_PostInc) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PostInc) {
 			return $this->visitor->leavePostIncExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_PreDec) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PreDec) {
 			return $this->visitor->leavePreDecExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_PreInc) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PreInc) {
 			return $this->visitor->leavePreIncExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Print) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Print_) {
 			return $this->visitor->leavePrintExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_PropertyFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\PropertyFetch) {
 			return $this->visitor->leavePropertyFetchExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ShellExec) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\ShellExec) {
 			return $this->visitor->leaveShellExecExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ShiftLeft) {
-			return $this->visitor->leaveShiftLeftExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_ShiftRight) {
-			return $this->visitor->leaveShiftRightExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Smaller) {
-			return $this->visitor->leaveSmallerExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_SmallerOrEqual) {
-			return $this->visitor->leaveSmallerOrEqualExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_StaticCall) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\StaticCall) {
 			return $this->visitor->leaveStaticCallExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_StaticPropertyFetch) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\StaticPropertyFetch) {
 			return $this->visitor->leaveStaticPropertyFetchExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Ternary) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Ternary) {
 			return $this->visitor->leaveTernaryExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_UnaryMinus) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\UnaryMinus) {
 			return $this->visitor->leaveUnaryMinusExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_UnaryPlus) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\UnaryPlus) {
 			return $this->visitor->leaveUnaryPlusExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Variable) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Variable) {
 			return $this->visitor->leaveVariableExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Expr_Yield) {
+		} elseif ($node instanceof \PhpParser\Node\Expr\Yield_) {
 			return $this->visitor->leaveYieldExpr($node);
-		} elseif ($node instanceof PhpParser_Node_Name_FullyQualified) {
+		} elseif ($node instanceof \PhpParser\Node\Name\FullyQualified) {
 			return $this->visitor->leaveFullyQualifiedName($node);
-		} elseif ($node instanceof PhpParser_Node_Name_Relative) {
+		} elseif ($node instanceof \PhpParser\Node\Name\Relative) {
 			return $this->visitor->leaveRelativeName($node);
-		} elseif ($node instanceof PhpParser_Node_Name) {
+		} elseif ($node instanceof \PhpParser\Node\Name) {
 			return $this->visitor->leaveName($node);
-		} elseif ($node instanceof PhpParser_Node_Param) {
+		} elseif ($node instanceof \PhpParser\Node\Param) {
 			return $this->visitor->leaveParam($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_ClassConst) {
-			return $this->visitor->leaveClassConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_DirConst) {
-			return $this->visitor->leaveDirConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_DNumber) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\DNumber) {
 			return $this->visitor->leaveDNumberScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_Encapsed) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\Encapsed) {
 			return $this->visitor->leaveEncapsedScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_FileConst) {
-			return $this->visitor->leaveFileConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_FuncConst) {
-			return $this->visitor->leaveFuncConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_LineConst) {
-			return $this->visitor->leaveLineConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_LNumber) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\LNumber) {
 			return $this->visitor->leaveLNumberScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_MethodConst) {
-			return $this->visitor->leaveMethodConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_NSConst) {
-			return $this->visitor->leaveNSConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_String) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Class_) {
+			return $this->visitor->leaveClassMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Dir) {
+			return $this->visitor->leaveDirMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\File) {
+			return $this->visitor->leaveFileMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Function_) {
+			return $this->visitor->leaveFunctionMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Line) {
+			return $this->visitor->leaveLineMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Method) {
+			return $this->visitor->leaveMethodMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Namespace_) {
+			return $this->visitor->leaveNamespaceMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Trait_) {
+			return $this->visitor->leaveTraitMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst) {
+			return $this->visitor->leaveMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\String) {
 			return $this->visitor->leaveStringScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar_TraitConst) {
-			return $this->visitor->leaveTraitConstScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Scalar) {
+		} elseif ($node instanceof \PhpParser\Node\Scalar) {
 			return $this->visitor->leaveScalar($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Break) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Break_) {
 			return $this->visitor->leaveBreakStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Case) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Case_) {
 			return $this->visitor->leaveCaseStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Catch) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Catch_) {
 			return $this->visitor->leaveCatchStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Class) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Class_) {
 			return $this->visitor->leaveClassStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_ClassConst) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\ClassConst) {
 			return $this->visitor->leaveClassConstStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_ClassMethod) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\ClassMethod) {
 			return $this->visitor->leaveClassMethodStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Const) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Const_) {
 			return $this->visitor->leaveConstStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Continue) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Continue_) {
 			return $this->visitor->leaveContinueStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Declare) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Declare_) {
 			return $this->visitor->leaveDeclareStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_DeclareDeclare) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\DeclareDeclare) {
 			return $this->visitor->leaveDeclareDeclareStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Do) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Do_) {
 			return $this->visitor->leaveDoStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Echo) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Echo_) {
 			return $this->visitor->leaveEchoStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Else) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Else_) {
 			return $this->visitor->leaveElseStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_ElseIf) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\ElseIf_) {
 			return $this->visitor->leaveElseIfStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Expr) {
-			return $this->visitor->leaveExprStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_For) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\For_) {
 			return $this->visitor->leaveForStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Foreach) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Foreach_) {
 			return $this->visitor->leaveForeachStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Function) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Function_) {
 			return $this->visitor->leaveFunctionStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Global) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Global_) {
 			return $this->visitor->leaveGlobalStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Goto) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Goto_) {
 			return $this->visitor->leaveGotoStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_HaltCompiler) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\HaltCompiler) {
 			return $this->visitor->leaveHaltCompilerStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_If) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\If_) {
 			return $this->visitor->leaveIfStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_InlineHTML) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\InlineHTML) {
 			return $this->visitor->leaveInlineHTMLStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Interface) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Interface_) {
 			return $this->visitor->leaveInterfaceStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Label) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Label) {
 			return $this->visitor->leaveLabelStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Namespace) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Namespace_) {
 			return $this->visitor->leaveNamespaceStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Property) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Property) {
 			return $this->visitor->leavePropertyStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_PropertyProperty) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\PropertyProperty) {
 			return $this->visitor->leavePropertyPropertyStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Return) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Return_) {
 			return $this->visitor->leaveReturnStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Static) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Static_) {
 			return $this->visitor->leaveStaticStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_StaticVar) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\StaticVar) {
 			return $this->visitor->leaveStaticVarStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Switch) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Switch_) {
 			return $this->visitor->leaveSwitchStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Throw) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Throw_) {
 			return $this->visitor->leaveThrowStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Trait) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Trait_) {
 			return $this->visitor->leaveTraitStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_TraitUse) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TraitUse) {
 			return $this->visitor->leaveTraitUseStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_TraitUseAdaptation_Alias) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TraitUseAdaptation\Alias) {
 			return $this->visitor->leaveAliasTraitUseAdaptationStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_TraitUseAdaptation_Precedence) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TraitUseAdaptation\Precedence) {
 			return $this->visitor->leavePrecedenceTraitUseAdaptationStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_TraitUseAdaptation) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TraitUseAdaptation) {
 			return $this->visitor->leaveTraitUseAdaptationStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_TryCatch) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\TryCatch) {
 			return $this->visitor->leaveTryCatchStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Unset) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Unset_) {
 			return $this->visitor->leaveUnsetStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_Use) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Use_) {
 			return $this->visitor->leaveUseStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_UseUse) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\UseUse) {
 			return $this->visitor->leaveUseUseStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt_While) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt\While_) {
 			return $this->visitor->leaveWhileStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Stmt) {
+		} elseif ($node instanceof \PhpParser\Node\Stmt) {
 			return $this->visitor->leaveStmt($node);
-		} elseif ($node instanceof PhpParser_Node_Expr) {
+		} elseif ($node instanceof \PhpParser\Node\Expr) {
 			return $this->visitor->leaveExpr($node);
 		}
 	}

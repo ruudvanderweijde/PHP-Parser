@@ -1,5 +1,4 @@
 <?php
-
 namespace Rascal;
 
 class BasePrinter implements IPrinter
@@ -18,44 +17,86 @@ class BasePrinter implements IPrinter
 			return $this->pprintArrayItemExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\Assign) {
 			return $this->pprintAssignExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\AssignBitwiseAnd) {
-			return $this->pprintAssignBitwiseAndExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\AssignBitwiseOr) {
-			return $this->pprintAssignBitwiseOrExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\AssignBitwiseXor) {
-			return $this->pprintAssignBitwiseXorExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\AssignConcat) {
-			return $this->pprintAssignConcatExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\AssignDiv) {
-			return $this->pprintAssignDivExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\AssignMinus) {
-			return $this->pprintAssignMinusExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\AssignMod) {
-			return $this->pprintAssignModExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\AssignMul) {
-			return $this->pprintAssignMulExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\AssignPlus) {
-			return $this->pprintAssignPlusExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\BitwiseAnd) {
+			return $this->pprintBitwiseAndAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\BitwiseOr) {
+			return $this->pprintBitwiseOrAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\BitwiseXor) {
+			return $this->pprintBitwiseXorAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Concat) {
+			return $this->pprintConcatAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Div) {
+			return $this->pprintDivAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Minus) {
+			return $this->pprintMinusAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Mod) {
+			return $this->pprintModAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Mul) {
+			return $this->pprintMulAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\Plus) {
+			return $this->pprintPlusAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\ShiftLeft) {
+			return $this->pprintShiftLeftAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp\ShiftRight) {
+			return $this->pprintShiftRightAssignOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\AssignOp) {
+			return $this->pprintAssignOpExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\AssignRef) {
 			return $this->pprintAssignRefExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\AssignShiftLeft) {
-			return $this->pprintAssignShiftLeftExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\AssignShiftRight) {
-			return $this->pprintAssignShiftRightExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\BitwiseAnd) {
-			return $this->pprintBitwiseAndExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BitwiseAnd) {
+			return $this->pprintBitwiseAndBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BitwiseOr) {
+			return $this->pprintBitwiseOrBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BitwiseXor) {
+			return $this->pprintBitwiseXorBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BooleanAnd) {
+			return $this->pprintBooleanAndBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\BooleanOr) {
+			return $this->pprintBooleanOrBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Concat) {
+			return $this->pprintConcatBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Div) {
+			return $this->pprintDivBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Equal) {
+			return $this->pprintEqualBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Greater) {
+			return $this->pprintGreaterBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\GreaterOrEqual) {
+			return $this->pprintGreaterOrEqualBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Identical) {
+			return $this->pprintIdenticalBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\LogicalAnd) {
+			return $this->pprintLogicalAndBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\LogicalOr) {
+			return $this->pprintLogicalOrBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\LogicalXor) {
+			return $this->pprintLogicalXorBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Minus) {
+			return $this->pprintMinusBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Mod) {
+			return $this->pprintModBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Mul) {
+			return $this->pprintMulBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\NotEqual) {
+			return $this->pprintNotEqualBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\NotIdentical) {
+			return $this->pprintNotIdenticalBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Plus) {
+			return $this->pprintPlusBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\ShiftLeft) {
+			return $this->pprintShiftLeftBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\ShiftRight) {
+			return $this->pprintShiftRightBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\Smaller) {
+			return $this->pprintSmallerBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp\SmallerOrEqual) {
+			return $this->pprintSmallerOrEqualBinaryOpExpr($node);
+		} elseif ($node instanceof \PhpParser\Node\Expr\BinaryOp) {
+			return $this->pprintBinaryOpExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\BitwiseNot) {
 			return $this->pprintBitwiseNotExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\BitwiseOr) {
-			return $this->pprintBitwiseOrExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\BitwiseXor) {
-			return $this->pprintBitwiseXorExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\BooleanAnd) {
-			return $this->pprintBooleanAndExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\BooleanNot) {
 			return $this->pprintBooleanNotExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\BooleanOr) {
-			return $this->pprintBooleanOrExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Array_) {
 			return $this->pprintArrayCastExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\Cast\Bool) {
@@ -80,16 +121,10 @@ class BasePrinter implements IPrinter
 			return $this->pprintClosureExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\ClosureUse) {
 			return $this->pprintClosureUseExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\Concat) {
-			return $this->pprintConcatExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\ConstFetch) {
 			return $this->pprintConstFetchExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\Div) {
-			return $this->pprintDivExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\Empty_) {
 			return $this->pprintEmptyExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\Equal) {
-			return $this->pprintEqualExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\ErrorSuppress) {
 			return $this->pprintErrorSuppressExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\Eval_) {
@@ -98,12 +133,6 @@ class BasePrinter implements IPrinter
 			return $this->pprintExitExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\FuncCall) {
 			return $this->pprintFuncCallExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\Greater) {
-			return $this->pprintGreaterExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\GreaterOrEqual) {
-			return $this->pprintGreaterOrEqualExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\Identical) {
-			return $this->pprintIdenticalExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\Include_) {
 			return $this->pprintIncludeExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\Instanceof_) {
@@ -112,28 +141,10 @@ class BasePrinter implements IPrinter
 			return $this->pprintIssetExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\List_) {
 			return $this->pprintListExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\LogicalAnd) {
-			return $this->pprintLogicalAndExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\LogicalOr) {
-			return $this->pprintLogicalOrExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\LogicalXor) {
-			return $this->pprintLogicalXorExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\MethodCall) {
 			return $this->pprintMethodCallExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\Minus) {
-			return $this->pprintMinusExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\Mod) {
-			return $this->pprintModExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\Mul) {
-			return $this->pprintMulExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\New_) {
 			return $this->pprintNewExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\NotEqual) {
-			return $this->pprintNotEqualExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\NotIdentical) {
-			return $this->pprintNotIdenticalExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\Plus) {
-			return $this->pprintPlusExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\PostDec) {
 			return $this->pprintPostDecExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\PostInc) {
@@ -148,14 +159,6 @@ class BasePrinter implements IPrinter
 			return $this->pprintPropertyFetchExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\ShellExec) {
 			return $this->pprintShellExecExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\ShiftLeft) {
-			return $this->pprintShiftLeftExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\ShiftRight) {
-			return $this->pprintShiftRightExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\Smaller) {
-			return $this->pprintSmallerExpr($node);
-		} elseif ($node instanceof \PhpParser\Node\Expr\SmallerOrEqual) {
-			return $this->pprintSmallerOrEqualExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\StaticCall) {
 			return $this->pprintStaticCallExpr($node);
 		} elseif ($node instanceof \PhpParser\Node\Expr\StaticPropertyFetch) {
@@ -178,30 +181,32 @@ class BasePrinter implements IPrinter
 			return $this->pprintName($node);
 		} elseif ($node instanceof \PhpParser\Node\Param) {
 			return $this->pprintParam($node);
-		} elseif ($node instanceof \PhpParser\Node\Scalar\ClassConst) {
-			return $this->pprintClassConstScalar($node);
-		} elseif ($node instanceof \PhpParser\Node\Scalar\DirConst) {
-			return $this->pprintDirConstScalar($node);
 		} elseif ($node instanceof \PhpParser\Node\Scalar\DNumber) {
 			return $this->pprintDNumberScalar($node);
 		} elseif ($node instanceof \PhpParser\Node\Scalar\Encapsed) {
 			return $this->pprintEncapsedScalar($node);
-		} elseif ($node instanceof \PhpParser\Node\Scalar\FileConst) {
-			return $this->pprintFileConstScalar($node);
-		} elseif ($node instanceof \PhpParser\Node\Scalar\FuncConst) {
-			return $this->pprintFuncConstScalar($node);
-		} elseif ($node instanceof \PhpParser\Node\Scalar\LineConst) {
-			return $this->pprintLineConstScalar($node);
 		} elseif ($node instanceof \PhpParser\Node\Scalar\LNumber) {
 			return $this->pprintLNumberScalar($node);
-		} elseif ($node instanceof \PhpParser\Node\Scalar\MethodConst) {
-			return $this->pprintMethodConstScalar($node);
-		} elseif ($node instanceof \PhpParser\Node\Scalar\NSConst) {
-			return $this->pprintNSConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Class_) {
+			return $this->pprintClassMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Dir) {
+			return $this->pprintDirMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\File) {
+			return $this->pprintFileMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Function_) {
+			return $this->pprintFunctionMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Line) {
+			return $this->pprintLineMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Method) {
+			return $this->pprintMethodMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Namespace_) {
+			return $this->pprintNamespaceMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst\Trait_) {
+			return $this->pprintTraitMagicConstScalar($node);
+		} elseif ($node instanceof \PhpParser\Node\Scalar\MagicConst) {
+			return $this->pprintMagicConstScalar($node);
 		} elseif ($node instanceof \PhpParser\Node\Scalar\String) {
 			return $this->pprintStringScalar($node);
-		} elseif ($node instanceof \PhpParser\Node\Scalar\TraitConst) {
-			return $this->pprintTraitConstScalar($node);
 		} elseif ($node instanceof \PhpParser\Node\Scalar) {
 			return $this->pprintScalar($node);
 		} elseif ($node instanceof \PhpParser\Node\Stmt\Break_) {
@@ -232,8 +237,6 @@ class BasePrinter implements IPrinter
 			return $this->pprintElseStmt($node);
 		} elseif ($node instanceof \PhpParser\Node\Stmt\ElseIf_) {
 			return $this->pprintElseIfStmt($node);
-		} elseif ($node instanceof \PhpParser\Node\Stmt\Expr) {
-			return $this->pprintExprStmt($node);
 		} elseif ($node instanceof \PhpParser\Node\Stmt\For_) {
 			return $this->pprintForStmt($node);
 		} elseif ($node instanceof \PhpParser\Node\Stmt\Foreach_) {
@@ -320,39 +323,51 @@ class BasePrinter implements IPrinter
 	{
 		return "";
 	}
-	public function pprintAssignBitwiseAndExpr(\PhpParser\Node\Expr\AssignBitwiseAnd $node)
+	public function pprintBitwiseAndAssignOpExpr(\PhpParser\Node\Expr\AssignOp\BitwiseAnd $node)
 	{
 		return "";
 	}
-	public function pprintAssignBitwiseOrExpr(\PhpParser\Node\Expr\AssignBitwiseOr $node)
+	public function pprintBitwiseOrAssignOpExpr(\PhpParser\Node\Expr\AssignOp\BitwiseOr $node)
 	{
 		return "";
 	}
-	public function pprintAssignBitwiseXorExpr(\PhpParser\Node\Expr\AssignBitwiseXor $node)
+	public function pprintBitwiseXorAssignOpExpr(\PhpParser\Node\Expr\AssignOp\BitwiseXor $node)
 	{
 		return "";
 	}
-	public function pprintAssignConcatExpr(\PhpParser\Node\Expr\AssignConcat $node)
+	public function pprintConcatAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Concat $node)
 	{
 		return "";
 	}
-	public function pprintAssignDivExpr(\PhpParser\Node\Expr\AssignDiv $node)
+	public function pprintDivAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Div $node)
 	{
 		return "";
 	}
-	public function pprintAssignMinusExpr(\PhpParser\Node\Expr\AssignMinus $node)
+	public function pprintMinusAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Minus $node)
 	{
 		return "";
 	}
-	public function pprintAssignModExpr(\PhpParser\Node\Expr\AssignMod $node)
+	public function pprintModAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Mod $node)
 	{
 		return "";
 	}
-	public function pprintAssignMulExpr(\PhpParser\Node\Expr\AssignMul $node)
+	public function pprintMulAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Mul $node)
 	{
 		return "";
 	}
-	public function pprintAssignPlusExpr(\PhpParser\Node\Expr\AssignPlus $node)
+	public function pprintPlusAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Plus $node)
+	{
+		return "";
+	}
+	public function pprintShiftLeftAssignOpExpr(\PhpParser\Node\Expr\AssignOp\ShiftLeft $node)
+	{
+		return "";
+	}
+	public function pprintShiftRightAssignOpExpr(\PhpParser\Node\Expr\AssignOp\ShiftRight $node)
+	{
+		return "";
+	}
+	public function pprintAssignOpExpr(\PhpParser\Node\Expr\AssignOp $node)
 	{
 		return "";
 	}
@@ -360,15 +375,103 @@ class BasePrinter implements IPrinter
 	{
 		return "";
 	}
-	public function pprintAssignShiftLeftExpr(\PhpParser\Node\Expr\AssignShiftLeft $node)
+	public function pprintBitwiseAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseAnd $node)
 	{
 		return "";
 	}
-	public function pprintAssignShiftRightExpr(\PhpParser\Node\Expr\AssignShiftRight $node)
+	public function pprintBitwiseOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseOr $node)
 	{
 		return "";
 	}
-	public function pprintBitwiseAndExpr(\PhpParser\Node\Expr\BitwiseAnd $node)
+	public function pprintBitwiseXorBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseXor $node)
+	{
+		return "";
+	}
+	public function pprintBooleanAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BooleanAnd $node)
+	{
+		return "";
+	}
+	public function pprintBooleanOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BooleanOr $node)
+	{
+		return "";
+	}
+	public function pprintConcatBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Concat $node)
+	{
+		return "";
+	}
+	public function pprintDivBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Div $node)
+	{
+		return "";
+	}
+	public function pprintEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Equal $node)
+	{
+		return "";
+	}
+	public function pprintGreaterBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Greater $node)
+	{
+		return "";
+	}
+	public function pprintGreaterOrEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\GreaterOrEqual $node)
+	{
+		return "";
+	}
+	public function pprintIdenticalBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Identical $node)
+	{
+		return "";
+	}
+	public function pprintLogicalAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalAnd $node)
+	{
+		return "";
+	}
+	public function pprintLogicalOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalOr $node)
+	{
+		return "";
+	}
+	public function pprintLogicalXorBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalXor $node)
+	{
+		return "";
+	}
+	public function pprintMinusBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Minus $node)
+	{
+		return "";
+	}
+	public function pprintModBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Mod $node)
+	{
+		return "";
+	}
+	public function pprintMulBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Mul $node)
+	{
+		return "";
+	}
+	public function pprintNotEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\NotEqual $node)
+	{
+		return "";
+	}
+	public function pprintNotIdenticalBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\NotIdentical $node)
+	{
+		return "";
+	}
+	public function pprintPlusBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Plus $node)
+	{
+		return "";
+	}
+	public function pprintShiftLeftBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\ShiftLeft $node)
+	{
+		return "";
+	}
+	public function pprintShiftRightBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\ShiftRight $node)
+	{
+		return "";
+	}
+	public function pprintSmallerBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Smaller $node)
+	{
+		return "";
+	}
+	public function pprintSmallerOrEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\SmallerOrEqual $node)
+	{
+		return "";
+	}
+	public function pprintBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp $node)
 	{
 		return "";
 	}
@@ -376,23 +479,7 @@ class BasePrinter implements IPrinter
 	{
 		return "";
 	}
-	public function pprintBitwiseOrExpr(\PhpParser\Node\Expr\BitwiseOr $node)
-	{
-		return "";
-	}
-	public function pprintBitwiseXorExpr(\PhpParser\Node\Expr\BitwiseXor $node)
-	{
-		return "";
-	}
-	public function pprintBooleanAndExpr(\PhpParser\Node\Expr\BooleanAnd $node)
-	{
-		return "";
-	}
 	public function pprintBooleanNotExpr(\PhpParser\Node\Expr\BooleanNot $node)
-	{
-		return "";
-	}
-	public function pprintBooleanOrExpr(\PhpParser\Node\Expr\BooleanOr $node)
 	{
 		return "";
 	}
@@ -444,23 +531,11 @@ class BasePrinter implements IPrinter
 	{
 		return "";
 	}
-	public function pprintConcatExpr(\PhpParser\Node\Expr\Concat $node)
-	{
-		return "";
-	}
 	public function pprintConstFetchExpr(\PhpParser\Node\Expr\ConstFetch $node)
 	{
 		return "";
 	}
-	public function pprintDivExpr(\PhpParser\Node\Expr\Div $node)
-	{
-		return "";
-	}
 	public function pprintEmptyExpr(\PhpParser\Node\Expr\Empty_ $node)
-	{
-		return "";
-	}
-	public function pprintEqualExpr(\PhpParser\Node\Expr\Equal $node)
 	{
 		return "";
 	}
@@ -480,18 +555,6 @@ class BasePrinter implements IPrinter
 	{
 		return "";
 	}
-	public function pprintGreaterExpr(\PhpParser\Node\Expr\Greater $node)
-	{
-		return "";
-	}
-	public function pprintGreaterOrEqualExpr(\PhpParser\Node\Expr\GreaterOrEqual $node)
-	{
-		return "";
-	}
-	public function pprintIdenticalExpr(\PhpParser\Node\Expr\Identical $node)
-	{
-		return "";
-	}
 	public function pprintIncludeExpr(\PhpParser\Node\Expr\Include_ $node)
 	{
 		return "";
@@ -508,47 +571,11 @@ class BasePrinter implements IPrinter
 	{
 		return "";
 	}
-	public function pprintLogicalAndExpr(\PhpParser\Node\Expr\LogicalAnd $node)
-	{
-		return "";
-	}
-	public function pprintLogicalOrExpr(\PhpParser\Node\Expr\LogicalOr $node)
-	{
-		return "";
-	}
-	public function pprintLogicalXorExpr(\PhpParser\Node\Expr\LogicalXor $node)
-	{
-		return "";
-	}
 	public function pprintMethodCallExpr(\PhpParser\Node\Expr\MethodCall $node)
 	{
 		return "";
 	}
-	public function pprintMinusExpr(\PhpParser\Node\Expr\Minus $node)
-	{
-		return "";
-	}
-	public function pprintModExpr(\PhpParser\Node\Expr\Mod $node)
-	{
-		return "";
-	}
-	public function pprintMulExpr(\PhpParser\Node\Expr\Mul $node)
-	{
-		return "";
-	}
 	public function pprintNewExpr(\PhpParser\Node\Expr\New_ $node)
-	{
-		return "";
-	}
-	public function pprintNotEqualExpr(\PhpParser\Node\Expr\NotEqual $node)
-	{
-		return "";
-	}
-	public function pprintNotIdenticalExpr(\PhpParser\Node\Expr\NotIdentical $node)
-	{
-		return "";
-	}
-	public function pprintPlusExpr(\PhpParser\Node\Expr\Plus $node)
 	{
 		return "";
 	}
@@ -577,22 +604,6 @@ class BasePrinter implements IPrinter
 		return "";
 	}
 	public function pprintShellExecExpr(\PhpParser\Node\Expr\ShellExec $node)
-	{
-		return "";
-	}
-	public function pprintShiftLeftExpr(\PhpParser\Node\Expr\ShiftLeft $node)
-	{
-		return "";
-	}
-	public function pprintShiftRightExpr(\PhpParser\Node\Expr\ShiftRight $node)
-	{
-		return "";
-	}
-	public function pprintSmallerExpr(\PhpParser\Node\Expr\Smaller $node)
-	{
-		return "";
-	}
-	public function pprintSmallerOrEqualExpr(\PhpParser\Node\Expr\SmallerOrEqual $node)
 	{
 		return "";
 	}
@@ -640,14 +651,6 @@ class BasePrinter implements IPrinter
 	{
 		return "";
 	}
-	public function pprintClassConstScalar(\PhpParser\Node\Scalar\ClassConst $node)
-	{
-		return "";
-	}
-	public function pprintDirConstScalar(\PhpParser\Node\Scalar\DirConst $node)
-	{
-		return "";
-	}
 	public function pprintDNumberScalar(\PhpParser\Node\Scalar\DNumber $node)
 	{
 		return "";
@@ -656,35 +659,47 @@ class BasePrinter implements IPrinter
 	{
 		return "";
 	}
-	public function pprintFileConstScalar(\PhpParser\Node\Scalar\FileConst $node)
-	{
-		return "";
-	}
-	public function pprintFuncConstScalar(\PhpParser\Node\Scalar\FuncConst $node)
-	{
-		return "";
-	}
-	public function pprintLineConstScalar(\PhpParser\Node\Scalar\LineConst $node)
-	{
-		return "";
-	}
 	public function pprintLNumberScalar(\PhpParser\Node\Scalar\LNumber $node)
 	{
 		return "";
 	}
-	public function pprintMethodConstScalar(\PhpParser\Node\Scalar\MethodConst $node)
+	public function pprintClassMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Class_ $node)
 	{
 		return "";
 	}
-	public function pprintNSConstScalar(\PhpParser\Node\Scalar\NSConst $node)
+	public function pprintDirMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Dir $node)
+	{
+		return "";
+	}
+	public function pprintFileMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\File $node)
+	{
+		return "";
+	}
+	public function pprintFunctionMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Function_ $node)
+	{
+		return "";
+	}
+	public function pprintLineMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Line $node)
+	{
+		return "";
+	}
+	public function pprintMethodMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Method $node)
+	{
+		return "";
+	}
+	public function pprintNamespaceMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Namespace_ $node)
+	{
+		return "";
+	}
+	public function pprintTraitMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Trait_ $node)
+	{
+		return "";
+	}
+	public function pprintMagicConstScalar(\PhpParser\Node\Scalar\MagicConst $node)
 	{
 		return "";
 	}
 	public function pprintStringScalar(\PhpParser\Node\Scalar\String $node)
-	{
-		return "";
-	}
-	public function pprintTraitConstScalar(\PhpParser\Node\Scalar\TraitConst $node)
 	{
 		return "";
 	}
@@ -745,10 +760,6 @@ class BasePrinter implements IPrinter
 		return "";
 	}
 	public function pprintElseIfStmt(\PhpParser\Node\Stmt\ElseIf_ $node)
-	{
-		return "";
-	}
-	public function pprintExprStmt(\PhpParser\Node\Stmt\Expr $node)
 	{
 		return "";
 	}

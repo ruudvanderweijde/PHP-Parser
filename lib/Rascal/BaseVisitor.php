@@ -1,1159 +1,1174 @@
 <?php
-
 namespace Rascal;
 
 class BaseVisitor implements IVisitor
 {
-	public function enterArg(PhpParser_Node_Arg $node)
+	public function enterArg(\PhpParser\Node\Arg $node)
 	{
 		return null;
 	}
-	public function enterConst(PhpParser_Node_Const $node)
+	public function enterConst(\PhpParser\Node\Const_ $node)
 	{
 		return null;
 	}
-	public function enterArrayExpr(PhpParser_Node_Expr_Array $node)
+	public function enterArrayExpr(\PhpParser\Node\Expr\Array_ $node)
 	{
 		return null;
 	}
-	public function enterArrayDimFetchExpr(PhpParser_Node_Expr_ArrayDimFetch $node)
+	public function enterArrayDimFetchExpr(\PhpParser\Node\Expr\ArrayDimFetch $node)
 	{
 		return null;
 	}
-	public function enterArrayItemExpr(PhpParser_Node_Expr_ArrayItem $node)
+	public function enterArrayItemExpr(\PhpParser\Node\Expr\ArrayItem $node)
 	{
 		return null;
 	}
-	public function enterAssignExpr(PhpParser_Node_Expr_Assign $node)
+	public function enterAssignExpr(\PhpParser\Node\Expr\Assign $node)
 	{
 		return null;
 	}
-	public function enterAssignBitwiseAndExpr(PhpParser_Node_Expr_AssignBitwiseAnd $node)
+	public function enterBitwiseAndAssignOpExpr(\PhpParser\Node\Expr\AssignOp\BitwiseAnd $node)
 	{
 		return null;
 	}
-	public function enterAssignBitwiseOrExpr(PhpParser_Node_Expr_AssignBitwiseOr $node)
+	public function enterBitwiseOrAssignOpExpr(\PhpParser\Node\Expr\AssignOp\BitwiseOr $node)
 	{
 		return null;
 	}
-	public function enterAssignBitwiseXorExpr(PhpParser_Node_Expr_AssignBitwiseXor $node)
+	public function enterBitwiseXorAssignOpExpr(\PhpParser\Node\Expr\AssignOp\BitwiseXor $node)
 	{
 		return null;
 	}
-	public function enterAssignConcatExpr(PhpParser_Node_Expr_AssignConcat $node)
+	public function enterConcatAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Concat $node)
 	{
 		return null;
 	}
-	public function enterAssignDivExpr(PhpParser_Node_Expr_AssignDiv $node)
+	public function enterDivAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Div $node)
 	{
 		return null;
 	}
-	public function enterAssignMinusExpr(PhpParser_Node_Expr_AssignMinus $node)
+	public function enterMinusAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Minus $node)
 	{
 		return null;
 	}
-	public function enterAssignModExpr(PhpParser_Node_Expr_AssignMod $node)
+	public function enterModAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Mod $node)
 	{
 		return null;
 	}
-	public function enterAssignMulExpr(PhpParser_Node_Expr_AssignMul $node)
+	public function enterMulAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Mul $node)
 	{
 		return null;
 	}
-	public function enterAssignPlusExpr(PhpParser_Node_Expr_AssignPlus $node)
+	public function enterPlusAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Plus $node)
 	{
 		return null;
 	}
-	public function enterAssignRefExpr(PhpParser_Node_Expr_AssignRef $node)
+	public function enterShiftLeftAssignOpExpr(\PhpParser\Node\Expr\AssignOp\ShiftLeft $node)
 	{
 		return null;
 	}
-	public function enterAssignShiftLeftExpr(PhpParser_Node_Expr_AssignShiftLeft $node)
+	public function enterShiftRightAssignOpExpr(\PhpParser\Node\Expr\AssignOp\ShiftRight $node)
 	{
 		return null;
 	}
-	public function enterAssignShiftRightExpr(PhpParser_Node_Expr_AssignShiftRight $node)
+	public function enterAssignOpExpr(\PhpParser\Node\Expr\AssignOp $node)
 	{
 		return null;
 	}
-	public function enterBitwiseAndExpr(PhpParser_Node_Expr_BitwiseAnd $node)
+	public function enterAssignRefExpr(\PhpParser\Node\Expr\AssignRef $node)
 	{
 		return null;
 	}
-	public function enterBitwiseNotExpr(PhpParser_Node_Expr_BitwiseNot $node)
+	public function enterBitwiseAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseAnd $node)
 	{
 		return null;
 	}
-	public function enterBitwiseOrExpr(PhpParser_Node_Expr_BitwiseOr $node)
+	public function enterBitwiseOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseOr $node)
 	{
 		return null;
 	}
-	public function enterBitwiseXorExpr(PhpParser_Node_Expr_BitwiseXor $node)
+	public function enterBitwiseXorBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseXor $node)
 	{
 		return null;
 	}
-	public function enterBooleanAndExpr(PhpParser_Node_Expr_BooleanAnd $node)
+	public function enterBooleanAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BooleanAnd $node)
 	{
 		return null;
 	}
-	public function enterBooleanNotExpr(PhpParser_Node_Expr_BooleanNot $node)
+	public function enterBooleanOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BooleanOr $node)
 	{
 		return null;
 	}
-	public function enterBooleanOrExpr(PhpParser_Node_Expr_BooleanOr $node)
+	public function enterConcatBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Concat $node)
 	{
 		return null;
 	}
-	public function enterArrayCastExpr(PhpParser_Node_Expr_Cast_Array $node)
+	public function enterDivBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Div $node)
 	{
 		return null;
 	}
-	public function enterBoolCastExpr(PhpParser_Node_Expr_Cast_Bool $node)
+	public function enterEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Equal $node)
 	{
 		return null;
 	}
-	public function enterDoubleCastExpr(PhpParser_Node_Expr_Cast_Double $node)
+	public function enterGreaterBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Greater $node)
 	{
 		return null;
 	}
-	public function enterIntCastExpr(PhpParser_Node_Expr_Cast_Int $node)
+	public function enterGreaterOrEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\GreaterOrEqual $node)
 	{
 		return null;
 	}
-	public function enterObjectCastExpr(PhpParser_Node_Expr_Cast_Object $node)
+	public function enterIdenticalBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Identical $node)
 	{
 		return null;
 	}
-	public function enterStringCastExpr(PhpParser_Node_Expr_Cast_String $node)
+	public function enterLogicalAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalAnd $node)
 	{
 		return null;
 	}
-	public function enterUnsetCastExpr(PhpParser_Node_Expr_Cast_Unset $node)
+	public function enterLogicalOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalOr $node)
 	{
 		return null;
 	}
-	public function enterCastExpr(PhpParser_Node_Expr_Cast $node)
+	public function enterLogicalXorBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalXor $node)
 	{
 		return null;
 	}
-	public function enterClassConstFetchExpr(PhpParser_Node_Expr_ClassConstFetch $node)
+	public function enterMinusBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Minus $node)
 	{
 		return null;
 	}
-	public function enterCloneExpr(PhpParser_Node_Expr_Clone $node)
+	public function enterModBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Mod $node)
 	{
 		return null;
 	}
-	public function enterClosureExpr(PhpParser_Node_Expr_Closure $node)
+	public function enterMulBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Mul $node)
 	{
 		return null;
 	}
-	public function enterClosureUseExpr(PhpParser_Node_Expr_ClosureUse $node)
+	public function enterNotEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\NotEqual $node)
 	{
 		return null;
 	}
-	public function enterConcatExpr(PhpParser_Node_Expr_Concat $node)
+	public function enterNotIdenticalBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\NotIdentical $node)
 	{
 		return null;
 	}
-	public function enterConstFetchExpr(PhpParser_Node_Expr_ConstFetch $node)
+	public function enterPlusBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Plus $node)
 	{
 		return null;
 	}
-	public function enterDivExpr(PhpParser_Node_Expr_Div $node)
+	public function enterShiftLeftBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\ShiftLeft $node)
 	{
 		return null;
 	}
-	public function enterEmptyExpr(PhpParser_Node_Expr_Empty $node)
+	public function enterShiftRightBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\ShiftRight $node)
 	{
 		return null;
 	}
-	public function enterEqualExpr(PhpParser_Node_Expr_Equal $node)
+	public function enterSmallerBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Smaller $node)
 	{
 		return null;
 	}
-	public function enterErrorSuppressExpr(PhpParser_Node_Expr_ErrorSuppress $node)
+	public function enterSmallerOrEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\SmallerOrEqual $node)
 	{
 		return null;
 	}
-	public function enterEvalExpr(PhpParser_Node_Expr_Eval $node)
+	public function enterBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp $node)
 	{
 		return null;
 	}
-	public function enterExitExpr(PhpParser_Node_Expr_Exit $node)
+	public function enterBitwiseNotExpr(\PhpParser\Node\Expr\BitwiseNot $node)
 	{
 		return null;
 	}
-	public function enterFuncCallExpr(PhpParser_Node_Expr_FuncCall $node)
+	public function enterBooleanNotExpr(\PhpParser\Node\Expr\BooleanNot $node)
 	{
 		return null;
 	}
-	public function enterGreaterExpr(PhpParser_Node_Expr_Greater $node)
+	public function enterArrayCastExpr(\PhpParser\Node\Expr\Cast\Array_ $node)
 	{
 		return null;
 	}
-	public function enterGreaterOrEqualExpr(PhpParser_Node_Expr_GreaterOrEqual $node)
+	public function enterBoolCastExpr(\PhpParser\Node\Expr\Cast\Bool $node)
 	{
 		return null;
 	}
-	public function enterIdenticalExpr(PhpParser_Node_Expr_Identical $node)
+	public function enterDoubleCastExpr(\PhpParser\Node\Expr\Cast\Double $node)
 	{
 		return null;
 	}
-	public function enterIncludeExpr(PhpParser_Node_Expr_Include $node)
+	public function enterIntCastExpr(\PhpParser\Node\Expr\Cast\Int $node)
 	{
 		return null;
 	}
-	public function enterInstanceofExpr(PhpParser_Node_Expr_Instanceof $node)
+	public function enterObjectCastExpr(\PhpParser\Node\Expr\Cast\Object $node)
 	{
 		return null;
 	}
-	public function enterIssetExpr(PhpParser_Node_Expr_Isset $node)
+	public function enterStringCastExpr(\PhpParser\Node\Expr\Cast\String $node)
 	{
 		return null;
 	}
-	public function enterListExpr(PhpParser_Node_Expr_List $node)
+	public function enterUnsetCastExpr(\PhpParser\Node\Expr\Cast\Unset_ $node)
 	{
 		return null;
 	}
-	public function enterLogicalAndExpr(PhpParser_Node_Expr_LogicalAnd $node)
+	public function enterCastExpr(\PhpParser\Node\Expr\Cast $node)
 	{
 		return null;
 	}
-	public function enterLogicalOrExpr(PhpParser_Node_Expr_LogicalOr $node)
+	public function enterClassConstFetchExpr(\PhpParser\Node\Expr\ClassConstFetch $node)
 	{
 		return null;
 	}
-	public function enterLogicalXorExpr(PhpParser_Node_Expr_LogicalXor $node)
+	public function enterCloneExpr(\PhpParser\Node\Expr\Clone_ $node)
 	{
 		return null;
 	}
-	public function enterMethodCallExpr(PhpParser_Node_Expr_MethodCall $node)
+	public function enterClosureExpr(\PhpParser\Node\Expr\Closure $node)
 	{
 		return null;
 	}
-	public function enterMinusExpr(PhpParser_Node_Expr_Minus $node)
+	public function enterClosureUseExpr(\PhpParser\Node\Expr\ClosureUse $node)
 	{
 		return null;
 	}
-	public function enterModExpr(PhpParser_Node_Expr_Mod $node)
+	public function enterConstFetchExpr(\PhpParser\Node\Expr\ConstFetch $node)
 	{
 		return null;
 	}
-	public function enterMulExpr(PhpParser_Node_Expr_Mul $node)
+	public function enterEmptyExpr(\PhpParser\Node\Expr\Empty_ $node)
 	{
 		return null;
 	}
-	public function enterNewExpr(PhpParser_Node_Expr_New $node)
+	public function enterErrorSuppressExpr(\PhpParser\Node\Expr\ErrorSuppress $node)
 	{
 		return null;
 	}
-	public function enterNotEqualExpr(PhpParser_Node_Expr_NotEqual $node)
+	public function enterEvalExpr(\PhpParser\Node\Expr\Eval_ $node)
 	{
 		return null;
 	}
-	public function enterNotIdenticalExpr(PhpParser_Node_Expr_NotIdentical $node)
+	public function enterExitExpr(\PhpParser\Node\Expr\Exit_ $node)
 	{
 		return null;
 	}
-	public function enterPlusExpr(PhpParser_Node_Expr_Plus $node)
+	public function enterFuncCallExpr(\PhpParser\Node\Expr\FuncCall $node)
 	{
 		return null;
 	}
-	public function enterPostDecExpr(PhpParser_Node_Expr_PostDec $node)
+	public function enterIncludeExpr(\PhpParser\Node\Expr\Include_ $node)
 	{
 		return null;
 	}
-	public function enterPostIncExpr(PhpParser_Node_Expr_PostInc $node)
+	public function enterInstanceofExpr(\PhpParser\Node\Expr\Instanceof_ $node)
 	{
 		return null;
 	}
-	public function enterPreDecExpr(PhpParser_Node_Expr_PreDec $node)
+	public function enterIssetExpr(\PhpParser\Node\Expr\Isset_ $node)
 	{
 		return null;
 	}
-	public function enterPreIncExpr(PhpParser_Node_Expr_PreInc $node)
+	public function enterListExpr(\PhpParser\Node\Expr\List_ $node)
 	{
 		return null;
 	}
-	public function enterPrintExpr(PhpParser_Node_Expr_Print $node)
+	public function enterMethodCallExpr(\PhpParser\Node\Expr\MethodCall $node)
 	{
 		return null;
 	}
-	public function enterPropertyFetchExpr(PhpParser_Node_Expr_PropertyFetch $node)
+	public function enterNewExpr(\PhpParser\Node\Expr\New_ $node)
 	{
 		return null;
 	}
-	public function enterShellExecExpr(PhpParser_Node_Expr_ShellExec $node)
+	public function enterPostDecExpr(\PhpParser\Node\Expr\PostDec $node)
 	{
 		return null;
 	}
-	public function enterShiftLeftExpr(PhpParser_Node_Expr_ShiftLeft $node)
+	public function enterPostIncExpr(\PhpParser\Node\Expr\PostInc $node)
 	{
 		return null;
 	}
-	public function enterShiftRightExpr(PhpParser_Node_Expr_ShiftRight $node)
+	public function enterPreDecExpr(\PhpParser\Node\Expr\PreDec $node)
 	{
 		return null;
 	}
-	public function enterSmallerExpr(PhpParser_Node_Expr_Smaller $node)
+	public function enterPreIncExpr(\PhpParser\Node\Expr\PreInc $node)
 	{
 		return null;
 	}
-	public function enterSmallerOrEqualExpr(PhpParser_Node_Expr_SmallerOrEqual $node)
+	public function enterPrintExpr(\PhpParser\Node\Expr\Print_ $node)
 	{
 		return null;
 	}
-	public function enterStaticCallExpr(PhpParser_Node_Expr_StaticCall $node)
+	public function enterPropertyFetchExpr(\PhpParser\Node\Expr\PropertyFetch $node)
 	{
 		return null;
 	}
-	public function enterStaticPropertyFetchExpr(PhpParser_Node_Expr_StaticPropertyFetch $node)
+	public function enterShellExecExpr(\PhpParser\Node\Expr\ShellExec $node)
 	{
 		return null;
 	}
-	public function enterTernaryExpr(PhpParser_Node_Expr_Ternary $node)
+	public function enterStaticCallExpr(\PhpParser\Node\Expr\StaticCall $node)
 	{
 		return null;
 	}
-	public function enterUnaryMinusExpr(PhpParser_Node_Expr_UnaryMinus $node)
+	public function enterStaticPropertyFetchExpr(\PhpParser\Node\Expr\StaticPropertyFetch $node)
 	{
 		return null;
 	}
-	public function enterUnaryPlusExpr(PhpParser_Node_Expr_UnaryPlus $node)
+	public function enterTernaryExpr(\PhpParser\Node\Expr\Ternary $node)
 	{
 		return null;
 	}
-	public function enterVariableExpr(PhpParser_Node_Expr_Variable $node)
+	public function enterUnaryMinusExpr(\PhpParser\Node\Expr\UnaryMinus $node)
 	{
 		return null;
 	}
-	public function enterYieldExpr(PhpParser_Node_Expr_Yield $node)
+	public function enterUnaryPlusExpr(\PhpParser\Node\Expr\UnaryPlus $node)
 	{
 		return null;
 	}
-	public function enterFullyQualifiedName(PhpParser_Node_Name_FullyQualified $node)
+	public function enterVariableExpr(\PhpParser\Node\Expr\Variable $node)
 	{
 		return null;
 	}
-	public function enterRelativeName(PhpParser_Node_Name_Relative $node)
+	public function enterYieldExpr(\PhpParser\Node\Expr\Yield_ $node)
 	{
 		return null;
 	}
-	public function enterName(PhpParser_Node_Name $node)
+	public function enterFullyQualifiedName(\PhpParser\Node\Name\FullyQualified $node)
 	{
 		return null;
 	}
-	public function enterParam(PhpParser_Node_Param $node)
+	public function enterRelativeName(\PhpParser\Node\Name\Relative $node)
 	{
 		return null;
 	}
-	public function enterClassConstScalar(PhpParser_Node_Scalar_ClassConst $node)
+	public function enterName(\PhpParser\Node\Name $node)
 	{
 		return null;
 	}
-	public function enterDirConstScalar(PhpParser_Node_Scalar_DirConst $node)
+	public function enterParam(\PhpParser\Node\Param $node)
 	{
 		return null;
 	}
-	public function enterDNumberScalar(PhpParser_Node_Scalar_DNumber $node)
+	public function enterDNumberScalar(\PhpParser\Node\Scalar\DNumber $node)
 	{
 		return null;
 	}
-	public function enterEncapsedScalar(PhpParser_Node_Scalar_Encapsed $node)
+	public function enterEncapsedScalar(\PhpParser\Node\Scalar\Encapsed $node)
 	{
 		return null;
 	}
-	public function enterFileConstScalar(PhpParser_Node_Scalar_FileConst $node)
+	public function enterLNumberScalar(\PhpParser\Node\Scalar\LNumber $node)
 	{
 		return null;
 	}
-	public function enterFuncConstScalar(PhpParser_Node_Scalar_FuncConst $node)
+	public function enterClassMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Class_ $node)
 	{
 		return null;
 	}
-	public function enterLineConstScalar(PhpParser_Node_Scalar_LineConst $node)
+	public function enterDirMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Dir $node)
 	{
 		return null;
 	}
-	public function enterLNumberScalar(PhpParser_Node_Scalar_LNumber $node)
+	public function enterFileMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\File $node)
 	{
 		return null;
 	}
-	public function enterMethodConstScalar(PhpParser_Node_Scalar_MethodConst $node)
+	public function enterFunctionMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Function_ $node)
 	{
 		return null;
 	}
-	public function enterNSConstScalar(PhpParser_Node_Scalar_NSConst $node)
+	public function enterLineMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Line $node)
 	{
 		return null;
 	}
-	public function enterStringScalar(PhpParser_Node_Scalar_String $node)
+	public function enterMethodMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Method $node)
 	{
 		return null;
 	}
-	public function enterTraitConstScalar(PhpParser_Node_Scalar_TraitConst $node)
+	public function enterNamespaceMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Namespace_ $node)
 	{
 		return null;
 	}
-	public function enterScalar(PhpParser_Node_Scalar $node)
+	public function enterTraitMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Trait_ $node)
 	{
 		return null;
 	}
-	public function enterBreakStmt(PhpParser_Node_Stmt_Break $node)
+	public function enterMagicConstScalar(\PhpParser\Node\Scalar\MagicConst $node)
 	{
 		return null;
 	}
-	public function enterCaseStmt(PhpParser_Node_Stmt_Case $node)
+	public function enterStringScalar(\PhpParser\Node\Scalar\String $node)
 	{
 		return null;
 	}
-	public function enterCatchStmt(PhpParser_Node_Stmt_Catch $node)
+	public function enterScalar(\PhpParser\Node\Scalar $node)
 	{
 		return null;
 	}
-	public function enterClassStmt(PhpParser_Node_Stmt_Class $node)
+	public function enterBreakStmt(\PhpParser\Node\Stmt\Break_ $node)
 	{
 		return null;
 	}
-	public function enterClassConstStmt(PhpParser_Node_Stmt_ClassConst $node)
+	public function enterCaseStmt(\PhpParser\Node\Stmt\Case_ $node)
 	{
 		return null;
 	}
-	public function enterClassMethodStmt(PhpParser_Node_Stmt_ClassMethod $node)
+	public function enterCatchStmt(\PhpParser\Node\Stmt\Catch_ $node)
 	{
 		return null;
 	}
-	public function enterConstStmt(PhpParser_Node_Stmt_Const $node)
+	public function enterClassStmt(\PhpParser\Node\Stmt\Class_ $node)
 	{
 		return null;
 	}
-	public function enterContinueStmt(PhpParser_Node_Stmt_Continue $node)
+	public function enterClassConstStmt(\PhpParser\Node\Stmt\ClassConst $node)
 	{
 		return null;
 	}
-	public function enterDeclareStmt(PhpParser_Node_Stmt_Declare $node)
+	public function enterClassMethodStmt(\PhpParser\Node\Stmt\ClassMethod $node)
 	{
 		return null;
 	}
-	public function enterDeclareDeclareStmt(PhpParser_Node_Stmt_DeclareDeclare $node)
+	public function enterConstStmt(\PhpParser\Node\Stmt\Const_ $node)
 	{
 		return null;
 	}
-	public function enterDoStmt(PhpParser_Node_Stmt_Do $node)
+	public function enterContinueStmt(\PhpParser\Node\Stmt\Continue_ $node)
 	{
 		return null;
 	}
-	public function enterEchoStmt(PhpParser_Node_Stmt_Echo $node)
+	public function enterDeclareStmt(\PhpParser\Node\Stmt\Declare_ $node)
 	{
 		return null;
 	}
-	public function enterElseStmt(PhpParser_Node_Stmt_Else $node)
+	public function enterDeclareDeclareStmt(\PhpParser\Node\Stmt\DeclareDeclare $node)
 	{
 		return null;
 	}
-	public function enterElseIfStmt(PhpParser_Node_Stmt_ElseIf $node)
+	public function enterDoStmt(\PhpParser\Node\Stmt\Do_ $node)
 	{
 		return null;
 	}
-	public function enterExprStmt(PhpParser_Node_Stmt_Expr $node)
+	public function enterEchoStmt(\PhpParser\Node\Stmt\Echo_ $node)
 	{
 		return null;
 	}
-	public function enterForStmt(PhpParser_Node_Stmt_For $node)
+	public function enterElseStmt(\PhpParser\Node\Stmt\Else_ $node)
 	{
 		return null;
 	}
-	public function enterForeachStmt(PhpParser_Node_Stmt_Foreach $node)
+	public function enterElseIfStmt(\PhpParser\Node\Stmt\ElseIf_ $node)
 	{
 		return null;
 	}
-	public function enterFunctionStmt(PhpParser_Node_Stmt_Function $node)
+	public function enterForStmt(\PhpParser\Node\Stmt\For_ $node)
 	{
 		return null;
 	}
-	public function enterGlobalStmt(PhpParser_Node_Stmt_Global $node)
+	public function enterForeachStmt(\PhpParser\Node\Stmt\Foreach_ $node)
 	{
 		return null;
 	}
-	public function enterGotoStmt(PhpParser_Node_Stmt_Goto $node)
+	public function enterFunctionStmt(\PhpParser\Node\Stmt\Function_ $node)
 	{
 		return null;
 	}
-	public function enterHaltCompilerStmt(PhpParser_Node_Stmt_HaltCompiler $node)
+	public function enterGlobalStmt(\PhpParser\Node\Stmt\Global_ $node)
 	{
 		return null;
 	}
-	public function enterIfStmt(PhpParser_Node_Stmt_If $node)
+	public function enterGotoStmt(\PhpParser\Node\Stmt\Goto_ $node)
 	{
 		return null;
 	}
-	public function enterInlineHTMLStmt(PhpParser_Node_Stmt_InlineHTML $node)
+	public function enterHaltCompilerStmt(\PhpParser\Node\Stmt\HaltCompiler $node)
 	{
 		return null;
 	}
-	public function enterInterfaceStmt(PhpParser_Node_Stmt_Interface $node)
+	public function enterIfStmt(\PhpParser\Node\Stmt\If_ $node)
 	{
 		return null;
 	}
-	public function enterLabelStmt(PhpParser_Node_Stmt_Label $node)
+	public function enterInlineHTMLStmt(\PhpParser\Node\Stmt\InlineHTML $node)
 	{
 		return null;
 	}
-	public function enterNamespaceStmt(PhpParser_Node_Stmt_Namespace $node)
+	public function enterInterfaceStmt(\PhpParser\Node\Stmt\Interface_ $node)
 	{
 		return null;
 	}
-	public function enterPropertyStmt(PhpParser_Node_Stmt_Property $node)
+	public function enterLabelStmt(\PhpParser\Node\Stmt\Label $node)
 	{
 		return null;
 	}
-	public function enterPropertyPropertyStmt(PhpParser_Node_Stmt_PropertyProperty $node)
+	public function enterNamespaceStmt(\PhpParser\Node\Stmt\Namespace_ $node)
 	{
 		return null;
 	}
-	public function enterReturnStmt(PhpParser_Node_Stmt_Return $node)
+	public function enterPropertyStmt(\PhpParser\Node\Stmt\Property $node)
 	{
 		return null;
 	}
-	public function enterStaticStmt(PhpParser_Node_Stmt_Static $node)
+	public function enterPropertyPropertyStmt(\PhpParser\Node\Stmt\PropertyProperty $node)
 	{
 		return null;
 	}
-	public function enterStaticVarStmt(PhpParser_Node_Stmt_StaticVar $node)
+	public function enterReturnStmt(\PhpParser\Node\Stmt\Return_ $node)
 	{
 		return null;
 	}
-	public function enterSwitchStmt(PhpParser_Node_Stmt_Switch $node)
+	public function enterStaticStmt(\PhpParser\Node\Stmt\Static_ $node)
 	{
 		return null;
 	}
-	public function enterThrowStmt(PhpParser_Node_Stmt_Throw $node)
+	public function enterStaticVarStmt(\PhpParser\Node\Stmt\StaticVar $node)
 	{
 		return null;
 	}
-	public function enterTraitStmt(PhpParser_Node_Stmt_Trait $node)
+	public function enterSwitchStmt(\PhpParser\Node\Stmt\Switch_ $node)
 	{
 		return null;
 	}
-	public function enterTraitUseStmt(PhpParser_Node_Stmt_TraitUse $node)
+	public function enterThrowStmt(\PhpParser\Node\Stmt\Throw_ $node)
 	{
 		return null;
 	}
-	public function enterAliasTraitUseAdaptationStmt(PhpParser_Node_Stmt_TraitUseAdaptation_Alias $node)
+	public function enterTraitStmt(\PhpParser\Node\Stmt\Trait_ $node)
 	{
 		return null;
 	}
-	public function enterPrecedenceTraitUseAdaptationStmt(PhpParser_Node_Stmt_TraitUseAdaptation_Precedence $node)
+	public function enterTraitUseStmt(\PhpParser\Node\Stmt\TraitUse $node)
 	{
 		return null;
 	}
-	public function enterTraitUseAdaptationStmt(PhpParser_Node_Stmt_TraitUseAdaptation $node)
+	public function enterAliasTraitUseAdaptationStmt(\PhpParser\Node\Stmt\TraitUseAdaptation\Alias $node)
 	{
 		return null;
 	}
-	public function enterTryCatchStmt(PhpParser_Node_Stmt_TryCatch $node)
+	public function enterPrecedenceTraitUseAdaptationStmt(\PhpParser\Node\Stmt\TraitUseAdaptation\Precedence $node)
 	{
 		return null;
 	}
-	public function enterUnsetStmt(PhpParser_Node_Stmt_Unset $node)
+	public function enterTraitUseAdaptationStmt(\PhpParser\Node\Stmt\TraitUseAdaptation $node)
 	{
 		return null;
 	}
-	public function enterUseStmt(PhpParser_Node_Stmt_Use $node)
+	public function enterTryCatchStmt(\PhpParser\Node\Stmt\TryCatch $node)
 	{
 		return null;
 	}
-	public function enterUseUseStmt(PhpParser_Node_Stmt_UseUse $node)
+	public function enterUnsetStmt(\PhpParser\Node\Stmt\Unset_ $node)
 	{
 		return null;
 	}
-	public function enterWhileStmt(PhpParser_Node_Stmt_While $node)
+	public function enterUseStmt(\PhpParser\Node\Stmt\Use_ $node)
 	{
 		return null;
 	}
-	public function enterStmt(PhpParser_Node_Stmt $node)
+	public function enterUseUseStmt(\PhpParser\Node\Stmt\UseUse $node)
 	{
 		return null;
 	}
-	public function enterExpr(PhpParser_Node_Expr $node)
+	public function enterWhileStmt(\PhpParser\Node\Stmt\While_ $node)
+	{
+		return null;
+	}
+	public function enterStmt(\PhpParser\Node\Stmt $node)
+	{
+		return null;
+	}
+	public function enterExpr(\PhpParser\Node\Expr $node)
 	{
 		return null;
 	}
 
-	public function leaveArg(PhpParser_Node_Arg $node)
+	public function leaveArg(\PhpParser\Node\Arg $node)
 	{
 		return null;
 	}
-	public function leaveConst(PhpParser_Node_Const $node)
+	public function leaveConst(\PhpParser\Node\Const_ $node)
 	{
 		return null;
 	}
-	public function leaveArrayExpr(PhpParser_Node_Expr_Array $node)
+	public function leaveArrayExpr(\PhpParser\Node\Expr\Array_ $node)
 	{
 		return null;
 	}
-	public function leaveArrayDimFetchExpr(PhpParser_Node_Expr_ArrayDimFetch $node)
+	public function leaveArrayDimFetchExpr(\PhpParser\Node\Expr\ArrayDimFetch $node)
 	{
 		return null;
 	}
-	public function leaveArrayItemExpr(PhpParser_Node_Expr_ArrayItem $node)
+	public function leaveArrayItemExpr(\PhpParser\Node\Expr\ArrayItem $node)
 	{
 		return null;
 	}
-	public function leaveAssignExpr(PhpParser_Node_Expr_Assign $node)
+	public function leaveAssignExpr(\PhpParser\Node\Expr\Assign $node)
 	{
 		return null;
 	}
-	public function leaveAssignBitwiseAndExpr(PhpParser_Node_Expr_AssignBitwiseAnd $node)
+	public function leaveBitwiseAndAssignOpExpr(\PhpParser\Node\Expr\AssignOp\BitwiseAnd $node)
 	{
 		return null;
 	}
-	public function leaveAssignBitwiseOrExpr(PhpParser_Node_Expr_AssignBitwiseOr $node)
+	public function leaveBitwiseOrAssignOpExpr(\PhpParser\Node\Expr\AssignOp\BitwiseOr $node)
 	{
 		return null;
 	}
-	public function leaveAssignBitwiseXorExpr(PhpParser_Node_Expr_AssignBitwiseXor $node)
+	public function leaveBitwiseXorAssignOpExpr(\PhpParser\Node\Expr\AssignOp\BitwiseXor $node)
 	{
 		return null;
 	}
-	public function leaveAssignConcatExpr(PhpParser_Node_Expr_AssignConcat $node)
+	public function leaveConcatAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Concat $node)
 	{
 		return null;
 	}
-	public function leaveAssignDivExpr(PhpParser_Node_Expr_AssignDiv $node)
+	public function leaveDivAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Div $node)
 	{
 		return null;
 	}
-	public function leaveAssignMinusExpr(PhpParser_Node_Expr_AssignMinus $node)
+	public function leaveMinusAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Minus $node)
 	{
 		return null;
 	}
-	public function leaveAssignModExpr(PhpParser_Node_Expr_AssignMod $node)
+	public function leaveModAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Mod $node)
 	{
 		return null;
 	}
-	public function leaveAssignMulExpr(PhpParser_Node_Expr_AssignMul $node)
+	public function leaveMulAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Mul $node)
 	{
 		return null;
 	}
-	public function leaveAssignPlusExpr(PhpParser_Node_Expr_AssignPlus $node)
+	public function leavePlusAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Plus $node)
 	{
 		return null;
 	}
-	public function leaveAssignRefExpr(PhpParser_Node_Expr_AssignRef $node)
+	public function leaveShiftLeftAssignOpExpr(\PhpParser\Node\Expr\AssignOp\ShiftLeft $node)
 	{
 		return null;
 	}
-	public function leaveAssignShiftLeftExpr(PhpParser_Node_Expr_AssignShiftLeft $node)
+	public function leaveShiftRightAssignOpExpr(\PhpParser\Node\Expr\AssignOp\ShiftRight $node)
 	{
 		return null;
 	}
-	public function leaveAssignShiftRightExpr(PhpParser_Node_Expr_AssignShiftRight $node)
+	public function leaveAssignOpExpr(\PhpParser\Node\Expr\AssignOp $node)
 	{
 		return null;
 	}
-	public function leaveBitwiseAndExpr(PhpParser_Node_Expr_BitwiseAnd $node)
+	public function leaveAssignRefExpr(\PhpParser\Node\Expr\AssignRef $node)
 	{
 		return null;
 	}
-	public function leaveBitwiseNotExpr(PhpParser_Node_Expr_BitwiseNot $node)
+	public function leaveBitwiseAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseAnd $node)
 	{
 		return null;
 	}
-	public function leaveBitwiseOrExpr(PhpParser_Node_Expr_BitwiseOr $node)
+	public function leaveBitwiseOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseOr $node)
 	{
 		return null;
 	}
-	public function leaveBitwiseXorExpr(PhpParser_Node_Expr_BitwiseXor $node)
+	public function leaveBitwiseXorBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseXor $node)
 	{
 		return null;
 	}
-	public function leaveBooleanAndExpr(PhpParser_Node_Expr_BooleanAnd $node)
+	public function leaveBooleanAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BooleanAnd $node)
 	{
 		return null;
 	}
-	public function leaveBooleanNotExpr(PhpParser_Node_Expr_BooleanNot $node)
+	public function leaveBooleanOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BooleanOr $node)
 	{
 		return null;
 	}
-	public function leaveBooleanOrExpr(PhpParser_Node_Expr_BooleanOr $node)
+	public function leaveConcatBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Concat $node)
 	{
 		return null;
 	}
-	public function leaveArrayCastExpr(PhpParser_Node_Expr_Cast_Array $node)
+	public function leaveDivBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Div $node)
 	{
 		return null;
 	}
-	public function leaveBoolCastExpr(PhpParser_Node_Expr_Cast_Bool $node)
+	public function leaveEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Equal $node)
 	{
 		return null;
 	}
-	public function leaveDoubleCastExpr(PhpParser_Node_Expr_Cast_Double $node)
+	public function leaveGreaterBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Greater $node)
 	{
 		return null;
 	}
-	public function leaveIntCastExpr(PhpParser_Node_Expr_Cast_Int $node)
+	public function leaveGreaterOrEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\GreaterOrEqual $node)
 	{
 		return null;
 	}
-	public function leaveObjectCastExpr(PhpParser_Node_Expr_Cast_Object $node)
+	public function leaveIdenticalBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Identical $node)
 	{
 		return null;
 	}
-	public function leaveStringCastExpr(PhpParser_Node_Expr_Cast_String $node)
+	public function leaveLogicalAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalAnd $node)
 	{
 		return null;
 	}
-	public function leaveUnsetCastExpr(PhpParser_Node_Expr_Cast_Unset $node)
+	public function leaveLogicalOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalOr $node)
 	{
 		return null;
 	}
-	public function leaveCastExpr(PhpParser_Node_Expr_Cast $node)
+	public function leaveLogicalXorBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalXor $node)
 	{
 		return null;
 	}
-	public function leaveClassConstFetchExpr(PhpParser_Node_Expr_ClassConstFetch $node)
+	public function leaveMinusBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Minus $node)
 	{
 		return null;
 	}
-	public function leaveCloneExpr(PhpParser_Node_Expr_Clone $node)
+	public function leaveModBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Mod $node)
 	{
 		return null;
 	}
-	public function leaveClosureExpr(PhpParser_Node_Expr_Closure $node)
+	public function leaveMulBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Mul $node)
 	{
 		return null;
 	}
-	public function leaveClosureUseExpr(PhpParser_Node_Expr_ClosureUse $node)
+	public function leaveNotEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\NotEqual $node)
 	{
 		return null;
 	}
-	public function leaveConcatExpr(PhpParser_Node_Expr_Concat $node)
+	public function leaveNotIdenticalBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\NotIdentical $node)
 	{
 		return null;
 	}
-	public function leaveConstFetchExpr(PhpParser_Node_Expr_ConstFetch $node)
+	public function leavePlusBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Plus $node)
 	{
 		return null;
 	}
-	public function leaveDivExpr(PhpParser_Node_Expr_Div $node)
+	public function leaveShiftLeftBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\ShiftLeft $node)
 	{
 		return null;
 	}
-	public function leaveEmptyExpr(PhpParser_Node_Expr_Empty $node)
+	public function leaveShiftRightBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\ShiftRight $node)
 	{
 		return null;
 	}
-	public function leaveEqualExpr(PhpParser_Node_Expr_Equal $node)
+	public function leaveSmallerBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Smaller $node)
 	{
 		return null;
 	}
-	public function leaveErrorSuppressExpr(PhpParser_Node_Expr_ErrorSuppress $node)
+	public function leaveSmallerOrEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\SmallerOrEqual $node)
 	{
 		return null;
 	}
-	public function leaveEvalExpr(PhpParser_Node_Expr_Eval $node)
+	public function leaveBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp $node)
 	{
 		return null;
 	}
-	public function leaveExitExpr(PhpParser_Node_Expr_Exit $node)
+	public function leaveBitwiseNotExpr(\PhpParser\Node\Expr\BitwiseNot $node)
 	{
 		return null;
 	}
-	public function leaveFuncCallExpr(PhpParser_Node_Expr_FuncCall $node)
+	public function leaveBooleanNotExpr(\PhpParser\Node\Expr\BooleanNot $node)
 	{
 		return null;
 	}
-	public function leaveGreaterExpr(PhpParser_Node_Expr_Greater $node)
+	public function leaveArrayCastExpr(\PhpParser\Node\Expr\Cast\Array_ $node)
 	{
 		return null;
 	}
-	public function leaveGreaterOrEqualExpr(PhpParser_Node_Expr_GreaterOrEqual $node)
+	public function leaveBoolCastExpr(\PhpParser\Node\Expr\Cast\Bool $node)
 	{
 		return null;
 	}
-	public function leaveIdenticalExpr(PhpParser_Node_Expr_Identical $node)
+	public function leaveDoubleCastExpr(\PhpParser\Node\Expr\Cast\Double $node)
 	{
 		return null;
 	}
-	public function leaveIncludeExpr(PhpParser_Node_Expr_Include $node)
+	public function leaveIntCastExpr(\PhpParser\Node\Expr\Cast\Int $node)
 	{
 		return null;
 	}
-	public function leaveInstanceofExpr(PhpParser_Node_Expr_Instanceof $node)
+	public function leaveObjectCastExpr(\PhpParser\Node\Expr\Cast\Object $node)
 	{
 		return null;
 	}
-	public function leaveIssetExpr(PhpParser_Node_Expr_Isset $node)
+	public function leaveStringCastExpr(\PhpParser\Node\Expr\Cast\String $node)
 	{
 		return null;
 	}
-	public function leaveListExpr(PhpParser_Node_Expr_List $node)
+	public function leaveUnsetCastExpr(\PhpParser\Node\Expr\Cast\Unset_ $node)
 	{
 		return null;
 	}
-	public function leaveLogicalAndExpr(PhpParser_Node_Expr_LogicalAnd $node)
+	public function leaveCastExpr(\PhpParser\Node\Expr\Cast $node)
 	{
 		return null;
 	}
-	public function leaveLogicalOrExpr(PhpParser_Node_Expr_LogicalOr $node)
+	public function leaveClassConstFetchExpr(\PhpParser\Node\Expr\ClassConstFetch $node)
 	{
 		return null;
 	}
-	public function leaveLogicalXorExpr(PhpParser_Node_Expr_LogicalXor $node)
+	public function leaveCloneExpr(\PhpParser\Node\Expr\Clone_ $node)
 	{
 		return null;
 	}
-	public function leaveMethodCallExpr(PhpParser_Node_Expr_MethodCall $node)
+	public function leaveClosureExpr(\PhpParser\Node\Expr\Closure $node)
 	{
 		return null;
 	}
-	public function leaveMinusExpr(PhpParser_Node_Expr_Minus $node)
+	public function leaveClosureUseExpr(\PhpParser\Node\Expr\ClosureUse $node)
 	{
 		return null;
 	}
-	public function leaveModExpr(PhpParser_Node_Expr_Mod $node)
+	public function leaveConstFetchExpr(\PhpParser\Node\Expr\ConstFetch $node)
 	{
 		return null;
 	}
-	public function leaveMulExpr(PhpParser_Node_Expr_Mul $node)
+	public function leaveEmptyExpr(\PhpParser\Node\Expr\Empty_ $node)
 	{
 		return null;
 	}
-	public function leaveNewExpr(PhpParser_Node_Expr_New $node)
+	public function leaveErrorSuppressExpr(\PhpParser\Node\Expr\ErrorSuppress $node)
 	{
 		return null;
 	}
-	public function leaveNotEqualExpr(PhpParser_Node_Expr_NotEqual $node)
+	public function leaveEvalExpr(\PhpParser\Node\Expr\Eval_ $node)
 	{
 		return null;
 	}
-	public function leaveNotIdenticalExpr(PhpParser_Node_Expr_NotIdentical $node)
+	public function leaveExitExpr(\PhpParser\Node\Expr\Exit_ $node)
 	{
 		return null;
 	}
-	public function leavePlusExpr(PhpParser_Node_Expr_Plus $node)
+	public function leaveFuncCallExpr(\PhpParser\Node\Expr\FuncCall $node)
 	{
 		return null;
 	}
-	public function leavePostDecExpr(PhpParser_Node_Expr_PostDec $node)
+	public function leaveIncludeExpr(\PhpParser\Node\Expr\Include_ $node)
 	{
 		return null;
 	}
-	public function leavePostIncExpr(PhpParser_Node_Expr_PostInc $node)
+	public function leaveInstanceofExpr(\PhpParser\Node\Expr\Instanceof_ $node)
 	{
 		return null;
 	}
-	public function leavePreDecExpr(PhpParser_Node_Expr_PreDec $node)
+	public function leaveIssetExpr(\PhpParser\Node\Expr\Isset_ $node)
 	{
 		return null;
 	}
-	public function leavePreIncExpr(PhpParser_Node_Expr_PreInc $node)
+	public function leaveListExpr(\PhpParser\Node\Expr\List_ $node)
 	{
 		return null;
 	}
-	public function leavePrintExpr(PhpParser_Node_Expr_Print $node)
+	public function leaveMethodCallExpr(\PhpParser\Node\Expr\MethodCall $node)
 	{
 		return null;
 	}
-	public function leavePropertyFetchExpr(PhpParser_Node_Expr_PropertyFetch $node)
+	public function leaveNewExpr(\PhpParser\Node\Expr\New_ $node)
 	{
 		return null;
 	}
-	public function leaveShellExecExpr(PhpParser_Node_Expr_ShellExec $node)
+	public function leavePostDecExpr(\PhpParser\Node\Expr\PostDec $node)
 	{
 		return null;
 	}
-	public function leaveShiftLeftExpr(PhpParser_Node_Expr_ShiftLeft $node)
+	public function leavePostIncExpr(\PhpParser\Node\Expr\PostInc $node)
 	{
 		return null;
 	}
-	public function leaveShiftRightExpr(PhpParser_Node_Expr_ShiftRight $node)
+	public function leavePreDecExpr(\PhpParser\Node\Expr\PreDec $node)
 	{
 		return null;
 	}
-	public function leaveSmallerExpr(PhpParser_Node_Expr_Smaller $node)
+	public function leavePreIncExpr(\PhpParser\Node\Expr\PreInc $node)
 	{
 		return null;
 	}
-	public function leaveSmallerOrEqualExpr(PhpParser_Node_Expr_SmallerOrEqual $node)
+	public function leavePrintExpr(\PhpParser\Node\Expr\Print_ $node)
 	{
 		return null;
 	}
-	public function leaveStaticCallExpr(PhpParser_Node_Expr_StaticCall $node)
+	public function leavePropertyFetchExpr(\PhpParser\Node\Expr\PropertyFetch $node)
 	{
 		return null;
 	}
-	public function leaveStaticPropertyFetchExpr(PhpParser_Node_Expr_StaticPropertyFetch $node)
+	public function leaveShellExecExpr(\PhpParser\Node\Expr\ShellExec $node)
 	{
 		return null;
 	}
-	public function leaveTernaryExpr(PhpParser_Node_Expr_Ternary $node)
+	public function leaveStaticCallExpr(\PhpParser\Node\Expr\StaticCall $node)
 	{
 		return null;
 	}
-	public function leaveUnaryMinusExpr(PhpParser_Node_Expr_UnaryMinus $node)
+	public function leaveStaticPropertyFetchExpr(\PhpParser\Node\Expr\StaticPropertyFetch $node)
 	{
 		return null;
 	}
-	public function leaveUnaryPlusExpr(PhpParser_Node_Expr_UnaryPlus $node)
+	public function leaveTernaryExpr(\PhpParser\Node\Expr\Ternary $node)
 	{
 		return null;
 	}
-	public function leaveVariableExpr(PhpParser_Node_Expr_Variable $node)
+	public function leaveUnaryMinusExpr(\PhpParser\Node\Expr\UnaryMinus $node)
 	{
 		return null;
 	}
-	public function leaveYieldExpr(PhpParser_Node_Expr_Yield $node)
+	public function leaveUnaryPlusExpr(\PhpParser\Node\Expr\UnaryPlus $node)
 	{
 		return null;
 	}
-	public function leaveFullyQualifiedName(PhpParser_Node_Name_FullyQualified $node)
+	public function leaveVariableExpr(\PhpParser\Node\Expr\Variable $node)
 	{
 		return null;
 	}
-	public function leaveRelativeName(PhpParser_Node_Name_Relative $node)
+	public function leaveYieldExpr(\PhpParser\Node\Expr\Yield_ $node)
 	{
 		return null;
 	}
-	public function leaveName(PhpParser_Node_Name $node)
+	public function leaveFullyQualifiedName(\PhpParser\Node\Name\FullyQualified $node)
 	{
 		return null;
 	}
-	public function leaveParam(PhpParser_Node_Param $node)
+	public function leaveRelativeName(\PhpParser\Node\Name\Relative $node)
 	{
 		return null;
 	}
-	public function leaveClassConstScalar(PhpParser_Node_Scalar_ClassConst $node)
+	public function leaveName(\PhpParser\Node\Name $node)
 	{
 		return null;
 	}
-	public function leaveDirConstScalar(PhpParser_Node_Scalar_DirConst $node)
+	public function leaveParam(\PhpParser\Node\Param $node)
 	{
 		return null;
 	}
-	public function leaveDNumberScalar(PhpParser_Node_Scalar_DNumber $node)
+	public function leaveDNumberScalar(\PhpParser\Node\Scalar\DNumber $node)
 	{
 		return null;
 	}
-	public function leaveEncapsedScalar(PhpParser_Node_Scalar_Encapsed $node)
+	public function leaveEncapsedScalar(\PhpParser\Node\Scalar\Encapsed $node)
 	{
 		return null;
 	}
-	public function leaveFileConstScalar(PhpParser_Node_Scalar_FileConst $node)
+	public function leaveLNumberScalar(\PhpParser\Node\Scalar\LNumber $node)
 	{
 		return null;
 	}
-	public function leaveFuncConstScalar(PhpParser_Node_Scalar_FuncConst $node)
+	public function leaveClassMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Class_ $node)
 	{
 		return null;
 	}
-	public function leaveLineConstScalar(PhpParser_Node_Scalar_LineConst $node)
+	public function leaveDirMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Dir $node)
 	{
 		return null;
 	}
-	public function leaveLNumberScalar(PhpParser_Node_Scalar_LNumber $node)
+	public function leaveFileMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\File $node)
 	{
 		return null;
 	}
-	public function leaveMethodConstScalar(PhpParser_Node_Scalar_MethodConst $node)
+	public function leaveFunctionMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Function_ $node)
 	{
 		return null;
 	}
-	public function leaveNSConstScalar(PhpParser_Node_Scalar_NSConst $node)
+	public function leaveLineMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Line $node)
 	{
 		return null;
 	}
-	public function leaveStringScalar(PhpParser_Node_Scalar_String $node)
+	public function leaveMethodMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Method $node)
 	{
 		return null;
 	}
-	public function leaveTraitConstScalar(PhpParser_Node_Scalar_TraitConst $node)
+	public function leaveNamespaceMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Namespace_ $node)
 	{
 		return null;
 	}
-	public function leaveScalar(PhpParser_Node_Scalar $node)
+	public function leaveTraitMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Trait_ $node)
 	{
 		return null;
 	}
-	public function leaveBreakStmt(PhpParser_Node_Stmt_Break $node)
+	public function leaveMagicConstScalar(\PhpParser\Node\Scalar\MagicConst $node)
 	{
 		return null;
 	}
-	public function leaveCaseStmt(PhpParser_Node_Stmt_Case $node)
+	public function leaveStringScalar(\PhpParser\Node\Scalar\String $node)
 	{
 		return null;
 	}
-	public function leaveCatchStmt(PhpParser_Node_Stmt_Catch $node)
+	public function leaveScalar(\PhpParser\Node\Scalar $node)
 	{
 		return null;
 	}
-	public function leaveClassStmt(PhpParser_Node_Stmt_Class $node)
+	public function leaveBreakStmt(\PhpParser\Node\Stmt\Break_ $node)
 	{
 		return null;
 	}
-	public function leaveClassConstStmt(PhpParser_Node_Stmt_ClassConst $node)
+	public function leaveCaseStmt(\PhpParser\Node\Stmt\Case_ $node)
 	{
 		return null;
 	}
-	public function leaveClassMethodStmt(PhpParser_Node_Stmt_ClassMethod $node)
+	public function leaveCatchStmt(\PhpParser\Node\Stmt\Catch_ $node)
 	{
 		return null;
 	}
-	public function leaveConstStmt(PhpParser_Node_Stmt_Const $node)
+	public function leaveClassStmt(\PhpParser\Node\Stmt\Class_ $node)
 	{
 		return null;
 	}
-	public function leaveContinueStmt(PhpParser_Node_Stmt_Continue $node)
+	public function leaveClassConstStmt(\PhpParser\Node\Stmt\ClassConst $node)
 	{
 		return null;
 	}
-	public function leaveDeclareStmt(PhpParser_Node_Stmt_Declare $node)
+	public function leaveClassMethodStmt(\PhpParser\Node\Stmt\ClassMethod $node)
 	{
 		return null;
 	}
-	public function leaveDeclareDeclareStmt(PhpParser_Node_Stmt_DeclareDeclare $node)
+	public function leaveConstStmt(\PhpParser\Node\Stmt\Const_ $node)
 	{
 		return null;
 	}
-	public function leaveDoStmt(PhpParser_Node_Stmt_Do $node)
+	public function leaveContinueStmt(\PhpParser\Node\Stmt\Continue_ $node)
 	{
 		return null;
 	}
-	public function leaveEchoStmt(PhpParser_Node_Stmt_Echo $node)
+	public function leaveDeclareStmt(\PhpParser\Node\Stmt\Declare_ $node)
 	{
 		return null;
 	}
-	public function leaveElseStmt(PhpParser_Node_Stmt_Else $node)
+	public function leaveDeclareDeclareStmt(\PhpParser\Node\Stmt\DeclareDeclare $node)
 	{
 		return null;
 	}
-	public function leaveElseIfStmt(PhpParser_Node_Stmt_ElseIf $node)
+	public function leaveDoStmt(\PhpParser\Node\Stmt\Do_ $node)
 	{
 		return null;
 	}
-	public function leaveExprStmt(PhpParser_Node_Stmt_Expr $node)
+	public function leaveEchoStmt(\PhpParser\Node\Stmt\Echo_ $node)
 	{
 		return null;
 	}
-	public function leaveForStmt(PhpParser_Node_Stmt_For $node)
+	public function leaveElseStmt(\PhpParser\Node\Stmt\Else_ $node)
 	{
 		return null;
 	}
-	public function leaveForeachStmt(PhpParser_Node_Stmt_Foreach $node)
+	public function leaveElseIfStmt(\PhpParser\Node\Stmt\ElseIf_ $node)
 	{
 		return null;
 	}
-	public function leaveFunctionStmt(PhpParser_Node_Stmt_Function $node)
+	public function leaveForStmt(\PhpParser\Node\Stmt\For_ $node)
 	{
 		return null;
 	}
-	public function leaveGlobalStmt(PhpParser_Node_Stmt_Global $node)
+	public function leaveForeachStmt(\PhpParser\Node\Stmt\Foreach_ $node)
 	{
 		return null;
 	}
-	public function leaveGotoStmt(PhpParser_Node_Stmt_Goto $node)
+	public function leaveFunctionStmt(\PhpParser\Node\Stmt\Function_ $node)
 	{
 		return null;
 	}
-	public function leaveHaltCompilerStmt(PhpParser_Node_Stmt_HaltCompiler $node)
+	public function leaveGlobalStmt(\PhpParser\Node\Stmt\Global_ $node)
 	{
 		return null;
 	}
-	public function leaveIfStmt(PhpParser_Node_Stmt_If $node)
+	public function leaveGotoStmt(\PhpParser\Node\Stmt\Goto_ $node)
 	{
 		return null;
 	}
-	public function leaveInlineHTMLStmt(PhpParser_Node_Stmt_InlineHTML $node)
+	public function leaveHaltCompilerStmt(\PhpParser\Node\Stmt\HaltCompiler $node)
 	{
 		return null;
 	}
-	public function leaveInterfaceStmt(PhpParser_Node_Stmt_Interface $node)
+	public function leaveIfStmt(\PhpParser\Node\Stmt\If_ $node)
 	{
 		return null;
 	}
-	public function leaveLabelStmt(PhpParser_Node_Stmt_Label $node)
+	public function leaveInlineHTMLStmt(\PhpParser\Node\Stmt\InlineHTML $node)
 	{
 		return null;
 	}
-	public function leaveNamespaceStmt(PhpParser_Node_Stmt_Namespace $node)
+	public function leaveInterfaceStmt(\PhpParser\Node\Stmt\Interface_ $node)
 	{
 		return null;
 	}
-	public function leavePropertyStmt(PhpParser_Node_Stmt_Property $node)
+	public function leaveLabelStmt(\PhpParser\Node\Stmt\Label $node)
 	{
 		return null;
 	}
-	public function leavePropertyPropertyStmt(PhpParser_Node_Stmt_PropertyProperty $node)
+	public function leaveNamespaceStmt(\PhpParser\Node\Stmt\Namespace_ $node)
 	{
 		return null;
 	}
-	public function leaveReturnStmt(PhpParser_Node_Stmt_Return $node)
+	public function leavePropertyStmt(\PhpParser\Node\Stmt\Property $node)
 	{
 		return null;
 	}
-	public function leaveStaticStmt(PhpParser_Node_Stmt_Static $node)
+	public function leavePropertyPropertyStmt(\PhpParser\Node\Stmt\PropertyProperty $node)
 	{
 		return null;
 	}
-	public function leaveStaticVarStmt(PhpParser_Node_Stmt_StaticVar $node)
+	public function leaveReturnStmt(\PhpParser\Node\Stmt\Return_ $node)
 	{
 		return null;
 	}
-	public function leaveSwitchStmt(PhpParser_Node_Stmt_Switch $node)
+	public function leaveStaticStmt(\PhpParser\Node\Stmt\Static_ $node)
 	{
 		return null;
 	}
-	public function leaveThrowStmt(PhpParser_Node_Stmt_Throw $node)
+	public function leaveStaticVarStmt(\PhpParser\Node\Stmt\StaticVar $node)
 	{
 		return null;
 	}
-	public function leaveTraitStmt(PhpParser_Node_Stmt_Trait $node)
+	public function leaveSwitchStmt(\PhpParser\Node\Stmt\Switch_ $node)
 	{
 		return null;
 	}
-	public function leaveTraitUseStmt(PhpParser_Node_Stmt_TraitUse $node)
+	public function leaveThrowStmt(\PhpParser\Node\Stmt\Throw_ $node)
 	{
 		return null;
 	}
-	public function leaveAliasTraitUseAdaptationStmt(PhpParser_Node_Stmt_TraitUseAdaptation_Alias $node)
+	public function leaveTraitStmt(\PhpParser\Node\Stmt\Trait_ $node)
 	{
 		return null;
 	}
-	public function leavePrecedenceTraitUseAdaptationStmt(PhpParser_Node_Stmt_TraitUseAdaptation_Precedence $node)
+	public function leaveTraitUseStmt(\PhpParser\Node\Stmt\TraitUse $node)
 	{
 		return null;
 	}
-	public function leaveTraitUseAdaptationStmt(PhpParser_Node_Stmt_TraitUseAdaptation $node)
+	public function leaveAliasTraitUseAdaptationStmt(\PhpParser\Node\Stmt\TraitUseAdaptation\Alias $node)
 	{
 		return null;
 	}
-	public function leaveTryCatchStmt(PhpParser_Node_Stmt_TryCatch $node)
+	public function leavePrecedenceTraitUseAdaptationStmt(\PhpParser\Node\Stmt\TraitUseAdaptation\Precedence $node)
 	{
 		return null;
 	}
-	public function leaveUnsetStmt(PhpParser_Node_Stmt_Unset $node)
+	public function leaveTraitUseAdaptationStmt(\PhpParser\Node\Stmt\TraitUseAdaptation $node)
 	{
 		return null;
 	}
-	public function leaveUseStmt(PhpParser_Node_Stmt_Use $node)
+	public function leaveTryCatchStmt(\PhpParser\Node\Stmt\TryCatch $node)
 	{
 		return null;
 	}
-	public function leaveUseUseStmt(PhpParser_Node_Stmt_UseUse $node)
+	public function leaveUnsetStmt(\PhpParser\Node\Stmt\Unset_ $node)
 	{
 		return null;
 	}
-	public function leaveWhileStmt(PhpParser_Node_Stmt_While $node)
+	public function leaveUseStmt(\PhpParser\Node\Stmt\Use_ $node)
 	{
 		return null;
 	}
-	public function leaveStmt(PhpParser_Node_Stmt $node)
+	public function leaveUseUseStmt(\PhpParser\Node\Stmt\UseUse $node)
 	{
 		return null;
 	}
-	public function leaveExpr(PhpParser_Node_Expr $node)
+	public function leaveWhileStmt(\PhpParser\Node\Stmt\While_ $node)
+	{
+		return null;
+	}
+	public function leaveStmt(\PhpParser\Node\Stmt $node)
+	{
+		return null;
+	}
+	public function leaveExpr(\PhpParser\Node\Expr $node)
 	{
 		return null;
 	}
