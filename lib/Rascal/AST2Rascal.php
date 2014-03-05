@@ -11,17 +11,17 @@ class AST2Rascal extends BasePrinter
 
     private $filename = "";
 
-    private $addLocations = FALSE;
+    private $addLocations = false;
 
-    private $relativeLocations = FALSE;
+    private $relativeLocations = false;
 
-    private $addIds = FALSE;
+    private $addIds = false;
 
-    private $addDocs = FALSE;
+    private $addPHPDocs = false;
 
     private $idPrefix = "";
 
-    private $insideTrait = FALSE;
+    private $insideTrait = false;
 
     private $currentFunction = "";
 
@@ -35,21 +35,21 @@ class AST2Rascal extends BasePrinter
 
     /**
      *
-     * @param string $str            
-     * @param bool $locs            
-     * @param bool $rel            
-     * @param bool $ids            
-     * @param string $prefix            
-     * @param bool $docs            
+     * @param string $str
+     * @param bool $locs
+     * @param bool $rel
+     * @param bool $ids
+     * @param string $prefix
+     * @param bool $docs
      */
-    public function AST2Rascal($str, $locs, $rel, $ids, $prefix, $docs)
+    public function __construct($str, $locs, $rel, $ids, $prefix, $docs)
     {
         $this->filename = $str;
         $this->addLocations = $locs;
         $this->relativeLocations = $rel;
         $this->addIds = $ids;
         $this->idPrefix = $prefix;
-        $this->addDocs = $docs;
+        $this->addPHPDocs = $docs;
     }
 
     public function rascalizeString($str)
@@ -78,14 +78,14 @@ class AST2Rascal extends BasePrinter
      *
      * @return string
      */
-    private function addDocForNode(\PhpParser\Node $node)
+    private function addPHPDocForNode(\PhpParser\Node $node)
     {
         $docString = "@doc=\"%s\"";
         if ($doc = $node->getDocComment())
             return sprintf($docString, $this->rascalizeString($doc));
         return sprintf($docString, null);
     }
-    
+
     private function annotateASTNode(\PhpParser\Node $node)
     {
         $tagsToAdd = array();
@@ -93,9 +93,9 @@ class AST2Rascal extends BasePrinter
             $tagsToAdd[] = $this->addLocationTag($node);
         if ($this->addIds)
             $tagsToAdd[] = $this->addUniqueId();
-        if ($this->addDocs)
-            $tagsToAdd[] = $this->addDocForNode($node);
-        
+        if ($this->addPHPDocs)
+            $tagsToAdd[] = $this->addPHPDocForNode($node);
+
         if (count($tagsToAdd) > 0)
             return "[" . implode(",", $tagsToAdd) . "]";
         return "";
@@ -104,15 +104,15 @@ class AST2Rascal extends BasePrinter
     public function pprintArg(\PhpParser\Node\Arg $node)
     {
         $argValue = $this->pprint($node->value);
-        
+
         if ($node->byRef)
             $byRef = "true";
         else
             $byRef = "false";
-        
+
         $fragment = "actualParameter(" . $argValue . "," . $byRef . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -120,7 +120,7 @@ class AST2Rascal extends BasePrinter
     {
         $fragment = "const(\"" . $node->name . "\"," . $this->pprint($node->value) . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -129,10 +129,10 @@ class AST2Rascal extends BasePrinter
         $items = array();
         foreach ($node->items as $item)
             $items[] = $this->pprint($item);
-        
+
         $fragment = "array([" . implode(",", $items) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -142,30 +142,30 @@ class AST2Rascal extends BasePrinter
             $dim = "someExpr(" . $this->pprint($node->dim) . ")";
         else
             $dim = "noExpr()";
-        
+
         $fragment = "fetchArrayDim(" . $this->pprint($node->var) . "," . $dim . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
     public function pprintArrayItemExpr(\PhpParser\Node\Expr\ArrayItem $node)
     {
         $nodeValue = $this->pprint($node->value);
-        
+
         if (null == $node->key)
             $key = "noExpr()";
         else
             $key = "someExpr(" . $this->pprint($node->key) . ")";
-        
+
         if ($node->byRef)
             $byRef = "true";
         else
             $byRef = "false";
-        
+
         $fragment = "arrayElement(" . $key . "," . $nodeValue . "," . $byRef . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -173,10 +173,10 @@ class AST2Rascal extends BasePrinter
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
-        
+
         $fragment = "assign(" . $assignVar . "," . $assignExpr . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -184,10 +184,10 @@ class AST2Rascal extends BasePrinter
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
-        
+
         $fragment = "assignWOp(" . $assignVar . "," . $assignExpr . ",bitwiseAnd())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -195,10 +195,10 @@ class AST2Rascal extends BasePrinter
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
-        
+
         $fragment = "assignWOp(" . $assignVar . "," . $assignExpr . ",bitwiseOr())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -206,10 +206,10 @@ class AST2Rascal extends BasePrinter
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
-        
+
         $fragment = "assignWOp(" . $assignVar . "," . $assignExpr . ",bitwiseXor())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -217,10 +217,10 @@ class AST2Rascal extends BasePrinter
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
-        
+
         $fragment = "assignWOp(" . $assignVar . "," . $assignExpr . ",concat())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -228,10 +228,10 @@ class AST2Rascal extends BasePrinter
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
-        
+
         $fragment = "assignWOp(" . $assignVar . "," . $assignExpr . ",div())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -239,10 +239,10 @@ class AST2Rascal extends BasePrinter
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
-        
+
         $fragment = "assignWOp(" . $assignVar . "," . $assignExpr . ",minus())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -250,10 +250,10 @@ class AST2Rascal extends BasePrinter
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
-        
+
         $fragment = "assignWOp(" . $assignVar . "," . $assignExpr . ",\\mod())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -261,10 +261,10 @@ class AST2Rascal extends BasePrinter
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
-        
+
         $fragment = "assignWOp(" . $assignVar . "," . $assignExpr . ",mul())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -272,10 +272,10 @@ class AST2Rascal extends BasePrinter
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
-        
+
         $fragment = "assignWOp(" . $assignVar . "," . $assignExpr . ",plus())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -283,10 +283,10 @@ class AST2Rascal extends BasePrinter
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
-        
+
         $fragment = "refAssign(" . $assignVar . "," . $assignExpr . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -294,10 +294,10 @@ class AST2Rascal extends BasePrinter
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
-        
+
         $fragment = "assignWOp(" . $assignVar . "," . $assignExpr . ",leftShift())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -305,10 +305,10 @@ class AST2Rascal extends BasePrinter
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
-        
+
         $fragment = "assignWOp(" . $assignVar . "," . $assignExpr . ",rightShift())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -316,20 +316,20 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",bitwiseAnd())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
     public function pprintBitwiseNotExpr(\PhpParser\Node\Expr\BitwiseNot $node)
     {
         $expr = $this->pprint($node->expr);
-        
+
         $fragment = "unaryOperation(" . $expr . ",bitwiseNot())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -337,10 +337,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",bitwiseOr())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -348,10 +348,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",bitwiseXor())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -359,20 +359,20 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",booleanAnd())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
     public function pprintBooleanNotExpr(\PhpParser\Node\Expr\BooleanNot $node)
     {
         $expr = $this->pprint($node->expr);
-        
+
         $fragment = "unaryOperation(" . $expr . ",booleanNot())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -380,10 +380,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",booleanOr())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -450,10 +450,10 @@ class AST2Rascal extends BasePrinter
             $name = "name({$name})";
         else
             $name = "expr({$name})";
-        
+
         $fragment = "fetchClassConst(" . $name . ",\"" . $node->name . "\")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -469,14 +469,14 @@ class AST2Rascal extends BasePrinter
         $body = array();
         $params = array();
         $uses = array();
-        
+
         foreach ($node->uses as $use)
             $uses[] = $this->pprint($use);
         foreach ($node->params as $param)
             $params[] = $this->pprint($param);
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
-        
+
         $fragment = "closure([" . implode(",", $body) . "],[";
         $fragment .= implode(",", $params) . "],[";
         $fragment .= implode(",", $uses) . "],";
@@ -489,7 +489,7 @@ class AST2Rascal extends BasePrinter
         else
             $fragment .= "false";
         $fragment .= ")";
-        
+
         $fragment .= $this->annotateASTNode($node);
         return $fragment;
     }
@@ -510,10 +510,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",concat())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -528,10 +528,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",div())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -546,10 +546,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",equal())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -583,16 +583,16 @@ class AST2Rascal extends BasePrinter
         $args = array();
         foreach ($node->args as $arg)
             $args[] = $this->pprint($arg);
-        
+
         $name = $this->pprint($node->name);
         if ($node->name instanceof \PhpParser\Node\Name)
             $name = "name({$name})";
         else
             $name = "expr({$name})";
-        
+
         $fragment = "call(" . $name . ",[" . implode(",", $args) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -600,10 +600,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",gt())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -611,10 +611,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",geq())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -622,10 +622,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",identical())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -642,7 +642,7 @@ class AST2Rascal extends BasePrinter
             $fragment .= "requireOnce()";
         $fragment .= ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -653,12 +653,12 @@ class AST2Rascal extends BasePrinter
             $right = "name({$right})";
         else
             $right = "expr({$right})";
-        
+
         $left = $this->pprint($node->expr);
-        
+
         $fragment = "instanceOf(" . $left . "," . $right . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -667,10 +667,10 @@ class AST2Rascal extends BasePrinter
         $exprs = array();
         foreach ($node->vars as $var)
             $exprs[] = $this->pprint($var);
-        
+
         $fragment = "isSet([" . implode(",", $exprs) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -682,10 +682,10 @@ class AST2Rascal extends BasePrinter
                 $exprs[] = "someExpr(" . $this->pprint($var) . ")";
             else
                 $exprs[] = "noExpr()";
-        
+
         $fragment = "listExpr([" . implode(",", $exprs) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -693,10 +693,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",logicalAnd())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -704,10 +704,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",logicalOr())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -715,10 +715,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",logicalXor())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -727,19 +727,19 @@ class AST2Rascal extends BasePrinter
         $args = array();
         foreach ($node->args as $arg)
             $args[] = $this->pprint($arg);
-        
+
         if ($node->name instanceof \PhpParser\Node\Expr) {
             $name = $this->pprint($node->name);
             $name = "expr({$name})";
         } else {
             $name = "name(name(\"" . $node->name . "\"))";
         }
-        
+
         $target = $this->pprint($node->var);
-        
+
         $fragment = "methodCall(" . $target . "," . $name . ",[" . implode(",", $args) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -747,10 +747,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",minus())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -758,10 +758,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",\\mod())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -769,10 +769,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",mul())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -781,17 +781,17 @@ class AST2Rascal extends BasePrinter
         $args = array();
         foreach ($node->args as $arg)
             $args[] = $this->pprint($arg);
-        
+
         $name = $this->pprint($node->class);
-        
+
         if ($node->class instanceof \PhpParser\Node\Expr)
             $name = "expr({$name})";
         else
             $name = "name({$name})";
-        
+
         $fragment = "new(" . $name . ",[" . implode(",", $args) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -799,10 +799,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",notEqual())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -810,10 +810,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",notIdentical())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -821,10 +821,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",plus())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -875,10 +875,10 @@ class AST2Rascal extends BasePrinter
         } else {
             $fragment = "name(name(\"" . $node->name . "\"))";
         }
-        
+
         $fragment = "propertyFetch(" . $this->pprint($node->var) . "," . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -892,10 +892,10 @@ class AST2Rascal extends BasePrinter
                 $parts[] = "scalar(string(\"" . $this->rascalizeString($item) . "\"))";
             }
         }
-        
+
         $fragment = "shellExec([" . implode(",", $parts) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -903,10 +903,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",leftShift())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -914,10 +914,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",rightShift())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -925,10 +925,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",lt())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -936,10 +936,10 @@ class AST2Rascal extends BasePrinter
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
-        
+
         $fragment = "binaryOperation(" . $left . "," . $right . ",leq())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -948,21 +948,21 @@ class AST2Rascal extends BasePrinter
         $args = array();
         foreach ($node->args as $arg)
             $args[] = $this->pprint($arg);
-        
+
         if ($node->name instanceof \PhpParser\Node\Expr)
             $name = "expr(" . $this->pprint($node->name) . ")";
         else
             $name = "name(name(\"" . $node->name . "\"))";
-        
+
         if ($node->class instanceof \PhpParser\Node\Expr) {
             $class = "expr(" . $this->pprint($node->class) . ")";
         } else {
             $class = "name(" . $this->pprint($node->class) . ")";
         }
-        
+
         $fragment = "staticCall({$class},{$name},[" . implode(",", $args) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -973,16 +973,16 @@ class AST2Rascal extends BasePrinter
         } else {
             $name = "name(name(\"" . $node->name . "\"))";
         }
-        
+
         if ($node->class instanceof \PhpParser\Node\Expr) {
             $class = "expr(" . $this->pprint($node->class) . ")";
         } else {
             $class = "name(" . $this->pprint($node->class) . ")";
         }
-        
+
         $fragment = "staticPropertyFetch({$class},{$name})";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -994,10 +994,10 @@ class AST2Rascal extends BasePrinter
         else
             $if = "noExpr()";
         $cond = $this->pprint($node->cond);
-        
+
         $fragment = "ternary({$cond},{$if},{$else})";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1006,7 +1006,7 @@ class AST2Rascal extends BasePrinter
         $operand = $this->pprint($node->expr);
         $fragment = "unaryOperation(" . $operand . ",unaryMinus())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1015,7 +1015,7 @@ class AST2Rascal extends BasePrinter
         $operand = $this->pprint($node->expr);
         $fragment = "unaryOperation(" . $operand . ",unaryPlus())";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1028,7 +1028,7 @@ class AST2Rascal extends BasePrinter
         }
         $fragment = "var(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1038,15 +1038,15 @@ class AST2Rascal extends BasePrinter
             $valuePart = "someExpr(" . $this->pprint($node->value) . ")";
         else
             $valuePart = "noExpr()";
-        
+
         if (null != $node->key)
             $keyPart = "someExpr(" . $this->pprint($node->key) . ")";
         else
             $keyPart = "noExpr()";
-        
+
         $fragment = "yield({$keyPart},{$valuePart})";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1068,7 +1068,7 @@ class AST2Rascal extends BasePrinter
             $fragment = $node->parts;
         $fragment = "name(\"" . $fragment . "\")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1083,22 +1083,22 @@ class AST2Rascal extends BasePrinter
                 $type = "someName(name(\"" . $node->type . "\"))";
             }
         }
-        
+
         if (null == $node->default) {
             $default = "noExpr()";
         } else {
             $default = "someExpr(" . $this->pprint($node->default) . ")";
         }
-        
+
         $fragment = "param(\"" . $node->name . "\"," . $default . "," . $type . ",";
         if (false == $node->byRef)
             $fragment .= "false";
         else
             $fragment .= "true";
         $fragment .= ")";
-        
+
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1114,7 +1114,7 @@ class AST2Rascal extends BasePrinter
         }
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1123,7 +1123,7 @@ class AST2Rascal extends BasePrinter
         $fragment = "dirConstant()[@actualValue=\"{dirname($this->filename)}\"]";
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1132,7 +1132,7 @@ class AST2Rascal extends BasePrinter
         $fragment = "float(" . sprintf('%f', $node->value) . ")";
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1148,7 +1148,7 @@ class AST2Rascal extends BasePrinter
         }
         $fragment = "scalar(encapsed([" . implode(",", $parts) . "]))";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1157,7 +1157,7 @@ class AST2Rascal extends BasePrinter
         $fragment = "fileConstant()[@actualValue=\"{$this->filename}\"]";
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1166,7 +1166,7 @@ class AST2Rascal extends BasePrinter
         $fragment = "funcConstant()[@actualValue=\"{$this->currentFunction}\"]";
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1175,7 +1175,7 @@ class AST2Rascal extends BasePrinter
         $fragment = "lineConstant()[@actualValue=\"{$node->getLine()}\"]";
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1184,7 +1184,7 @@ class AST2Rascal extends BasePrinter
         $fragment = "integer(" . sprintf('%d', $node->value) . ")";
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1193,7 +1193,7 @@ class AST2Rascal extends BasePrinter
         $fragment = "methodConstant()[@actualValue=\"{$this->currentMethod}\"]";
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1202,7 +1202,7 @@ class AST2Rascal extends BasePrinter
         $fragment = "namespaceConstant()[@actualValue=\"{$this->currentNamespace}\"]";
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1211,7 +1211,7 @@ class AST2Rascal extends BasePrinter
         $fragment = "string(\"" . $this->rascalizeString($node->value) . "\")";
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1220,7 +1220,7 @@ class AST2Rascal extends BasePrinter
         $fragment = "traitConstant()[@actualValue=\"{$this->currentTrait}\"]";
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1230,10 +1230,10 @@ class AST2Rascal extends BasePrinter
             $fragment = "someExpr(" . $this->pprint($node->num) . ")";
         else
             $fragment = "noExpr()";
-        
+
         $fragment = "\\break(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1243,14 +1243,14 @@ class AST2Rascal extends BasePrinter
             $cond = "someExpr(" . $this->pprint($node->cond) . ")";
         else
             $cond = "noExpr()";
-        
+
         $body = array();
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
-        
+
         $fragment = "\\case(" . $cond . ",[" . implode(",", $body) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1259,12 +1259,12 @@ class AST2Rascal extends BasePrinter
         $body = array();
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
-        
+
         $xtype = $this->pprint($node->type);
-        
+
         $fragment = "\\catch(" . $xtype . ",\"" . $node->var . "\",[" . implode(",", $body) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1275,20 +1275,20 @@ class AST2Rascal extends BasePrinter
             $this->currentClass = $this->currentNamespace . "\\" . $node->name;
         else
             $this->currentClass = $node->name;
-        
+
         $stmts = array();
         foreach ($node->stmts as $stmt)
             $stmts[] = $this->pprint($stmt);
-        
+
         $implements = array();
         foreach ($node->implements as $implemented)
             $implements[] = $this->pprint($implemented);
-        
+
         if (null != $node->extends)
             $extends = "someName(" . $this->pprint($node->extends) . ")";
         else
             $extends = "noName()";
-        
+
         $modifiers = array();
         if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_PUBLIC)
             $modifiers[] = "\\public()";
@@ -1302,17 +1302,17 @@ class AST2Rascal extends BasePrinter
             $modifiers[] = "final()";
         if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_STATIC)
             $modifiers[] = "static()";
-        
+
         $fragment = "class(\"" . $node->name . "\",{" . implode(",", $modifiers) . "}," . $extends . ",";
         $fragment .= "[" . implode(",", $implements) . "],[";
         $fragment .= implode(",", $stmts) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         $fragment = "classDef(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         $this->currentClass = $priorClass;
-        
+
         return $fragment;
     }
 
@@ -1321,10 +1321,10 @@ class AST2Rascal extends BasePrinter
         $consts = array();
         foreach ($node->consts as $const)
             $consts[] = $this->pprint($const);
-        
+
         $fragment = "constCI([" . implode(",", $consts) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1332,16 +1332,16 @@ class AST2Rascal extends BasePrinter
     {
         $priorMethod = $this->currentMethod;
         $this->currentMethod = $node->name;
-        
+
         $body = array();
         if (null != $node->stmts)
             foreach ($node->stmts as $thestmt)
                 $body[] = $this->pprint($thestmt);
-        
+
         $params = array();
         foreach ($node->params as $param)
             $params[] = $this->pprint($param);
-        
+
         $modifiers = array();
         if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_PUBLIC)
             $modifiers[] = "\\public()";
@@ -1355,16 +1355,16 @@ class AST2Rascal extends BasePrinter
             $modifiers[] = "final()";
         if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_STATIC)
             $modifiers[] = "static()";
-        
+
         $byRef = "false";
         if ($node->byRef)
             $byRef = "true";
-        
+
         $fragment = "method(\"" . $node->name . "\",{" . implode(",", $modifiers) . "}," . $byRef . ",[" . implode(",", $params) . "],[" . implode(",", $body) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         $this->currentMethod = $priorMethod;
-        
+
         return $fragment;
     }
 
@@ -1373,10 +1373,10 @@ class AST2Rascal extends BasePrinter
         $consts = array();
         foreach ($node->consts as $const)
             $consts[] = $this->pprint($const);
-        
+
         $fragment = "const([" . implode(",", $consts) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1386,10 +1386,10 @@ class AST2Rascal extends BasePrinter
             $fragment = "someExpr(" . $this->pprint($node->num) . ")";
         else
             $fragment = "noExpr()";
-        
+
         $fragment = "\\continue(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1398,14 +1398,14 @@ class AST2Rascal extends BasePrinter
         $body = array();
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
-        
+
         $decls = array();
         foreach ($node->declares as $decl)
             $decls[] = $this->pprint($decl);
-        
+
         $fragment = "declare([" . implode(",", $decls) . "],[" . implode(",", $body) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1413,7 +1413,7 @@ class AST2Rascal extends BasePrinter
     {
         $fragment = "declaration(\"" . $node->key . "\", " . $this->pprint($node->value) . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1422,10 +1422,10 @@ class AST2Rascal extends BasePrinter
         $stmts = array();
         foreach ($node->stmts as $stmt)
             $stmts[] = $this->pprint($stmt);
-        
+
         $fragment = "\\do(" . $this->pprint($node->cond) . ",[" . implode(",", $stmts) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1434,10 +1434,10 @@ class AST2Rascal extends BasePrinter
         $parts = array();
         foreach ($node->exprs as $expr)
             $parts[] = $this->pprint($expr);
-        
+
         $fragment = "echo([" . implode(",", $parts) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1446,10 +1446,10 @@ class AST2Rascal extends BasePrinter
         $body = array();
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
-        
+
         $fragment = "\\else([" . implode(",", $body) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1458,10 +1458,10 @@ class AST2Rascal extends BasePrinter
         $body = array();
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
-        
+
         $fragment = "elseIf(" . $this->pprint($node->cond) . ",[" . implode(",", $body) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1469,7 +1469,7 @@ class AST2Rascal extends BasePrinter
     {
         $fragment = "exprstmt(" . $this->pprint($node->expr) . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1478,22 +1478,22 @@ class AST2Rascal extends BasePrinter
         $stmts = array();
         foreach ($node->stmts as $stmt)
             $stmts[] = $this->pprint($stmt);
-        
+
         $loops = array();
         foreach ($node->loop as $loop)
             $loops[] = $this->pprint($loop);
-        
+
         $conds = array();
         foreach ($node->cond as $cond)
             $conds[] = $this->pprint($cond);
-        
+
         $inits = array();
         foreach ($node->init as $init)
             $inits[] = $this->pprint($init);
-        
+
         $fragment = "\\for([" . implode(",", $inits) . "],[" . implode(",", $conds) . "],[" . implode(",", $loops) . "],[" . implode(",", $stmts) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1504,18 +1504,18 @@ class AST2Rascal extends BasePrinter
         $byRef = "false";
         if ($node->byRef)
             $byRef = "true";
-        
+
         $stmts = array();
         foreach ($node->stmts as $stmt)
             $stmts[] = $this->pprint($stmt);
-        
+
         $keyvar = "noExpr()";
         if (null != $node->keyVar)
             $keyvar = "someExpr(" . $this->pprint($node->keyVar) . ")";
-        
+
         $fragment = "foreach(" . $expr . "," . $keyvar . "," . $byRef . "," . $valueVar . ",[" . implode(",", $stmts) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1523,24 +1523,24 @@ class AST2Rascal extends BasePrinter
     {
         $priorFunction = $this->currentFunction;
         $this->currentFunction = $node->name;
-        
+
         $body = array();
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
-        
+
         $params = array();
         foreach ($node->params as $param)
             $params[] = $this->pprint($param);
-        
+
         $byRef = "false";
         if ($node->byRef)
             $byRef = "true";
-        
+
         $fragment = "function(\"" . $node->name . "\"," . $byRef . ",[" . implode(",", $params) . "],[" . implode(",", $body) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         $this->currentFunction = $priorFunction;
-        
+
         return $fragment;
     }
 
@@ -1549,10 +1549,10 @@ class AST2Rascal extends BasePrinter
         $vars = array();
         foreach ($node->vars as $var)
             $vars[] = $this->pprint($var);
-        
+
         $fragment = "global([" . implode(",", $vars) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1560,7 +1560,7 @@ class AST2Rascal extends BasePrinter
     {
         $fragment = "goto(\"" . $node->name . "\")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1568,30 +1568,30 @@ class AST2Rascal extends BasePrinter
     {
         $fragment = "haltCompiler(\"" . $this->rascalizeString($node->remaining) . "\")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
     public function pprintIfStmt(\PhpParser\Node\Stmt\If_ $node)
     {
         $cond = $this->pprint($node->cond);
-        
+
         if (null != $node->else)
             $elseNode = "someElse(" . $this->pprint($node->else) . ")";
         else
             $elseNode = "noElse()";
-        
+
         $elseIfs = array();
         foreach ($node->elseifs as $elseif)
             $elseIfs[] = $this->pprint($elseif);
-        
+
         $body = array();
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
-        
+
         $fragment = "\\if(" . $cond . ",[" . implode(",", $body) . "],[" . implode(",", $elseIfs) . "]," . $elseNode . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1599,7 +1599,7 @@ class AST2Rascal extends BasePrinter
     {
         $fragment = "inlineHTML(\"" . $this->rascalizeString($node->value) . "\")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1608,19 +1608,19 @@ class AST2Rascal extends BasePrinter
         $stmts = array();
         foreach ($node->stmts as $stmt)
             $stmts[] = $this->pprint($stmt);
-        
+
         $extends = array();
         foreach ($node->extends as $extended)
             $extends[] = $this->pprint($extended);
-        
+
         $fragment = "interface(\"" . $node->name . "\",[";
         $fragment .= implode(",", $extends) . "],[";
         $fragment .= implode(",", $stmts) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         $fragment = "interfaceDef(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1628,7 +1628,7 @@ class AST2Rascal extends BasePrinter
     {
         $fragment = "label(\"" . $node->name . "\")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1642,11 +1642,11 @@ class AST2Rascal extends BasePrinter
             $this->currentNamespace = $node->name;
         else
             $this->currentNamespace = "";
-        
+
         $body = array();
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
-            
+
             // Again check the name -- since it is optional, we return an OptionName
             // here, which could be noName() if this is a global namespace
         if (null != $node->name) {
@@ -1655,28 +1655,28 @@ class AST2Rascal extends BasePrinter
         } else {
             $name = "noName()";
         }
-        
+
         // The third option shouldn't occur, but is put in just in case; the first
         // option is the case where we have a body, the second is where we have
         // a namespace header, like namespace DB; that opens a new block but doesn't
         // enclose it in braces
         if (null != $node->stmts)
             $fragment = "namespace(" . $name . ",[" . implode(",", $body) . "])";
-        else 
+        else
             if (null != $node->name)
                 $fragment = "namespaceHeader({$this->pprint($node->name)})";
             else
                 $fragment = "namespaceHeader({$this->pprint("")})";
-        
+
         $fragment .= $this->annotateASTNode($node);
-        
+
         // If we had a statement body, then we reset the namespace at the end; if
         // we didn't, it means that we just had a namespace declaration like
         // namespace DB; which had no body, but then is still active at the end
         // in which case we don't want to reset it
         if (null != $node->stmts)
             $this->currentNamespace = $priorNamespace;
-        
+
         return $fragment;
     }
 
@@ -1685,7 +1685,7 @@ class AST2Rascal extends BasePrinter
         $props = array();
         foreach ($node->props as $prop)
             $props[] = $this->pprint($prop);
-        
+
         $modifiers = array();
         if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_PUBLIC)
             $modifiers[] = "\\public()";
@@ -1699,10 +1699,10 @@ class AST2Rascal extends BasePrinter
             $modifiers[] = "final()";
         if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_STATIC)
             $modifiers[] = "static()";
-        
+
         $fragment = "property({" . implode(",", $modifiers) . "},[" . implode(",", $props) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1713,10 +1713,10 @@ class AST2Rascal extends BasePrinter
         } else {
             $fragment = "noExpr()";
         }
-        
+
         $fragment = "property(\"" . $node->name . "\"," . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1728,7 +1728,7 @@ class AST2Rascal extends BasePrinter
             $fragment = "noExpr()";
         $fragment = "\\return(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1737,10 +1737,10 @@ class AST2Rascal extends BasePrinter
         $staticVars = array();
         foreach ($node->vars as $var)
             $staticVars[] = $this->pprint($var);
-        
+
         $fragment = "static([" . implode(",", $staticVars) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1749,10 +1749,10 @@ class AST2Rascal extends BasePrinter
         $default = "noExpr()";
         if (null != $node->default)
             $default = "someExpr(" . $this->pprint($node->default) . ")";
-        
+
         $fragment = "staticVar(\"" . $node->name . "\"," . $default . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1761,10 +1761,10 @@ class AST2Rascal extends BasePrinter
         $cases = array();
         foreach ($node->cases as $case)
             $cases[] = $this->pprint($case);
-        
+
         $fragment = "\\switch(" . $this->pprint($node->cond) . ",[" . implode(",", $cases) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1772,34 +1772,34 @@ class AST2Rascal extends BasePrinter
     {
         $fragment = "\\throw(" . $this->pprint($node->expr) . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
     public function pprintTraitStmt(\PhpParser\Node\Stmt\Trait_ $node)
     {
         $body = array();
-        
+
         $priorTrait = $this->currentTrait;
-        $this->insideTrait = TRUE;
-        
+        $this->insideTrait = true;
+
         if (strlen($this->currentNamespace) > 0)
             $this->currentTrait = $this->currentNamespace . "\\" . $node->name;
         else
             $this->currentTrait = $node->name;
-        
+
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
-        
+
         $fragment = "trait(\"" . $node->name . "\",[" . implode(",", $body) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         $fragment = "traitDef(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         $this->currentTrait = $priorTrait;
-        $this->insideTrait = FALSE;
-        
+        $this->insideTrait = false;
+
         return $fragment;
     }
 
@@ -1808,14 +1808,14 @@ class AST2Rascal extends BasePrinter
         $adaptations = array();
         foreach ($node->adaptations as $adaptation)
             $adaptations[] = $this->pprint($adaptation);
-        
+
         $traits = array();
         foreach ($node->traits as $trait)
             $traits[] = $this->pprint($trait);
-        
+
         $fragment = "traitUse([" . implode(",", $traits) . "],[" . implode(",", $adaptations) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1826,7 +1826,7 @@ class AST2Rascal extends BasePrinter
         } else {
             $newName = "noName()";
         }
-        
+
         if (null != $node->newModifier) {
             $modifiers = array();
             if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_PUBLIC)
@@ -1845,18 +1845,18 @@ class AST2Rascal extends BasePrinter
         } else {
             $newModifier = "{ }";
         }
-        
+
         $newMethod = "\"" . $node->method . "\"";
-        
+
         if (null != $node->trait) {
             $trait = "someName(" . $this->pprint($node->trait) . ")";
         } else {
             $trait = "noName()";
         }
-        
+
         $fragment = "traitAlias(" . $trait . "," . $newMethod . "," . $newModifier . "," . $newName . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1865,10 +1865,10 @@ class AST2Rascal extends BasePrinter
         $insteadOf = array();
         foreach ($node->insteadof as $item)
             $insteadOf[] = $this->pprint($item);
-        
+
         $fragment = "traitPrecedence(" . $this->pprint($node->trait) . ",\"" . $node->method . "\",[" . implode(",", $insteadOf) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1878,21 +1878,21 @@ class AST2Rascal extends BasePrinter
         if (null != $node->finallyStmts)
             foreach ($node->finallyStmts as $fstmt)
                 $finallyBody[] = $this->pprint($fstmt);
-        
+
         $catches = array();
         foreach ($node->catches as $toCatch)
             $catches[] = $this->pprint($toCatch);
-        
+
         $body = array();
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
-        
+
         if (null != $node->finallyStmts)
             $fragment = "tryCatchFinally([" . implode(",", $body) . "],[" . implode(",", $catches) . "],[" . implode(",", $finallyBody) . "])";
         else
             $fragment = "tryCatch([" . implode(",", $body) . "],[" . implode(",", $catches) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1901,10 +1901,10 @@ class AST2Rascal extends BasePrinter
         $vars = array();
         foreach ($node->vars as $var)
             $vars[] = $this->pprint($var);
-        
+
         $fragment = "unset([" . implode(",", $vars) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1913,10 +1913,10 @@ class AST2Rascal extends BasePrinter
         $uses = array();
         foreach ($node->uses as $use)
             $uses[] = $this->pprint($use);
-        
+
         $fragment = "use([" . implode(",", $uses) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1927,10 +1927,10 @@ class AST2Rascal extends BasePrinter
             $alias = "someName(name(\"" . $node->alias . "\"))";
         else
             $alias = "noName()";
-        
+
         $fragment = "use(" . $name . "," . $alias . ")";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 
@@ -1939,10 +1939,10 @@ class AST2Rascal extends BasePrinter
         $stmts = array();
         foreach ($node->stmts as $stmt)
             $stmts[] = $this->pprint($stmt);
-        
+
         $fragment = "\\while(" . $this->pprint($node->cond) . ",[" . implode(",", $stmts) . "])";
         $fragment .= $this->annotateASTNode($node);
-        
+
         return $fragment;
     }
 }
@@ -1957,15 +1957,16 @@ $opts = getopt("f:lirp:", array(
     "enableLocations",
     "uniqueIds",
     "relativeLocations",
-    "prefix:"
+    "prefix:",
+    "phpdocs"
 ));
 
 if (isset($opts["f"]))
     $file = $opts["f"];
-else 
+else
     if (isset($opts["file"]))
         $file = $opts["file"];
-    else 
+    else
         if (count($argv) == 2) {
             $file = $argv[1];
         } else {
@@ -1973,26 +1974,30 @@ else
             exit() - 1;
         }
 
-$enableLocations = FALSE;
+$enableLocations = false;
 if (isset($opts["l"]) || isset($opts["enableLocations"]))
-    $enableLocations = TRUE;
+    $enableLocations = true;
 
-$uniqueIds = FALSE;
+$uniqueIds = false;
 if (isset($opts["i"]) || isset($opts["uniqueIds"]))
-    $uniqueIds = TRUE;
+    $uniqueIds = true;
 
 if (isset($opts["p"]))
     $prefix = $opts["p"] . '.';
-else 
+else
     if (isset($opts["prefix"]))
         $prefix = $opts["prefix"] . '.';
     else {
         $prefix = "";
     }
 
-$relativeLocations = FALSE;
-if (isset($opts["r"]) || isset($opts["relativeLocations"]))
-    $relativeLocations = TRUE;
+$relativeLocations = false;
+if (isset($opts["r"]) || isset($opts["relativelocations"]))
+    $relativelocations = true;
+
+$addPHPDocs = false;
+if (isset($opts["phpdocs"]))
+  $addPHPDocs = true;
 
 if (isset($_SERVER['HOME'])) {
     $homedir = $_SERVER['HOME'];
@@ -2003,7 +2008,7 @@ if (isset($_SERVER['HOME'])) {
 $inputCode = '';
 if (! $relativeLocations && file_exists($file))
     $inputCode = file_get_contents($file);
-else 
+else
     if ($relativeLocations && file_exists($homedir . $file))
         $inputCode = file_get_contents($homedir . $file);
     else {
@@ -2011,10 +2016,8 @@ else
         exit() - 1;
     }
 
-$addPHPDocs = TRUE;
 
 $parser = new \PhpParser\Parser(new \PhpParser\Lexer());
-$dumper = new \PhpParser\NodeDumper();
 $printer = new AST2Rascal($file, $enableLocations, $relativeLocations, $uniqueIds, $prefix, $addPHPDocs);
 
 try {
