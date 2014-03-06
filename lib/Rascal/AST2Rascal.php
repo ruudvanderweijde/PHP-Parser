@@ -80,7 +80,7 @@ class AST2Rascal extends BasePrinter
      */
     private function addPHPDocForNode(\PhpParser\Node $node)
     {
-        $docString = "@doc=\"%s\"";
+        $docString = "@phpdoc=\"%s\"";
         if ($doc = $node->getDocComment())
             return sprintf($docString, $this->rascalizeString($doc));
         return sprintf($docString, null);
@@ -312,7 +312,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintBitwiseAndExpr(\PhpParser\Node\Expr\BitwiseAnd $node)
+    public function pprintBitwiseAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseAnd $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -333,7 +333,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintBitwiseOrExpr(\PhpParser\Node\Expr\BitwiseOr $node)
+    public function pprintBitwiseOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseOr $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -344,7 +344,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintBitwiseXorExpr(\PhpParser\Node\Expr\BitwiseXor $node)
+    public function pprintBitwiseXorBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseXor $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -355,7 +355,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintBooleanAndExpr(\PhpParser\Node\Expr\BooleanAnd $node)
+    public function pprintBooleanAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BooleanAnd $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -376,7 +376,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintBooleanOrExpr(\PhpParser\Node\Expr\BooleanOr $node)
+    public function pprintBooleanOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BooleanOr $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -506,7 +506,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintConcatExpr(\PhpParser\Node\Expr\Concat $node)
+    public function pprintConcatBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Concat $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -524,7 +524,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintDivExpr(\PhpParser\Node\Expr\Div $node)
+    public function pprintDivBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Div $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -542,7 +542,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintEqualExpr(\PhpParser\Node\Expr\Equal $node)
+    public function pprintEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Equal $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -596,7 +596,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintGreaterExpr(\PhpParser\Node\Expr\Greater $node)
+    public function pprintGreaterBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Greater $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -607,7 +607,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintGreaterOrEqualExpr(\PhpParser\Node\Expr\GreaterOrEqual $node)
+    public function pprintGreaterOrEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\GreaterOrEqual $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -618,7 +618,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintIdenticalExpr(\PhpParser\Node\Expr\Identical $node)
+    public function pprintIdenticalBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Identical $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -689,7 +689,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintLogicalAndExpr(\PhpParser\Node\Expr\LogicalAnd $node)
+    public function pprintLogicalAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalAnd $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -700,7 +700,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintLogicalOrExpr(\PhpParser\Node\Expr\LogicalOr $node)
+    public function pprintLogicalOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalOr $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -711,7 +711,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintLogicalXorExpr(\PhpParser\Node\Expr\LogicalXor $node)
+    public function pprintLogicalXorBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalXor $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -743,7 +743,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintMinusExpr(\PhpParser\Node\Expr\Minus $node)
+    public function pprintMinusBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Minus $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -754,7 +754,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintModExpr(\PhpParser\Node\Expr\Mod $node)
+    public function pprintModBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Mod $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -765,7 +765,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintMulExpr(\PhpParser\Node\Expr\Mul $node)
+    public function pprintMulBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Mul $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -795,7 +795,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintNotEqualExpr(\PhpParser\Node\Expr\NotEqual $node)
+    public function pprintNotEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\NotEqual $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -806,7 +806,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintNotIdenticalExpr(\PhpParser\Node\Expr\NotIdentical $node)
+    public function pprintNotIdenticalBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\NotIdentical $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -817,7 +817,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintPlusExpr(\PhpParser\Node\Expr\Plus $node)
+    public function pprintPlusBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Plus $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -899,7 +899,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintShiftLeftExpr(\PhpParser\Node\Expr\ShiftLeft $node)
+    public function pprintShiftLeftBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\ShiftLeft $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -910,7 +910,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintShiftRightExpr(\PhpParser\Node\Expr\ShiftRight $node)
+    public function pprintShiftRightBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\ShiftRight $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -921,7 +921,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintSmallerExpr(\PhpParser\Node\Expr\Smaller $node)
+    public function pprintSmallerBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Smaller $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -932,7 +932,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintSmallerOrEqualExpr(\PhpParser\Node\Expr\SmallerOrEqual $node)
+    public function pprintSmallerOrEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\SmallerOrEqual $node)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -1102,7 +1102,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintClassConstScalar(\PhpParser\Node\Scalar\ClassConst $node)
+    public function pprintClassMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Class_ $node)
     {
         // If we are inside a trait and find __CLASS__, we have no clue what it should
         // be, so leave it unresolved for now; else tag it with the class we are actually
@@ -1118,7 +1118,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintDirConstScalar(\PhpParser\Node\Scalar\DirConst $node)
+    public function pprintDirMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Dir $node)
     {
         $fragment = "dirConstant()[@actualValue=\"{dirname($this->filename)}\"]";
         $fragment = "scalar(" . $fragment . ")";
@@ -1152,7 +1152,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintFileConstScalar(\PhpParser\Node\Scalar\FileConst $node)
+    public function pprintFileMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\File $node)
     {
         $fragment = "fileConstant()[@actualValue=\"{$this->filename}\"]";
         $fragment = "scalar(" . $fragment . ")";
@@ -1161,7 +1161,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintFuncConstScalar(\PhpParser\Node\Scalar\FuncConst $node)
+    public function pprintFunctionMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Function_ $node)
     {
         $fragment = "funcConstant()[@actualValue=\"{$this->currentFunction}\"]";
         $fragment = "scalar(" . $fragment . ")";
@@ -1170,7 +1170,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintLineConstScalar(\PhpParser\Node\Scalar\LineConst $node)
+    public function pprintLineMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Line $node)
     {
         $fragment = "lineConstant()[@actualValue=\"{$node->getLine()}\"]";
         $fragment = "scalar(" . $fragment . ")";
@@ -1188,7 +1188,7 @@ class AST2Rascal extends BasePrinter
         return $fragment;
     }
 
-    public function pprintMethodConstScalar(\PhpParser\Node\Scalar\MethodConst $node)
+    public function pprintMethodMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Method $node)
     {
         $fragment = "methodConstant()[@actualValue=\"{$this->currentMethod}\"]";
         $fragment = "scalar(" . $fragment . ")";
@@ -2016,25 +2016,22 @@ else
         exit() - 1;
     }
 
+// always parse phpdocs, or else rascal will crash because it is implemented there unconditional
+$addPHPDocs = true;
 
 $parser = new \PhpParser\Parser(new \PhpParser\Lexer());
 $printer = new AST2Rascal($file, $enableLocations, $relativeLocations, $uniqueIds, $prefix, $addPHPDocs);
 
 try {
     $stmts = $parser->parse($inputCode);
-    // cache the output of the parsed files in the case
-    $tempFileName = preg_replace('#(.*)/([a-z-_]+)/([a-z-_]+\.[a-z]{2,4})#i', '/tmp/\2_\3', $file);
-    file_put_contents($tempFileName, print_r($stmts,1));
     $strStmts = array();
     foreach ($stmts as $stmt)
         $strStmts[] = $printer->pprint($stmt);
     $script = implode(",\n", $strStmts);
     echo "script([" . $script . "])";
-    // add this output to the file
-    file_put_contents($tempFileName, "\nscript([" . $script . "])\n\nGenerated at: ".date('Y-m-d H:i:s'), FILE_APPEND);
 } catch (\PhpParser\Error $e) {
     echo "errscript(\"" . $printer->rascalizeString($e->getMessage()) . "\")";
-} catch (Exception $e) {
+} catch (\Exception $e) {
     echo "errscript(\"" . $printer->rascalizeString($e->getMessage()) . "\")";
 }
 ?>
