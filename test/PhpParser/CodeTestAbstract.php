@@ -50,4 +50,15 @@ abstract class CodeTestAbstract extends \PHPUnit_Framework_TestCase
         // trim right side of all lines
         return implode("\n", array_map('rtrim', explode("\n", $str)));
     }
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    protected function normalizeName($name)
+    {
+        $name = preg_replace('/\s+/', '', $name);
+        $name = preg_replace('/[^a-z0-9]/i', '', $name);
+        return $name;
+    }
 }
