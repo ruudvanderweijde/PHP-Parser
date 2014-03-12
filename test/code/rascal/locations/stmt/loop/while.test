@@ -1,0 +1,11 @@
+While loop
+-----
+<?php
+
+while ($a) {}
+
+while ($a):
+endwhile;
+-----
+script([\while(var(name(name("a")))[@at=|file:///tmp/WhileLoop.php|(14,2,<3,0>,<3,0>)],[])[@at=|file:///tmp/WhileLoop.php|(7,13,<3,0>,<3,0>)],
+\while(var(name(name("a")))[@at=|file:///tmp/WhileLoop.php|(29,2,<5,0>,<5,0>)],[])[@at=|file:///tmp/WhileLoop.php|(22,21,<5,0>,<5,0>)]])

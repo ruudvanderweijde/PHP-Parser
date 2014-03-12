@@ -1,0 +1,14 @@
+Include and eval
+-----
+<?php
+include 'A.php';
+include_once 'A.php';
+require 'A.php';
+require_once 'A.php';
+eval('A');
+-----
+script([exprstmt(include(scalar(string("A.php"))[@at=|file:///tmp/IncludeAndEval.php|(14,7,<2,0>,<2,0>)],include())[@at=|file:///tmp/IncludeAndEval.php|(6,15,<2,0>,<2,0>)])[@at=|file:///tmp/IncludeAndEval.php|(6,16,<2,0>,<2,0>)],
+exprstmt(include(scalar(string("A.php"))[@at=|file:///tmp/IncludeAndEval.php|(36,7,<3,0>,<3,0>)],includeOnce())[@at=|file:///tmp/IncludeAndEval.php|(23,20,<3,0>,<3,0>)])[@at=|file:///tmp/IncludeAndEval.php|(23,21,<3,0>,<3,0>)],
+exprstmt(include(scalar(string("A.php"))[@at=|file:///tmp/IncludeAndEval.php|(53,7,<4,0>,<4,0>)],require())[@at=|file:///tmp/IncludeAndEval.php|(45,15,<4,0>,<4,0>)])[@at=|file:///tmp/IncludeAndEval.php|(45,16,<4,0>,<4,0>)],
+exprstmt(include(scalar(string("A.php"))[@at=|file:///tmp/IncludeAndEval.php|(75,7,<5,0>,<5,0>)],requireOnce())[@at=|file:///tmp/IncludeAndEval.php|(62,20,<5,0>,<5,0>)])[@at=|file:///tmp/IncludeAndEval.php|(62,21,<5,0>,<5,0>)],
+exprstmt(eval(scalar(string("A"))[@at=|file:///tmp/IncludeAndEval.php|(89,3,<6,0>,<6,0>)])[@at=|file:///tmp/IncludeAndEval.php|(84,9,<6,0>,<6,0>)])[@at=|file:///tmp/IncludeAndEval.php|(84,10,<6,0>,<6,0>)]])

@@ -1,0 +1,22 @@
+Switch
+-----
+<?php
+
+switch ($a) {
+    case 0:
+    case 1;
+    default:
+}
+
+// alternative syntax
+switch ($a):
+endswitch;
+
+// leading semicolon
+switch ($a) { ; }
+switch ($a): ; endswitch;
+-----
+script([\switch(var(name(name("a")))[@at=|file:///tmp/Switch.php|(15,2,<3,0>,<3,0>)],[\case(someExpr(scalar(integer(0))[@at=|file:///tmp/Switch.php|(30,1,<4,0>,<4,0>)]),[])[@at=|file:///tmp/Switch.php|(25,7,<4,0>,<4,0>)],\case(someExpr(scalar(integer(1))[@at=|file:///tmp/Switch.php|(42,1,<5,0>,<5,0>)]),[])[@at=|file:///tmp/Switch.php|(37,7,<5,0>,<5,0>)],\case(noExpr(),[])[@at=|file:///tmp/Switch.php|(49,8,<6,0>,<6,0>)]])[@at=|file:///tmp/Switch.php|(7,52,<3,0>,<3,0>)],
+\switch(var(name(name("a")))[@at=|file:///tmp/Switch.php|(91,2,<10,0>,<10,0>)],[])[@at=|file:///tmp/Switch.php|(83,23,<10,0>,<10,0>)],
+\switch(var(name(name("a")))[@at=|file:///tmp/Switch.php|(137,2,<14,0>,<14,0>)],[])[@at=|file:///tmp/Switch.php|(129,17,<14,0>,<14,0>)],
+\switch(var(name(name("a")))[@at=|file:///tmp/Switch.php|(155,2,<15,0>,<15,0>)],[])[@at=|file:///tmp/Switch.php|(147,25,<15,0>,<15,0>)]])

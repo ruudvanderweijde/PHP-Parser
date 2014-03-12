@@ -1,0 +1,16 @@
+Exit
+-----
+<?php
+exit;
+exit();
+exit('Die!');
+die;
+die();
+die('Exit!');
+-----
+script([exprstmt(exit(noExpr())[@at=|file:///tmp/Exit.php|(6,4,<2,0>,<2,0>)])[@at=|file:///tmp/Exit.php|(6,5,<2,0>,<2,0>)],
+exprstmt(exit(noExpr())[@at=|file:///tmp/Exit.php|(12,6,<3,0>,<3,0>)])[@at=|file:///tmp/Exit.php|(12,7,<3,0>,<3,0>)],
+exprstmt(exit(someExpr(scalar(string("Die!"))[@at=|file:///tmp/Exit.php|(25,6,<4,0>,<4,0>)]))[@at=|file:///tmp/Exit.php|(20,12,<4,0>,<4,0>)])[@at=|file:///tmp/Exit.php|(20,13,<4,0>,<4,0>)],
+exprstmt(exit(noExpr())[@at=|file:///tmp/Exit.php|(34,3,<5,0>,<5,0>)])[@at=|file:///tmp/Exit.php|(34,4,<5,0>,<5,0>)],
+exprstmt(exit(noExpr())[@at=|file:///tmp/Exit.php|(39,5,<6,0>,<6,0>)])[@at=|file:///tmp/Exit.php|(39,6,<6,0>,<6,0>)],
+exprstmt(exit(someExpr(scalar(string("Exit!"))[@at=|file:///tmp/Exit.php|(50,7,<7,0>,<7,0>)]))[@at=|file:///tmp/Exit.php|(46,12,<7,0>,<7,0>)])[@at=|file:///tmp/Exit.php|(46,13,<7,0>,<7,0>)]])

@@ -1,0 +1,20 @@
+Static property fetches
+-----
+<?php
+
+// property name variations
+A::$b;
+A::$$b;
+A::${'b'};
+
+// array access
+A::$b['c'];
+A::$b{'c'};
+
+// class name variations can be found in staticCall.test
+-----
+script([exprstmt(staticPropertyFetch(name(name("A")[@at=|file:///tmp/StaticPropertyFetches.php|(35,1,<4,0>,<4,0>)]),name(name("b")))[@at=|file:///tmp/StaticPropertyFetches.php|(35,5,<4,0>,<4,0>)])[@at=|file:///tmp/StaticPropertyFetches.php|(35,6,<4,0>,<4,0>)],
+exprstmt(staticPropertyFetch(name(name("A")[@at=|file:///tmp/StaticPropertyFetches.php|(42,1,<5,0>,<5,0>)]),expr(var(name(name("b")))[@at=|file:///tmp/StaticPropertyFetches.php|(46,2,<5,0>,<5,0>)]))[@at=|file:///tmp/StaticPropertyFetches.php|(42,6,<5,0>,<5,0>)])[@at=|file:///tmp/StaticPropertyFetches.php|(42,7,<5,0>,<5,0>)],
+exprstmt(staticPropertyFetch(name(name("A")[@at=|file:///tmp/StaticPropertyFetches.php|(50,1,<6,0>,<6,0>)]),expr(scalar(string("b"))[@at=|file:///tmp/StaticPropertyFetches.php|(55,3,<6,0>,<6,0>)]))[@at=|file:///tmp/StaticPropertyFetches.php|(50,9,<6,0>,<6,0>)])[@at=|file:///tmp/StaticPropertyFetches.php|(50,10,<6,0>,<6,0>)],
+exprstmt(fetchArrayDim(staticPropertyFetch(name(name("A")[@at=|file:///tmp/StaticPropertyFetches.php|(78,1,<9,0>,<9,0>)]),name(name("b")))[@at=|file:///tmp/StaticPropertyFetches.php|(78,5,<9,0>,<9,0>)],someExpr(scalar(string("c"))[@at=|file:///tmp/StaticPropertyFetches.php|(84,3,<9,0>,<9,0>)]))[@at=|file:///tmp/StaticPropertyFetches.php|(78,10,<9,0>,<9,0>)])[@at=|file:///tmp/StaticPropertyFetches.php|(78,11,<9,0>,<9,0>)],
+exprstmt(fetchArrayDim(staticPropertyFetch(name(name("A")[@at=|file:///tmp/StaticPropertyFetches.php|(90,1,<10,0>,<10,0>)]),name(name("b")))[@at=|file:///tmp/StaticPropertyFetches.php|(90,5,<10,0>,<10,0>)],someExpr(scalar(string("c"))[@at=|file:///tmp/StaticPropertyFetches.php|(96,3,<10,0>,<10,0>)]))[@at=|file:///tmp/StaticPropertyFetches.php|(90,10,<10,0>,<10,0>)])[@at=|file:///tmp/StaticPropertyFetches.php|(90,11,<10,0>,<10,0>)]])

@@ -1,0 +1,30 @@
+Static calls
+-----
+<?php
+
+// method name variations
+A::b();
+A::{'b'}();
+A::$b();
+A::$b['c']();
+A::$b['c']['d']();
+
+// array dereferencing
+A::b()['c'];
+
+// class name variations
+static::b();
+$a::b();
+${'a'}::b();
+$a['b']::c();
+-----
+script([exprstmt(staticCall(name(name("A")[@at=|file:///tmp/StaticCalls.php|(33,1,<4,0>,<4,0>)]),name(name("b")),[])[@at=|file:///tmp/StaticCalls.php|(33,6,<4,0>,<4,0>)])[@at=|file:///tmp/StaticCalls.php|(33,7,<4,0>,<4,0>)],
+exprstmt(staticCall(name(name("A")[@at=|file:///tmp/StaticCalls.php|(41,1,<5,0>,<5,0>)]),expr(scalar(string("b"))[@at=|file:///tmp/StaticCalls.php|(45,3,<5,0>,<5,0>)]),[])[@at=|file:///tmp/StaticCalls.php|(41,10,<5,0>,<5,0>)])[@at=|file:///tmp/StaticCalls.php|(41,11,<5,0>,<5,0>)],
+exprstmt(staticCall(name(name("A")[@at=|file:///tmp/StaticCalls.php|(53,1,<6,0>,<6,0>)]),expr(var(name(name("b")))[@at=|file:///tmp/StaticCalls.php|(53,7,<6,0>,<6,0>)]),[])[@at=|file:///tmp/StaticCalls.php|(53,7,<6,0>,<6,0>)])[@at=|file:///tmp/StaticCalls.php|(53,8,<6,0>,<6,0>)],
+exprstmt(staticCall(name(name("A")[@at=|file:///tmp/StaticCalls.php|(62,1,<7,0>,<7,0>)]),expr(fetchArrayDim(var(name(name("b")))[@at=|file:///tmp/StaticCalls.php|(62,12,<7,0>,<7,0>)],someExpr(scalar(string("c"))[@at=|file:///tmp/StaticCalls.php|(68,3,<7,0>,<7,0>)]))[@at=|file:///tmp/StaticCalls.php|(62,10,<7,0>,<7,0>)]),[])[@at=|file:///tmp/StaticCalls.php|(62,12,<7,0>,<7,0>)])[@at=|file:///tmp/StaticCalls.php|(62,13,<7,0>,<7,0>)],
+exprstmt(staticCall(name(name("A")[@at=|file:///tmp/StaticCalls.php|(76,1,<8,0>,<8,0>)]),expr(fetchArrayDim(fetchArrayDim(var(name(name("b")))[@at=|file:///tmp/StaticCalls.php|(76,17,<8,0>,<8,0>)],someExpr(scalar(string("c"))[@at=|file:///tmp/StaticCalls.php|(82,3,<8,0>,<8,0>)]))[@at=|file:///tmp/StaticCalls.php|(76,10,<8,0>,<8,0>)],someExpr(scalar(string("d"))[@at=|file:///tmp/StaticCalls.php|(87,3,<8,0>,<8,0>)]))[@at=|file:///tmp/StaticCalls.php|(76,15,<8,0>,<8,0>)]),[])[@at=|file:///tmp/StaticCalls.php|(76,17,<8,0>,<8,0>)])[@at=|file:///tmp/StaticCalls.php|(76,18,<8,0>,<8,0>)],
+exprstmt(fetchArrayDim(staticCall(name(name("A")[@at=|file:///tmp/StaticCalls.php|(119,1,<11,0>,<11,0>)]),name(name("b")),[])[@at=|file:///tmp/StaticCalls.php|(119,6,<11,0>,<11,0>)],someExpr(scalar(string("c"))[@at=|file:///tmp/StaticCalls.php|(126,3,<11,0>,<11,0>)]))[@at=|file:///tmp/StaticCalls.php|(119,11,<11,0>,<11,0>)])[@at=|file:///tmp/StaticCalls.php|(119,12,<11,0>,<11,0>)],
+exprstmt(staticCall(name(name("static")[@at=|file:///tmp/StaticCalls.php|(158,6,<14,0>,<14,0>)]),name(name("b")),[])[@at=|file:///tmp/StaticCalls.php|(158,11,<14,0>,<14,0>)])[@at=|file:///tmp/StaticCalls.php|(158,12,<14,0>,<14,0>)],
+exprstmt(staticCall(expr(var(name(name("a")))[@at=|file:///tmp/StaticCalls.php|(171,2,<15,0>,<15,0>)]),name(name("b")),[])[@at=|file:///tmp/StaticCalls.php|(171,7,<15,0>,<15,0>)])[@at=|file:///tmp/StaticCalls.php|(171,8,<15,0>,<15,0>)],
+exprstmt(staticCall(expr(var(expr(scalar(string("a"))[@at=|file:///tmp/StaticCalls.php|(182,3,<16,0>,<16,0>)]))[@at=|file:///tmp/StaticCalls.php|(180,6,<16,0>,<16,0>)]),name(name("b")),[])[@at=|file:///tmp/StaticCalls.php|(180,11,<16,0>,<16,0>)])[@at=|file:///tmp/StaticCalls.php|(180,12,<16,0>,<16,0>)],
+exprstmt(staticCall(expr(fetchArrayDim(var(name(name("a")))[@at=|file:///tmp/StaticCalls.php|(193,2,<17,0>,<17,0>)],someExpr(scalar(string("b"))[@at=|file:///tmp/StaticCalls.php|(196,3,<17,0>,<17,0>)]))[@at=|file:///tmp/StaticCalls.php|(193,7,<17,0>,<17,0>)]),name(name("c")),[])[@at=|file:///tmp/StaticCalls.php|(193,12,<17,0>,<17,0>)])[@at=|file:///tmp/StaticCalls.php|(193,13,<17,0>,<17,0>)]])

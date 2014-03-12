@@ -1,0 +1,9 @@
+Return and pass by ref
+-----
+<?php
+
+function a(&$b) {}
+function &a($b) {}
+-----
+script([function("a",false,[param("b",noExpr(),noName(),true)[@at=|file:///tmp/ReturnAndPassByRef.php|(18,3,<3,0>,<3,0>)]],[])[@at=|file:///tmp/ReturnAndPassByRef.php|(7,18,<3,0>,<3,0>)],
+function("a",true,[param("b",noExpr(),noName(),false)[@at=|file:///tmp/ReturnAndPassByRef.php|(38,2,<4,0>,<4,0>)]],[])[@at=|file:///tmp/ReturnAndPassByRef.php|(26,18,<4,0>,<4,0>)]])

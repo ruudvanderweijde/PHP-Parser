@@ -1,0 +1,24 @@
+Blockless statements for if/for/etc
+-----
+<?php
+
+if ($a) $A;
+elseif ($b) $B;
+else $C;
+
+for (;;) $foo;
+
+foreach ($a as $b) $AB;
+
+while ($a) $A;
+
+do $A; while ($a);
+
+declare (a='b') $C;
+-----
+script([\if(var(name(name("a")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(11,2,<3,0>,<3,0>)],[exprstmt(var(name(name("A")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(15,2,<3,0>,<3,0>)])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(15,3,<3,0>,<3,0>)]],[elseIf(var(name(name("b")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(27,2,<4,0>,<4,0>)],[exprstmt(var(name(name("B")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(31,2,<4,0>,<4,0>)])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(31,3,<4,0>,<4,0>)]])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(19,15,<4,0>,<4,0>)]],someElse(\else([exprstmt(var(name(name("C")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(40,2,<5,0>,<5,0>)])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(40,3,<5,0>,<5,0>)]])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(35,8,<5,0>,<5,0>)]))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(7,36,<3,0>,<3,0>)],
+\for([],[],[],[exprstmt(var(name(name("foo")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(54,4,<7,0>,<7,0>)])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(54,5,<7,0>,<7,0>)]])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(45,14,<7,0>,<7,0>)],
+foreach(var(name(name("a")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(70,2,<9,0>,<9,0>)],noExpr(),false,var(name(name("b")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(76,2,<9,0>,<9,0>)],[exprstmt(var(name(name("AB")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(80,3,<9,0>,<9,0>)])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(80,4,<9,0>,<9,0>)]])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(61,23,<9,0>,<9,0>)],
+\while(var(name(name("a")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(93,2,<11,0>,<11,0>)],[exprstmt(var(name(name("A")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(97,2,<11,0>,<11,0>)])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(97,3,<11,0>,<11,0>)]])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(86,14,<11,0>,<11,0>)],
+\do(var(name(name("a")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(116,2,<13,0>,<13,0>)],[exprstmt(var(name(name("A")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(105,2,<13,0>,<13,0>)])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(105,3,<13,0>,<13,0>)]])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(102,18,<13,0>,<13,0>)],
+declare([declaration("a", scalar(string("b"))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(133,3,<15,0>,<15,0>)])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(131,5,<15,0>,<15,0>)]],[exprstmt(var(name(name("C")))[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(138,2,<15,0>,<15,0>)])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(138,3,<15,0>,<15,0>)]])[@at=|file:///tmp/BlocklessStatementsForIfForEtc.php|(122,19,<15,0>,<15,0>)]])
