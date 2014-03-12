@@ -1,0 +1,25 @@
+Some special methods cannot be static
+-----
+<?php class A { static function __construct() {} }
+-----
+errscript("\"__construct\" method cannot be static on line 1")
+-----
+<?php class A { static function __destruct() {} }
+-----
+errscript("\"__destruct\" method cannot be static on line 1")
+-----
+<?php class A { static function __clone() {} }
+-----
+errscript("\"__clone\" method cannot be static on line 1")
+-----
+<?php class A { static function __CONSTRUCT() {} }
+-----
+script([classDef(class("A",{},noName(),[],[method("__CONSTRUCT",{static()},false,[],[])]))])
+-----
+<?php class A { static function __Destruct() {} }
+-----
+script([classDef(class("A",{},noName(),[],[method("__Destruct",{static()},false,[],[])]))])
+-----
+<?php class A { static function __cLoNe() {} }
+-----
+script([classDef(class("A",{},noName(),[],[method("__cLoNe",{static()},false,[],[])]))])

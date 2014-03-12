@@ -1,0 +1,12 @@
+Semicolon style namespaces
+-----
+<?php
+
+namespace Foo\Bar;
+foo;
+
+namespace Bar;
+bar;
+-----
+script([namespace(someName(name("Foo::Bar")),[exprstmt(fetchConst(name("foo")))]),
+namespace(someName(name("Bar")),[exprstmt(fetchConst(name("bar")))])])

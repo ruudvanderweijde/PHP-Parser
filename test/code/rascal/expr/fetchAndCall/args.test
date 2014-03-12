@@ -1,0 +1,13 @@
+Arguments
+-----
+<?php
+
+f();
+f($a);
+f($a, $b);
+f(&$a);
+-----
+script([exprstmt(call(name(name("f")),[])),
+exprstmt(call(name(name("f")),[actualParameter(var(name(name("a"))),false)])),
+exprstmt(call(name(name("f")),[actualParameter(var(name(name("a"))),false),actualParameter(var(name(name("b"))),false)])),
+exprstmt(call(name(name("f")),[actualParameter(var(name(name("a"))),true)]))])

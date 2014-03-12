@@ -1,0 +1,7 @@
+Final class
+-----
+<?php
+
+final class A {}
+-----
+script([classDef(class("A",{final()},noName(),[],[]))])

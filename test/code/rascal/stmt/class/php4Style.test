@@ -1,0 +1,10 @@
+PHP 4 style declarations
+-----
+<?php
+
+class A {
+    var $foo;
+    function bar() {}
+}
+-----
+script([classDef(class("A",{},noName(),[],[property({\public()},[property("foo",noExpr())]),method("bar",{\public()},false,[],[])]))])

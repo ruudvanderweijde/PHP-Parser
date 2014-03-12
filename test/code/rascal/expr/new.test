@@ -1,0 +1,30 @@
+New
+-----
+<?php
+
+new A;
+new A($b);
+
+// class name variations
+new $a();
+new $a['b']();
+new A::$b();
+// DNCR object access
+new $a->b();
+new $a->b->c();
+new $a->b['c']();
+new $a->b{'c'}();
+
+// test regression introduces by new dereferencing syntax
+(new A);
+-----
+script([exprstmt(new(name(name("A")),[])),
+exprstmt(new(name(name("A")),[actualParameter(var(name(name("b"))),false)])),
+exprstmt(new(expr(var(name(name("a")))),[])),
+exprstmt(new(expr(fetchArrayDim(var(name(name("a"))),someExpr(scalar(string("b"))))),[])),
+exprstmt(new(expr(staticPropertyFetch(name(name("A")),name(name("b")))),[])),
+exprstmt(new(expr(propertyFetch(var(name(name("a"))),name(name("b")))),[])),
+exprstmt(new(expr(propertyFetch(propertyFetch(var(name(name("a"))),name(name("b"))),name(name("c")))),[])),
+exprstmt(new(expr(fetchArrayDim(propertyFetch(var(name(name("a"))),name(name("b"))),someExpr(scalar(string("c"))))),[])),
+exprstmt(new(expr(fetchArrayDim(propertyFetch(var(name(name("a"))),name(name("b"))),someExpr(scalar(string("c"))))),[])),
+exprstmt(new(name(name("A")),[]))])

@@ -1,0 +1,28 @@
+__halt_compiler
+-----
+<?php
+
+$a;
+__halt_compiler()
+?>
+Hallo World!
+-----
+script([exprstmt(var(name(name("a")))),
+haltCompiler("Hallo World!")])
+-----
+<?php
+
+$a;
+__halt_compiler();Hallo World!
+-----
+script([exprstmt(var(name(name("a")))),
+haltCompiler("Hallo World!")])
+-----
+<?php
+
+namespace A;
+$a;
+__halt_compiler();
+-----
+script([namespace(someName(name("A")),[exprstmt(var(name(name("a"))))]),
+haltCompiler("")])

@@ -1,0 +1,14 @@
+Include and eval
+-----
+<?php
+include 'A.php';
+include_once 'A.php';
+require 'A.php';
+require_once 'A.php';
+eval('A');
+-----
+script([exprstmt(include(scalar(string("A.php")),include())),
+exprstmt(include(scalar(string("A.php")),includeOnce())),
+exprstmt(include(scalar(string("A.php")),require())),
+exprstmt(include(scalar(string("A.php")),requireOnce())),
+exprstmt(eval(scalar(string("A"))))])

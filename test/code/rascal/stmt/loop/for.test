@@ -1,0 +1,21 @@
+For loop
+-----
+<?php
+
+// "classical" loop
+for ($i = 0; $i < $c; ++$i) {}
+
+// multiple expressions
+for (;$a,$b;) {}
+
+// infinite loop
+for (;;) {}
+
+// alternative syntax
+for (;;):
+endfor;
+-----
+script([\for([assign(var(name(name("i"))),scalar(integer(0)))],[binaryOperation(var(name(name("i"))),var(name(name("c"))),lt())],[unaryOperation(var(name(name("i"))),preInc())],[]),
+\for([],[var(name(name("a"))),var(name(name("b")))],[],[]),
+\for([],[],[],[]),
+\for([],[],[],[])])

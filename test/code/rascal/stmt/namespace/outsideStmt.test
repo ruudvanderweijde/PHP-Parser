@@ -1,0 +1,14 @@
+Some statements may occur outside of namespaces
+-----
+<?php
+declare(A='B');
+namespace B {
+
+}
+__halt_compiler()
+?>
+Hi!
+-----
+script([declare([declaration("A", scalar(string("B")))],[]),
+namespaceHeader(name("B")),
+haltCompiler("Hi!")])

@@ -1,0 +1,48 @@
+Mathematical operators
+-----
+<?php
+
+// unary ops
+~$a;
++$a;
+-$a;
+
+// binary ops
+$a & $b;
+$a | $b;
+$a ^ $b;
+$a . $b;
+$a / $b;
+$a - $b;
+$a % $b;
+$a * $b;
+$a + $b;
+$a << $b;
+$a >> $b;
+
+// associativity
+$a * $b * $c;
+$a * ($b * $c);
+
+// precedence
+$a + $b * $c;
+($a + $b) * $c;
+-----
+script([exprstmt(unaryOperation(var(name(name("a"))),bitwiseNot())),
+exprstmt(unaryOperation(var(name(name("a"))),unaryPlus())),
+exprstmt(unaryOperation(var(name(name("a"))),unaryMinus())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),bitwiseAnd())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),bitwiseOr())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),bitwiseXor())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),concat())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),div())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),minus())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),\mod())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),mul())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),plus())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),leftShift())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),rightShift())),
+exprstmt(binaryOperation(binaryOperation(var(name(name("a"))),var(name(name("b"))),mul()),var(name(name("c"))),mul())),
+exprstmt(binaryOperation(var(name(name("a"))),binaryOperation(var(name(name("b"))),var(name(name("c"))),mul()),mul())),
+exprstmt(binaryOperation(var(name(name("a"))),binaryOperation(var(name(name("b"))),var(name(name("c"))),mul()),plus())),
+exprstmt(binaryOperation(binaryOperation(var(name(name("a"))),var(name(name("b"))),plus()),var(name(name("c"))),mul()))])

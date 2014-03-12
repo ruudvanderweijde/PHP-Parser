@@ -1,0 +1,16 @@
+Exit
+-----
+<?php
+exit;
+exit();
+exit('Die!');
+die;
+die();
+die('Exit!');
+-----
+script([exprstmt(exit(noExpr())),
+exprstmt(exit(noExpr())),
+exprstmt(exit(someExpr(scalar(string("Die!"))))),
+exprstmt(exit(noExpr())),
+exprstmt(exit(noExpr())),
+exprstmt(exit(someExpr(scalar(string("Exit!")))))])

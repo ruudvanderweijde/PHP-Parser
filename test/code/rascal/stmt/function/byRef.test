@@ -1,0 +1,9 @@
+Return and pass by ref
+-----
+<?php
+
+function a(&$b) {}
+function &a($b) {}
+-----
+script([function("a",false,[param("b",noExpr(),noName(),true)],[]),
+function("a",true,[param("b",noExpr(),noName(),false)],[])])

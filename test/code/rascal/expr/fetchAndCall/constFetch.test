@@ -1,0 +1,11 @@
+Constant fetches
+-----
+<?php
+
+A;
+A::B;
+A::class;
+-----
+script([exprstmt(fetchConst(name("A"))),
+exprstmt(fetchClassConst(name(name("A")),"B")),
+exprstmt(fetchClassConst(name(name("A")),"class"))])

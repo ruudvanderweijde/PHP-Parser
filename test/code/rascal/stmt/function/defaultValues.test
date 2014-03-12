@@ -1,0 +1,17 @@
+Default values (static scalar tests)
+-----
+<?php
+
+function a(
+    $b = null,
+    $c = 'foo',
+    $d = A::B,
+    $f = +1,
+    $g = -1.0,
+    $h = array(),
+    $i = [],
+    $j = ['foo'],
+    $k = ['foo', 'bar' => 'baz']
+) {}
+-----
+script([function("a",false,[param("b",someExpr(fetchConst(name("null"))),noName(),false),param("c",someExpr(scalar(string("foo"))),noName(),false),param("d",someExpr(fetchClassConst(name(name("A")),"B")),noName(),false),param("f",someExpr(unaryOperation(scalar(integer(1)),unaryPlus())),noName(),false),param("g",someExpr(unaryOperation(scalar(float(1.000000)),unaryMinus())),noName(),false),param("h",someExpr(array([])),noName(),false),param("i",someExpr(array([])),noName(),false),param("j",someExpr(array([arrayElement(noExpr(),scalar(string("foo")),false)])),noName(),false),param("k",someExpr(array([arrayElement(noExpr(),scalar(string("foo")),false),arrayElement(someExpr(scalar(string("bar"))),scalar(string("baz")),false)])),noName(),false)],[])])

@@ -1,0 +1,25 @@
+Try/catch
+-----
+<?php
+
+try {
+    doTry();
+} catch (A $b) {
+    doCatchA();
+} catch (B $c) {
+    doCatchB();
+} finally {
+    doFinally();
+}
+
+// no finally
+try { }
+catch (A $b) { }
+
+// no catch
+try { }
+finally { }
+-----
+script([tryCatchFinally([exprstmt(call(name(name("doTry")),[]))],[\catch(name("A"),"b",[exprstmt(call(name(name("doCatchA")),[]))]),\catch(name("B"),"c",[exprstmt(call(name(name("doCatchB")),[]))])],[exprstmt(call(name(name("doFinally")),[]))]),
+tryCatch([],[\catch(name("A"),"b",[])]),
+tryCatch([],[])])

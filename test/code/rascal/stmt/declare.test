@@ -1,0 +1,11 @@
+Declare
+-----
+<?php
+
+declare (A='B', C='D') {}
+
+declare (A='B', C='D'):
+enddeclare;
+-----
+script([declare([declaration("A", scalar(string("B"))),declaration("C", scalar(string("D")))],[]),
+declare([declaration("A", scalar(string("B"))),declaration("C", scalar(string("D")))],[])])

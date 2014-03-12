@@ -1,0 +1,19 @@
+Array/string dereferencing
+-----
+<?php
+
+"abc"[2];
+"abc"[2][0][0];
+
+[1, 2, 3][2];
+[1, 2, 3][2][0][0];
+
+array(1, 2, 3)[2];
+array(1, 2, 3)[2][0][0];
+-----
+script([exprstmt(fetchArrayDim(scalar(string("abc")),someExpr(scalar(integer(2))))),
+exprstmt(fetchArrayDim(fetchArrayDim(fetchArrayDim(scalar(string("abc")),someExpr(scalar(integer(2)))),someExpr(scalar(integer(0)))),someExpr(scalar(integer(0))))),
+exprstmt(fetchArrayDim(array([arrayElement(noExpr(),scalar(integer(1)),false),arrayElement(noExpr(),scalar(integer(2)),false),arrayElement(noExpr(),scalar(integer(3)),false)]),someExpr(scalar(integer(2))))),
+exprstmt(fetchArrayDim(fetchArrayDim(fetchArrayDim(array([arrayElement(noExpr(),scalar(integer(1)),false),arrayElement(noExpr(),scalar(integer(2)),false),arrayElement(noExpr(),scalar(integer(3)),false)]),someExpr(scalar(integer(2)))),someExpr(scalar(integer(0)))),someExpr(scalar(integer(0))))),
+exprstmt(fetchArrayDim(array([arrayElement(noExpr(),scalar(integer(1)),false),arrayElement(noExpr(),scalar(integer(2)),false),arrayElement(noExpr(),scalar(integer(3)),false)]),someExpr(scalar(integer(2))))),
+exprstmt(fetchArrayDim(fetchArrayDim(fetchArrayDim(array([arrayElement(noExpr(),scalar(integer(1)),false),arrayElement(noExpr(),scalar(integer(2)),false),arrayElement(noExpr(),scalar(integer(3)),false)]),someExpr(scalar(integer(2)))),someExpr(scalar(integer(0)))),someExpr(scalar(integer(0)))))])

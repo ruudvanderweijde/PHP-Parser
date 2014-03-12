@@ -1,0 +1,20 @@
+Static property fetches
+-----
+<?php
+
+// property name variations
+A::$b;
+A::$$b;
+A::${'b'};
+
+// array access
+A::$b['c'];
+A::$b{'c'};
+
+// class name variations can be found in staticCall.test
+-----
+script([exprstmt(staticPropertyFetch(name(name("A")),name(name("b")))),
+exprstmt(staticPropertyFetch(name(name("A")),expr(var(name(name("b")))))),
+exprstmt(staticPropertyFetch(name(name("A")),expr(scalar(string("b"))))),
+exprstmt(fetchArrayDim(staticPropertyFetch(name(name("A")),name(name("b"))),someExpr(scalar(string("c"))))),
+exprstmt(fetchArrayDim(staticPropertyFetch(name(name("A")),name(name("b"))),someExpr(scalar(string("c")))))])

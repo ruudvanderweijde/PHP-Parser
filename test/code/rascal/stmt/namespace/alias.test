@@ -1,0 +1,17 @@
+Aliases (use)
+-----
+<?php
+
+use A\B;
+use C\D as E;
+use F\G as H, J;
+
+// evil alias notation - Do Not Use!
+use \A;
+use \A as B;
+-----
+script([use([use(name("A::B"),someName(name("B")))]),
+use([use(name("C::D"),someName(name("E")))]),
+use([use(name("F::G"),someName(name("H"))),use(name("J"),someName(name("J")))]),
+use([use(name("A"),someName(name("A")))]),
+use([use(name("A"),someName(name("B")))])])

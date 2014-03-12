@@ -1,0 +1,17 @@
+Variable syntaxes
+-----
+<?php
+
+$a;
+${'a'};
+${foo()};
+$$a;
+$$$a;
+$$a['b'];
+-----
+script([exprstmt(var(name(name("a")))),
+exprstmt(var(expr(scalar(string("a"))))),
+exprstmt(var(expr(call(name(name("foo")),[])))),
+exprstmt(var(expr(var(name(name("a")))))),
+exprstmt(var(expr(var(expr(var(name(name("a")))))))),
+exprstmt(var(expr(fetchArrayDim(var(name(name("a"))),someExpr(scalar(string("b")))))))])

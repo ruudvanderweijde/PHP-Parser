@@ -1,0 +1,30 @@
+Generators (yield expression
+-----
+<?php
+
+function gen() {
+    // statements
+    yield;
+    yield $value;
+    yield $key => $value;
+
+    // expressions
+    $data = yield;
+    $data = (yield $value);
+    $data = (yield $key => $value);
+
+    // yield in language constructs with their own parentheses
+    if (yield $foo); elseif (yield $foo);
+    if (yield $foo): elseif (yield $foo): endif;
+    while (yield $foo);
+    do {} while (yield $foo);
+    switch (yield $foo) {}
+    die(yield $foo);
+
+    // yield in function calls
+    func(yield $foo);
+    $foo->func(yield $foo);
+    new Foo(yield $foo);
+}
+-----
+script([function("gen",false,[],[exprstmt(yield(noExpr(),noExpr())),yield(noExpr(),someExpr(var(name(name("value"))))),yield(someExpr(var(name(name("key")))),someExpr(var(name(name("value"))))),exprstmt(assign(var(name(name("data"))),yield(noExpr(),noExpr()))),exprstmt(assign(var(name(name("data"))),yield(noExpr(),someExpr(var(name(name("value"))))))),exprstmt(assign(var(name(name("data"))),yield(someExpr(var(name(name("key")))),someExpr(var(name(name("value"))))))),\if(yield(noExpr(),someExpr(var(name(name("foo"))))),[],[elseIf(yield(noExpr(),someExpr(var(name(name("foo"))))),[])],noElse()),\if(yield(noExpr(),someExpr(var(name(name("foo"))))),[],[elseIf(yield(noExpr(),someExpr(var(name(name("foo"))))),[])],noElse()),\while(yield(noExpr(),someExpr(var(name(name("foo"))))),[]),\do(yield(noExpr(),someExpr(var(name(name("foo"))))),[]),\switch(yield(noExpr(),someExpr(var(name(name("foo"))))),[]),exprstmt(exit(someExpr(yield(noExpr(),someExpr(var(name(name("foo")))))))),exprstmt(call(name(name("func")),[actualParameter(yield(noExpr(),someExpr(var(name(name("foo"))))),false)])),exprstmt(methodCall(var(name(name("foo"))),name(name("func")),[actualParameter(yield(noExpr(),someExpr(var(name(name("foo"))))),false)])),exprstmt(new(name(name("Foo")),[actualParameter(yield(noExpr(),someExpr(var(name(name("foo"))))),false)]))])])

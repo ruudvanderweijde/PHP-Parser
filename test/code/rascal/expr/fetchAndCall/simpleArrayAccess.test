@@ -1,0 +1,15 @@
+Simple array access
+-----
+<?php
+
+$a['b'];
+$a['b']['c'];
+$a[] = $b;
+$a{'b'};
+${$a}['b'];
+-----
+script([exprstmt(fetchArrayDim(var(name(name("a"))),someExpr(scalar(string("b"))))),
+exprstmt(fetchArrayDim(fetchArrayDim(var(name(name("a"))),someExpr(scalar(string("b")))),someExpr(scalar(string("c"))))),
+exprstmt(assign(fetchArrayDim(var(name(name("a"))),noExpr()),var(name(name("b"))))),
+exprstmt(fetchArrayDim(var(name(name("a"))),someExpr(scalar(string("b"))))),
+exprstmt(fetchArrayDim(var(expr(var(name(name("a"))))),someExpr(scalar(string("b")))))])

@@ -1,0 +1,7 @@
+Global constants
+-----
+<?php
+
+const A = 0, B = 1.0, C = 'A', D = E;
+-----
+script([const([const("A",scalar(integer(0))),const("B",scalar(float(1.000000))),const("C",scalar(string("A"))),const("D",fetchConst(name("E")))])])

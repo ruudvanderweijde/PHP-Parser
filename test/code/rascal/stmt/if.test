@@ -1,0 +1,23 @@
+If/Elseif/Else
+-----
+<?php
+
+if      ($a) {}
+elseif  ($b) {}
+elseif  ($c) {}
+else         {}
+
+if ($a) {} // without else
+
+if      ($a):
+elseif  ($b):
+elseif  ($c):
+else        :
+endif;
+
+if ($a): endif; // without else
+-----
+script([\if(var(name(name("a"))),[],[elseIf(var(name(name("b"))),[]),elseIf(var(name(name("c"))),[])],someElse(\else([]))),
+\if(var(name(name("a"))),[],[],noElse()),
+\if(var(name(name("a"))),[],[elseIf(var(name(name("b"))),[]),elseIf(var(name(name("c"))),[])],someElse(\else([]))),
+\if(var(name(name("a"))),[],[],noElse())])

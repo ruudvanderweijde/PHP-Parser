@@ -1,0 +1,6 @@
+Print
+-----
+<?php
+print $a;
+-----
+script([exprstmt(print(var(name(name("a")))))])

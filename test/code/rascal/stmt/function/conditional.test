@@ -1,0 +1,9 @@
+Conditional function definition
+-----
+<?php
+
+if (true) {
+    function A() {}
+}
+-----
+script([\if(fetchConst(name("true")),[function("A",false,[],[])],[],noElse())])

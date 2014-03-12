@@ -1,0 +1,14 @@
+Shell execution
+-----
+<?php
+``;
+`test`;
+`test $A`;
+`test \``;
+`test \"`;
+-----
+script([exprstmt(shellExec([])),
+exprstmt(shellExec([scalar(string("test"))])),
+exprstmt(shellExec([scalar(string("test ")),var(name(name("A")))])),
+exprstmt(shellExec([scalar(string("test `"))])),
+exprstmt(shellExec([scalar(string("test \\\""))]))])

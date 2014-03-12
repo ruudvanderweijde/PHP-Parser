@@ -1,0 +1,9 @@
+Echo
+-----
+<?php
+
+echo 'Hallo World!';
+echo 'Hallo', ' ', 'World', '!';
+-----
+script([echo([scalar(string("Hallo World!"))]),
+echo([scalar(string("Hallo")),scalar(string(" ")),scalar(string("World")),scalar(string("!"))])])

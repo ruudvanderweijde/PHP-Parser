@@ -1,0 +1,24 @@
+Comparison operators
+-----
+<?php
+$a < $b;
+$a <= $b;
+$a > $b;
+$a >= $b;
+$a == $b;
+$a === $b;
+$a != $b;
+$a !== $b;
+$a instanceof B;
+$a instanceof $b;
+-----
+script([exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),lt())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),leq())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),gt())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),geq())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),equal())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),identical())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),notEqual())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),notIdentical())),
+exprstmt(instanceOf(var(name(name("a"))),name(name("B")))),
+exprstmt(instanceOf(var(name(name("a"))),expr(var(name(name("b"))))))])

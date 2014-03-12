@@ -1,0 +1,9 @@
+Do loop
+-----
+<?php
+
+do {
+
+} while ($a);
+-----
+script([\do(var(name(name("a"))),[])])

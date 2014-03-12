@@ -1,0 +1,26 @@
+Function calls
+-----
+<?php
+
+// function name variations
+a();
+$a();
+${'a'}();
+$$a();
+$$$a();
+$a['b']();
+$a{'b'}();
+$a->b['c']();
+
+// array dereferencing
+a()['b'];
+-----
+script([exprstmt(call(name(name("a")),[])),
+exprstmt(call(expr(var(name(name("a")))),[])),
+exprstmt(call(expr(var(expr(scalar(string("a"))))),[])),
+exprstmt(call(expr(var(expr(var(name(name("a")))))),[])),
+exprstmt(call(expr(var(expr(var(expr(var(name(name("a")))))))),[])),
+exprstmt(call(expr(fetchArrayDim(var(name(name("a"))),someExpr(scalar(string("b"))))),[])),
+exprstmt(call(expr(fetchArrayDim(var(name(name("a"))),someExpr(scalar(string("b"))))),[])),
+exprstmt(call(expr(fetchArrayDim(propertyFetch(var(name(name("a"))),name(name("b"))),someExpr(scalar(string("c"))))),[])),
+exprstmt(fetchArrayDim(call(name(name("a")),[]),someExpr(scalar(string("b")))))])

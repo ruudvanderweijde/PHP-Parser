@@ -1,0 +1,33 @@
+Logical operators
+-----
+<?php
+
+// boolean ops
+$a && $b;
+$a || $b;
+!$a;
+!!$a;
+
+// logical ops
+$a and $b;
+$a or $b;
+$a xor $b;
+
+// precedence
+$a && $b || $c && $d;
+$a && ($b || $c) && $d;
+
+$a = $b || $c;
+$a = $b or $c;
+-----
+script([exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),booleanAnd())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),booleanOr())),
+exprstmt(unaryOperation(var(name(name("a"))),booleanNot())),
+exprstmt(unaryOperation(unaryOperation(var(name(name("a"))),booleanNot()),booleanNot())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),logicalAnd())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),logicalOr())),
+exprstmt(binaryOperation(var(name(name("a"))),var(name(name("b"))),logicalXor())),
+exprstmt(binaryOperation(binaryOperation(var(name(name("a"))),var(name(name("b"))),booleanAnd()),binaryOperation(var(name(name("c"))),var(name(name("d"))),booleanAnd()),booleanOr())),
+exprstmt(binaryOperation(binaryOperation(var(name(name("a"))),binaryOperation(var(name(name("b"))),var(name(name("c"))),booleanOr()),booleanAnd()),var(name(name("d"))),booleanAnd())),
+exprstmt(assign(var(name(name("a"))),binaryOperation(var(name(name("b"))),var(name(name("c"))),booleanOr()))),
+exprstmt(binaryOperation(assign(var(name(name("a"))),var(name(name("b")))),var(name(name("c"))),logicalOr()))])

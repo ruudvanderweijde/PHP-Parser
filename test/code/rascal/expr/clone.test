@@ -1,0 +1,7 @@
+Clone
+-----
+<?php
+
+clone $a;
+-----
+script([exprstmt(clone(var(name(name("a")))))])
