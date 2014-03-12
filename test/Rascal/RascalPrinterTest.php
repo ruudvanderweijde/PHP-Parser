@@ -23,10 +23,6 @@ class AST2RascalTest extends CodeTestAbstract
         $this->assertEquals($expected, $actual, $name);
     }
 
-    public function provideRascalFiles() {
-        return $this->getTests(__DIR__ . '/../code/rascal', 'test');
-    }
-
     /**
      * @dataProvider provideRascalFailedFiles
      */
@@ -41,6 +37,10 @@ class AST2RascalTest extends CodeTestAbstract
             $errorMsg = "errscript(\"" . $printer->rascalizeString($e->getMessage()) . "\")";
             $this->assertEquals($msg, $errorMsg, $name);
         }
+    }
+
+    public function provideRascalFiles() {
+        return $this->getTests(__DIR__ . '/../code/rascal', 'test');
     }
 
     public function provideRascalFailedFiles() {
