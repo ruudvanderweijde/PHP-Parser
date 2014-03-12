@@ -71,12 +71,12 @@ class AST2RascalTest extends CodeTestAbstract
 
     /**
      * @param $name
-     * @return AST2Rascal
+     * @return RascalPrinter
      */
     private function getPrinterForName($name)
     {
         $fileName = $this->getFileName($name);
-        $printer = new AST2Rascal($fileName, false, false, false, "", false);
+        $printer = new RascalPrinter($fileName, false, false, false, "", false);
         return $printer;
     }
 
