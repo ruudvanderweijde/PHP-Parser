@@ -2,10 +2,12 @@
 
 namespace Rascal;
 
+use PhpParser\Autoloader;
 use PhpParser\Parser;
 use PhpParser\Lexer;
 
-require '../bootstrap.php';
+if (!class_exists('Autoloader'))
+    require_once __DIR__ . '/../bootstrap.php';
 
 ini_set('xdebug.max_nesting_level', 2000);
 
@@ -77,9 +79,6 @@ else
         echo "errscript(\"The given file, $file, does not exist\")";
         exit() - 1;
     }
-
-// always parse phpdocs, or else rascal will crash because it is implemented there unconditional
-$addPHPDocs = true;
 
 $parser = new Parser(new Lexer());
 $printer = new AST2Rascal($file, $enableLocations, $relativeLocations, $uniqueIds, $prefix, $addPHPDocs);
