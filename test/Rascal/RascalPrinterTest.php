@@ -15,19 +15,28 @@ class AST2RascalTest extends CodeTestAbstract
     {
         $this->parser = new Parser(new Lexer());
     }
+
     /**
-     * @dataProvider provideRascalFiles
+     * @dataProvider provideRascalFilesWithLocations
      */
-    public function testParseSuccess($name, $code, $expected) {
-        $actual = $this->getRascalScript($code, $this->getPrinterForName($name));
+    public function testParseSuccessWithLocations($name, $code, $expected) {
+        $actual = $this->getRascalScript($code, $this->getPrinterForNameWithLocation($name));
         $this->assertEquals($expected, $actual, $name);
     }
 
     /**
-     * @dataProvider provideRascalFailedFiles
+     * @dataProvider provideRascalFilesNoParams
      */
-    public function testParseFail($name, $code, $msg) {
-        $printer = $this->getPrinterForName($name);
+    public function testParseSuccessNoParams($name, $code, $expected) {
+        $actual = $this->getRascalScript($code, $this->getPrinterForNameNoParam($name));
+        $this->assertEquals($expected, $actual, $name);
+    }
+
+    /**
+     * @dataProvider provideRascalFailedFilesWithLocations
+     */
+    public function testParseFailWithLocations($name, $code, $msg) {
+        $printer = $this->getPrinterForNameWithLocation($name);
 
         try {
             $this->parser->parse($code);
@@ -39,13 +48,39 @@ class AST2RascalTest extends CodeTestAbstract
         }
     }
 
-    public function provideRascalFiles() {
-        return $this->getTests(__DIR__ . '/../code/rascal', 'test');
+    /**
+     * @dataProvider provideRascalFailedFilesNoParams
+     */
+    public function testParseFailNoParams($name, $code, $msg) {
+        $printer = $this->getPrinterForNameNoParam($name);
+
+        try {
+            $this->parser->parse($code);
+
+            $this->fail(sprintf('"%s": Expected Error', $name));
+        } catch (\PhpParser\Error $e) {
+            $errorMsg = "errscript(\"" . $printer->rascalizeString($e->getMessage()) . "\")";
+            $this->assertEquals($msg, $errorMsg, $name);
+        }
     }
 
-    public function provideRascalFailedFiles() {
-        return $this->getTests(__DIR__ . '/../code/rascal', 'test-fail');
+    public function provideRascalFilesWithLocations() {
+        return $this->provideRascalFiles('locations', 'test');
     }
+    public function provideRascalFilesNoParams() {
+        return $this->provideRascalFiles('no_params', 'test');
+    }
+    public function provideRascalFailedFilesWithLocations() {
+        return $this->provideRascalFiles('locations', 'test-fail');
+    }
+    public function provideRascalFailedFilesNoParams() {
+        return $this->provideRascalFiles('no_params', 'test-fail');
+    }
+
+    public function provideRascalFiles($dir, $type) {
+        return $this->getTests(__DIR__ . '/../code/rascal/'.$dir, $type);
+    }
+
 
     /**
      * @param string $code
@@ -59,25 +94,23 @@ class AST2RascalTest extends CodeTestAbstract
     }
 
     /**
-     * These names were used during the test code generation
-     *
      * @param $name
-     * @return string
+     * @return RascalPrinter
      */
-    private function getFileName($name)
+    private function getPrinterForNameNoParam($name)
     {
-        return sprintf("/tmp/%s.php", $this->normalizeText($name));
+        $fileName = $this->getFileName($name);
+        return new RascalPrinter($fileName, false, false, false, "", false);
     }
 
     /**
      * @param $name
      * @return RascalPrinter
      */
-    private function getPrinterForName($name)
+    private function getPrinterForNameWithLocation($name)
     {
         $fileName = $this->getFileName($name);
-        $printer = new RascalPrinter($fileName, false, false, false, "", false);
-        return $printer;
+        return new RascalPrinter($fileName, true, false, false, "", false);
     }
 
     /**

@@ -2,7 +2,6 @@
 
 namespace Rascal;
 
-use PhpParser\Autoloader;
 use PhpParser\Parser;
 use PhpParser\Lexer;
 

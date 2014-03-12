@@ -59,6 +59,17 @@ abstract class CodeTestAbstract extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * These names were used during the test code generation
+     *
+     * @param $name
+     * @return string
+     */
+    public function getFileName($name)
+    {
+        return sprintf("/tmp/%s.php", $this->normalizeText($name));
+    }
+
+    /**
      * @param $name
      * @return mixed
      */
