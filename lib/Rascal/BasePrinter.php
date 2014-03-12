@@ -237,6 +237,8 @@ class BasePrinter implements IPrinter
 			return $this->pprintElseStmt($node);
 		} elseif ($node instanceof \PhpParser\Node\Stmt\ElseIf_) {
 			return $this->pprintElseIfStmt($node);
+		} elseif ($node instanceof \PhpParser\Node\Stmt\Expr) {
+			return $this->pprintExprStmt($node);
 		} elseif ($node instanceof \PhpParser\Node\Stmt\For_) {
 			return $this->pprintForStmt($node);
 		} elseif ($node instanceof \PhpParser\Node\Stmt\Foreach_) {
@@ -760,6 +762,10 @@ class BasePrinter implements IPrinter
 		return "";
 	}
 	public function pprintElseIfStmt(\PhpParser\Node\Stmt\ElseIf_ $node)
+	{
+		return "";
+	}
+	public function pprintExprStmt(\PhpParser\Node\Stmt\Expr $node)
 	{
 		return "";
 	}
