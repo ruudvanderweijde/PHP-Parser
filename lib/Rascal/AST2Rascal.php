@@ -1159,7 +1159,6 @@ class AST2Rascal extends BasePrinter
 
     public function pprintFileMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\File $node)
     {
-        var_dump($this->filename);
         $fragment = "fileConstant()[@actualValue=\"{$this->filename}\"]";
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
