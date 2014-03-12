@@ -2,11 +2,11 @@ Invalid namespace names
 -----
 <?php namespace self;
 -----
-errscript("Cannot use \"self\" as namespace name as it is reserved on line 1")
+errscript("Cannot use \'self\' as namespace name on line 1")
 -----
 <?php namespace parent;
 -----
-errscript("Cannot use \"parent\" as namespace name as it is reserved on line 1")
+errscript("Cannot use \'parent\' as namespace name on line 1")
 -----
 <?php namespace static;
 -----
@@ -14,11 +14,11 @@ errscript("Syntax error, unexpected T_STATIC, expecting T_STRING or T_NS_SEPARAT
 -----
 <?php use A as self;
 -----
-errscript("Cannot use \"A\" as \"self\" because \"self\" is a special class name on line 1")
+errscript("Cannot use A as self because \'self\' is a special class name on line 1")
 -----
 <?php use B as parent;
 -----
-errscript("Cannot use \"B\" as \"parent\" because \"parent\" is a special class name on line 1")
+errscript("Cannot use B as parent because \'parent\' is a special class name on line 1")
 -----
 <?php use C as static;
 -----
