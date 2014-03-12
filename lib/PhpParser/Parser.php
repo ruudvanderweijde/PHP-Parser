@@ -1304,7 +1304,7 @@ class Parser
     }
 
     protected function yyn48($attributes) {
-         $this->yyval = $this->yyastk[$this->stackPos-(2-1)]; 
+        $this->yyval = new Node\Stmt\Expr($this->yyastk[$this->stackPos - (2 - 1)], $attributes);
     }
 
     protected function yyn49($attributes) {
