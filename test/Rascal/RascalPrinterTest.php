@@ -13,7 +13,7 @@ class AST2RascalTest extends CodeTestAbstract
 
     public function setUp()
     {
-        $this->parser = new Parser(new Lexer());
+        $this->parser = new Parser(new Lexer\Emulative);
     }
 
     /**
@@ -77,8 +77,8 @@ class AST2RascalTest extends CodeTestAbstract
         return $this->provideRascalFiles('no_params', 'test-fail');
     }
 
-    public function provideRascalFiles($dir, $type) {
-        return $this->getTests(__DIR__ . '/../code/rascal/'.$dir, $type);
+    public function provideRascalFiles($dir, $fileType) {
+        return $this->getTests(__DIR__ . '/../code/rascal/'.$dir, $fileType);
     }
 
 
