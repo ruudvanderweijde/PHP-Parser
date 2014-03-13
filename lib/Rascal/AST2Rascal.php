@@ -2,6 +2,8 @@
 
 namespace Rascal;
 
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\NameResolver;
 use PhpParser\Parser;
 use PhpParser\Lexer;
 
@@ -15,14 +17,16 @@ if (count($argv) < 2) {
     exit() - 1;
 }
 
-$opts = getopt("f:lirp:", array(
-    "file:",
-    "enableLocations",
-    "uniqueIds",
-    "relativeLocations",
-    "prefix:",
-    "phpdocs"
-));
+if (!isset($opts))
+    $opts = getopt("f:lirp:", array(
+        "file:",
+        "enableLocations",
+        "uniqueIds",
+        "relativeLocations",
+        "prefix:",
+        "phpdocs",
+        "resolve-namespaces"
+    ));
 
 if (isset($opts["f"]))
     $file = $opts["f"];
@@ -79,11 +83,20 @@ else
         exit() - 1;
     }
 
-$parser = new Parser(new Lexer());
+$resolveNamespaces = isset($opts['resolve-namespaces']) ? true : false;
+
+$parser = new Parser(new Lexer\Emulative);
 $printer = new RascalPrinter($file, $enableLocations, $relativeLocations, $uniqueIds, $prefix, $addPHPDocs);
 
 try {
     $stmts = $parser->parse($inputCode);
+
+    if ($resolveNamespaces) {
+        $traverser = new NodeTraverser;
+        $traverser->addVisitor(new NameResolver);
+        $traverser->traverse($stmts);
+    }
+
     $strStmts = array();
     foreach ($stmts as $stmt)
         $strStmts[] = $printer->pprint($stmt);
