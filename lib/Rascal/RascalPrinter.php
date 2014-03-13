@@ -13,7 +13,7 @@ class RascalPrinter extends BasePrinter
 
     private $addIds = false;
 
-    private $addPHPDocs = false;
+    private $addPhpDocs = false;
 
     private $idPrefix = "";
 
@@ -45,7 +45,7 @@ class RascalPrinter extends BasePrinter
         $this->relativeLocations = $rel;
         $this->addIds = $ids;
         $this->idPrefix = $prefix;
-        $this->addPHPDocs = $docs;
+        $this->addPhpDocs = $docs;
     }
 
     public function rascalizeString($str)
@@ -72,13 +72,19 @@ class RascalPrinter extends BasePrinter
      * Try to extract data from PHPDoc.
      * If no PHPDoc found, return NULL
      *
+     * Restriction: only for Class, Interface and Variable.
+     *
      * @return string
      */
-    private function addPHPDocForNode(\PhpParser\Node $node)
+    private function addPhpDocForNode(PHPParser_Node $node)
     {
         $docString = "@phpdoc=\"%s\"";
-        if ($doc = $node->getDocComment())
-            return sprintf($docString, $this->rascalizeString($doc));
+        if ($node instanceof \PhpParser\Node\Stmt\Class_ ||
+            $node instanceof \PhpParser\Node\Stmt\Interface_ ||
+            $node instanceof \PhpParser\Node\Expr\Variable
+        )
+            if ($doc = $node->getDocComment())
+                return sprintf($docString, $this->rascalizeString($doc));
         return sprintf($docString, null);
     }
 
@@ -89,8 +95,8 @@ class RascalPrinter extends BasePrinter
             $tagsToAdd[] = $this->addLocationTag($node);
         if ($this->addIds)
             $tagsToAdd[] = $this->addUniqueId();
-        if ($this->addPHPDocs)
-            $tagsToAdd[] = $this->addPHPDocForNode($node);
+        if ($this->addPhpDocs)
+            $tagsToAdd[] = $this->addPhpDocForNode($node);
 
         if (count($tagsToAdd) > 0)
             return "[" . implode(",", $tagsToAdd) . "]";
