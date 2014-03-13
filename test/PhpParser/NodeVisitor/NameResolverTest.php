@@ -248,6 +248,6 @@ EOC;
         $stmts = $traverser->traverse($stmts);
         $stmt = $stmts[0];
 
-        $this->assertEquals(array('Bar', 'Baz'), $stmt->stmts[1]->expr->class->parts);
+        $this->assertEquals(array('Bar', 'Baz'), $stmt->stmts[1]->expr->expr->class->parts);
     }
 }

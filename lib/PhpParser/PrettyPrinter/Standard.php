@@ -696,6 +696,14 @@ class Standard extends PrettyPrinterAbstract
         return '__halt_compiler();' . $node->remaining;
     }
 
+    public function pStmt_Expr(Stmt\Expr $node) {
+        $reflect = new \ReflectionClass($node);
+        $subNodesProperty = $reflect->getProperty("subNodes");
+        $subNodesProperty->setAccessible(true);
+        $subNodes = $subNodesProperty->getValue($node);
+        return $this->pStmts($subNodes, false);
+    }
+
     // Helpers
 
     public function pObjectProperty($node) {
