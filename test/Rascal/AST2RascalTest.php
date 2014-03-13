@@ -62,7 +62,7 @@ namespace(noName(),[use([use(name("Animal::Bear"),someName(name("Bear")))]),use(
     }
 
     public static function tearDownAfterClass() {
-      //  unlink(self::TEMP_FILE_NAME);
+        unlink(self::TEMP_FILE_NAME);
     }
 
     public function testAST2Racal() {
