@@ -467,10 +467,6 @@ class BaseVisitor implements IVisitor
 	{
 		return null;
 	}
-	public function enterExprStmt(\PhpParser\Node\Stmt\Expr $node)
-	{
-		return null;
-	}
 	public function enterForStmt(\PhpParser\Node\Stmt\For_ $node)
 	{
 		return null;
@@ -1053,10 +1049,6 @@ class BaseVisitor implements IVisitor
 		return null;
 	}
 	public function leaveElseIfStmt(\PhpParser\Node\Stmt\ElseIf_ $node)
-	{
-		return null;
-	}
-	public function leaveExprStmt(\PhpParser\Node\Stmt\Expr $node)
 	{
 		return null;
 	}

@@ -120,7 +120,6 @@ interface IPrinter
 	public function pprintEchoStmt(\PhpParser\Node\Stmt\Echo_ $node);
 	public function pprintElseStmt(\PhpParser\Node\Stmt\Else_ $node);
 	public function pprintElseIfStmt(\PhpParser\Node\Stmt\ElseIf_ $node);
-	public function pprintExprStmt(\PhpParser\Node\Stmt\Expr $node);
 	public function pprintForStmt(\PhpParser\Node\Stmt\For_ $node);
 	public function pprintForeachStmt(\PhpParser\Node\Stmt\Foreach_ $node);
 	public function pprintFunctionStmt(\PhpParser\Node\Stmt\Function_ $node);
