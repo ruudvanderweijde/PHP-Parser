@@ -1,0 +1,9 @@
+Interface
+-----
+<?php
+
+interface A extends C, D {
+    public function a();
+}
+-----
+script([interfaceDef(interface("A",[name("C"),name("D")],[method("a",{\public()},false,[],[])]))])

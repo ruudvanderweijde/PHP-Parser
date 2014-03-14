@@ -1,0 +1,48 @@
+Mathematical operators
+-----
+<?php
+
+// unary ops
+~$a;
++$a;
+-$a;
+
+// binary ops
+$a & $b;
+$a | $b;
+$a ^ $b;
+$a . $b;
+$a / $b;
+$a - $b;
+$a % $b;
+$a * $b;
+$a + $b;
+$a << $b;
+$a >> $b;
+
+// associativity
+$a * $b * $c;
+$a * ($b * $c);
+
+// precedence
+$a + $b * $c;
+($a + $b) * $c;
+-----
+script([exprstmt(unaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(21,2,<4,0>,<4,0>)],bitwiseNot())[@at=|file:///tmp/MathematicalOperators.php|(20,3,<4,0>,<4,0>)])[@at=|file:///tmp/MathematicalOperators.php|(20,4,<4,0>,<4,0>)],
+exprstmt(unaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(26,2,<5,0>,<5,0>)],unaryPlus())[@at=|file:///tmp/MathematicalOperators.php|(25,3,<5,0>,<5,0>)])[@at=|file:///tmp/MathematicalOperators.php|(25,4,<5,0>,<5,0>)],
+exprstmt(unaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(31,2,<6,0>,<6,0>)],unaryMinus())[@at=|file:///tmp/MathematicalOperators.php|(30,3,<6,0>,<6,0>)])[@at=|file:///tmp/MathematicalOperators.php|(30,4,<6,0>,<6,0>)],
+exprstmt(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(50,2,<9,0>,<9,0>)],var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(55,2,<9,0>,<9,0>)],bitwiseAnd())[@at=|file:///tmp/MathematicalOperators.php|(50,7,<9,0>,<9,0>)])[@at=|file:///tmp/MathematicalOperators.php|(50,8,<9,0>,<9,0>)],
+exprstmt(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(59,2,<10,0>,<10,0>)],var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(64,2,<10,0>,<10,0>)],bitwiseOr())[@at=|file:///tmp/MathematicalOperators.php|(59,7,<10,0>,<10,0>)])[@at=|file:///tmp/MathematicalOperators.php|(59,8,<10,0>,<10,0>)],
+exprstmt(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(68,2,<11,0>,<11,0>)],var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(73,2,<11,0>,<11,0>)],bitwiseXor())[@at=|file:///tmp/MathematicalOperators.php|(68,7,<11,0>,<11,0>)])[@at=|file:///tmp/MathematicalOperators.php|(68,8,<11,0>,<11,0>)],
+exprstmt(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(77,2,<12,0>,<12,0>)],var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(82,2,<12,0>,<12,0>)],concat())[@at=|file:///tmp/MathematicalOperators.php|(77,7,<12,0>,<12,0>)])[@at=|file:///tmp/MathematicalOperators.php|(77,8,<12,0>,<12,0>)],
+exprstmt(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(86,2,<13,0>,<13,0>)],var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(91,2,<13,0>,<13,0>)],div())[@at=|file:///tmp/MathematicalOperators.php|(86,7,<13,0>,<13,0>)])[@at=|file:///tmp/MathematicalOperators.php|(86,8,<13,0>,<13,0>)],
+exprstmt(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(95,2,<14,0>,<14,0>)],var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(100,2,<14,0>,<14,0>)],minus())[@at=|file:///tmp/MathematicalOperators.php|(95,7,<14,0>,<14,0>)])[@at=|file:///tmp/MathematicalOperators.php|(95,8,<14,0>,<14,0>)],
+exprstmt(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(104,2,<15,0>,<15,0>)],var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(109,2,<15,0>,<15,0>)],\mod())[@at=|file:///tmp/MathematicalOperators.php|(104,7,<15,0>,<15,0>)])[@at=|file:///tmp/MathematicalOperators.php|(104,8,<15,0>,<15,0>)],
+exprstmt(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(113,2,<16,0>,<16,0>)],var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(118,2,<16,0>,<16,0>)],mul())[@at=|file:///tmp/MathematicalOperators.php|(113,7,<16,0>,<16,0>)])[@at=|file:///tmp/MathematicalOperators.php|(113,8,<16,0>,<16,0>)],
+exprstmt(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(122,2,<17,0>,<17,0>)],var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(127,2,<17,0>,<17,0>)],plus())[@at=|file:///tmp/MathematicalOperators.php|(122,7,<17,0>,<17,0>)])[@at=|file:///tmp/MathematicalOperators.php|(122,8,<17,0>,<17,0>)],
+exprstmt(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(131,2,<18,0>,<18,0>)],var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(137,2,<18,0>,<18,0>)],leftShift())[@at=|file:///tmp/MathematicalOperators.php|(131,8,<18,0>,<18,0>)])[@at=|file:///tmp/MathematicalOperators.php|(131,9,<18,0>,<18,0>)],
+exprstmt(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(141,2,<19,0>,<19,0>)],var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(147,2,<19,0>,<19,0>)],rightShift())[@at=|file:///tmp/MathematicalOperators.php|(141,8,<19,0>,<19,0>)])[@at=|file:///tmp/MathematicalOperators.php|(141,9,<19,0>,<19,0>)],
+exprstmt(binaryOperation(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(169,2,<22,0>,<22,0>)],var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(174,2,<22,0>,<22,0>)],mul())[@at=|file:///tmp/MathematicalOperators.php|(169,7,<22,0>,<22,0>)],var(name(name("c")))[@at=|file:///tmp/MathematicalOperators.php|(179,2,<22,0>,<22,0>)],mul())[@at=|file:///tmp/MathematicalOperators.php|(169,12,<22,0>,<22,0>)])[@at=|file:///tmp/MathematicalOperators.php|(169,13,<22,0>,<22,0>)],
+exprstmt(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(183,2,<23,0>,<23,0>)],binaryOperation(var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(189,2,<23,0>,<23,0>)],var(name(name("c")))[@at=|file:///tmp/MathematicalOperators.php|(194,2,<23,0>,<23,0>)],mul())[@at=|file:///tmp/MathematicalOperators.php|(189,7,<23,0>,<23,0>)],mul())[@at=|file:///tmp/MathematicalOperators.php|(183,14,<23,0>,<23,0>)])[@at=|file:///tmp/MathematicalOperators.php|(183,15,<23,0>,<23,0>)],
+exprstmt(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(214,2,<26,0>,<26,0>)],binaryOperation(var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(219,2,<26,0>,<26,0>)],var(name(name("c")))[@at=|file:///tmp/MathematicalOperators.php|(224,2,<26,0>,<26,0>)],mul())[@at=|file:///tmp/MathematicalOperators.php|(219,7,<26,0>,<26,0>)],plus())[@at=|file:///tmp/MathematicalOperators.php|(214,12,<26,0>,<26,0>)])[@at=|file:///tmp/MathematicalOperators.php|(214,13,<26,0>,<26,0>)],
+exprstmt(binaryOperation(binaryOperation(var(name(name("a")))[@at=|file:///tmp/MathematicalOperators.php|(229,2,<27,0>,<27,0>)],var(name(name("b")))[@at=|file:///tmp/MathematicalOperators.php|(234,2,<27,0>,<27,0>)],plus())[@at=|file:///tmp/MathematicalOperators.php|(229,7,<27,0>,<27,0>)],var(name(name("c")))[@at=|file:///tmp/MathematicalOperators.php|(240,2,<27,0>,<27,0>)],mul())[@at=|file:///tmp/MathematicalOperators.php|(228,14,<27,0>,<27,0>)])[@at=|file:///tmp/MathematicalOperators.php|(228,15,<27,0>,<27,0>)]])

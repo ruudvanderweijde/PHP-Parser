@@ -1,0 +1,16 @@
+Ternary operator
+-----
+<?php
+
+// ternary
+$a ? $b : $c;
+$a ?: $c;
+
+// precedence
+$a ? $b : $c ? $d : $e;
+$a ? $b : ($c ? $d : $e);
+-----
+script([exprstmt(ternary(var(name(name("a"))),someExpr(var(name(name("b")))),var(name(name("c"))))),
+exprstmt(ternary(var(name(name("a"))),noExpr(),var(name(name("c"))))),
+exprstmt(ternary(ternary(var(name(name("a"))),someExpr(var(name(name("b")))),var(name(name("c")))),someExpr(var(name(name("d")))),var(name(name("e"))))),
+exprstmt(ternary(var(name(name("a"))),someExpr(var(name(name("b")))),ternary(var(name(name("c"))),someExpr(var(name(name("d")))),var(name(name("e"))))))])

@@ -1,0 +1,10 @@
+Special function variables
+-----
+<?php
+
+function a() {
+    global $a, ${'b'}, $$c;
+    static $c, $d = 'e';
+}
+-----
+script([function("a",false,[],[global([var(name(name("a"))),var(expr(scalar(string("b")))),var(expr(var(name(name("c")))))]),static([staticVar("c",noExpr()),staticVar("d",someExpr(scalar(string("e"))))])])])

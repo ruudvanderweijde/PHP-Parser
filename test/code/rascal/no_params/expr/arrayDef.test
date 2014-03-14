@@ -1,0 +1,23 @@
+Array definitions
+-----
+<?php
+
+array();
+array('a');
+array('a', );
+array('a', 'b');
+array('a', &$b, 'c' => 'd', 'e' => &$f);
+
+// short array syntax
+[];
+[1, 2, 3];
+['a' => 'b'];
+-----
+script([exprstmt(array([])),
+exprstmt(array([arrayElement(noExpr(),scalar(string("a")),false)])),
+exprstmt(array([arrayElement(noExpr(),scalar(string("a")),false)])),
+exprstmt(array([arrayElement(noExpr(),scalar(string("a")),false),arrayElement(noExpr(),scalar(string("b")),false)])),
+exprstmt(array([arrayElement(noExpr(),scalar(string("a")),false),arrayElement(noExpr(),var(name(name("b"))),true),arrayElement(someExpr(scalar(string("c"))),scalar(string("d")),false),arrayElement(someExpr(scalar(string("e"))),var(name(name("f"))),true)])),
+exprstmt(array([])),
+exprstmt(array([arrayElement(noExpr(),scalar(integer(1)),false),arrayElement(noExpr(),scalar(integer(2)),false),arrayElement(noExpr(),scalar(integer(3)),false)])),
+exprstmt(array([arrayElement(someExpr(scalar(string("a"))),scalar(string("b")),false)]))])

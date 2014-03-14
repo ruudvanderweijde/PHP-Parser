@@ -1,0 +1,22 @@
+Switch
+-----
+<?php
+
+switch ($a) {
+    case 0:
+    case 1;
+    default:
+}
+
+// alternative syntax
+switch ($a):
+endswitch;
+
+// leading semicolon
+switch ($a) { ; }
+switch ($a): ; endswitch;
+-----
+script([\switch(var(name(name("a"))),[\case(someExpr(scalar(integer(0))),[]),\case(someExpr(scalar(integer(1))),[]),\case(noExpr(),[])]),
+\switch(var(name(name("a"))),[]),
+\switch(var(name(name("a"))),[]),
+\switch(var(name(name("a"))),[])])

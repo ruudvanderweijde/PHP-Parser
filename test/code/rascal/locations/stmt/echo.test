@@ -1,0 +1,9 @@
+Echo
+-----
+<?php
+
+echo 'Hallo World!';
+echo 'Hallo', ' ', 'World', '!';
+-----
+script([echo([scalar(string("Hallo World!"))[@at=|file:///tmp/Echo.php|(12,14,<3,0>,<3,0>)]])[@at=|file:///tmp/Echo.php|(7,20,<3,0>,<3,0>)],
+echo([scalar(string("Hallo"))[@at=|file:///tmp/Echo.php|(33,7,<4,0>,<4,0>)],scalar(string(" "))[@at=|file:///tmp/Echo.php|(42,3,<4,0>,<4,0>)],scalar(string("World"))[@at=|file:///tmp/Echo.php|(47,7,<4,0>,<4,0>)],scalar(string("!"))[@at=|file:///tmp/Echo.php|(56,3,<4,0>,<4,0>)]])[@at=|file:///tmp/Echo.php|(28,32,<4,0>,<4,0>)]])

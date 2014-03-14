@@ -1,0 +1,28 @@
+Object access
+-----
+<?php
+
+// property fetch variations
+$a->b;
+$a->b['c'];
+$a->b{'c'};
+
+// method call variations
+$a->b();
+$a->{'b'}();
+$a->$b();
+$a->$b['c']();
+
+// array dereferencing
+$a->b()['c'];
+$a->b(){'c'}; // invalid PHP: drop Support?
+-----
+script([exprstmt(propertyFetch(var(name(name("a"))),name(name("b")))),
+exprstmt(fetchArrayDim(propertyFetch(var(name(name("a"))),name(name("b"))),someExpr(scalar(string("c"))))),
+exprstmt(fetchArrayDim(propertyFetch(var(name(name("a"))),name(name("b"))),someExpr(scalar(string("c"))))),
+exprstmt(methodCall(var(name(name("a"))),name(name("b")),[])),
+exprstmt(methodCall(var(name(name("a"))),expr(scalar(string("b"))),[])),
+exprstmt(methodCall(var(name(name("a"))),expr(var(name(name("b")))),[])),
+exprstmt(methodCall(var(name(name("a"))),expr(fetchArrayDim(var(name(name("b"))),someExpr(scalar(string("c"))))),[])),
+exprstmt(fetchArrayDim(methodCall(var(name(name("a"))),name(name("b")),[]),someExpr(scalar(string("c"))))),
+exprstmt(fetchArrayDim(methodCall(var(name(name("a"))),name(name("b")),[]),someExpr(scalar(string("c")))))])

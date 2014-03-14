@@ -1,0 +1,9 @@
+Conditional function definition
+-----
+<?php
+
+if (true) {
+    function A() {}
+}
+-----
+script([\if(fetchConst(name("true")[@at=|file:///tmp/ConditionalFunctionDefinition.php|(11,4,<3,0>,<3,0>)])[@at=|file:///tmp/ConditionalFunctionDefinition.php|(11,4,<3,0>,<3,0>)],[function("A",false,[],[])[@at=|file:///tmp/ConditionalFunctionDefinition.php|(23,15,<4,0>,<4,0>)]],[],noElse())[@at=|file:///tmp/ConditionalFunctionDefinition.php|(7,33,<3,0>,<3,0>)]])

@@ -1,0 +1,9 @@
+Unset
+-----
+<?php
+
+unset($a);
+unset($b, $c);
+-----
+script([unset([var(name(name("a")))]),
+unset([var(name(name("b"))),var(name(name("c")))])])

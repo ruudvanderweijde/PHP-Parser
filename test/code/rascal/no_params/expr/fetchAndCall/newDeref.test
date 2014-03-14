@@ -1,0 +1,13 @@
+New expression dereferencing
+-----
+<?php
+
+(new A)->b;
+(new A)->b();
+(new A)['b'];
+(new A)['b']['c'];
+-----
+script([exprstmt(propertyFetch(new(name(name("A")),[]),name(name("b")))),
+exprstmt(methodCall(new(name(name("A")),[]),name(name("b")),[])),
+exprstmt(fetchArrayDim(new(name(name("A")),[]),someExpr(scalar(string("b"))))),
+exprstmt(fetchArrayDim(fetchArrayDim(new(name(name("A")),[]),someExpr(scalar(string("b")))),someExpr(scalar(string("c")))))])

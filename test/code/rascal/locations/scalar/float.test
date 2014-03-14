@@ -1,0 +1,38 @@
+Different float syntaxes
+-----
+<?php
+
+0.0;
+0.;
+.0;
+0e0;
+0E0;
+0e+0;
+0e-0;
+30.20e10;
+300.200e100;
+1e10000;
+
+// various integer -> float overflows
+// (all are actually the same number, just in different representations)
+18446744073709551615;
+0xFFFFFFFFFFFFFFFF;
+01777777777777777777777;
+0177777777777777777777787;
+0b1111111111111111111111111111111111111111111111111111111111111111;
+-----
+script([exprstmt(scalar(float(0.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(7,3,<3,0>,<3,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(7,4,<3,0>,<3,0>)],
+exprstmt(scalar(float(0.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(12,2,<4,0>,<4,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(12,3,<4,0>,<4,0>)],
+exprstmt(scalar(float(0.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(16,2,<5,0>,<5,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(16,3,<5,0>,<5,0>)],
+exprstmt(scalar(float(0.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(20,3,<6,0>,<6,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(20,4,<6,0>,<6,0>)],
+exprstmt(scalar(float(0.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(25,3,<7,0>,<7,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(25,4,<7,0>,<7,0>)],
+exprstmt(scalar(float(0.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(30,4,<8,0>,<8,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(30,5,<8,0>,<8,0>)],
+exprstmt(scalar(float(0.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(36,4,<9,0>,<9,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(36,5,<9,0>,<9,0>)],
+exprstmt(scalar(float(302000000000.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(42,8,<10,0>,<10,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(42,9,<10,0>,<10,0>)],
+exprstmt(scalar(float(3001999999999999857747461451822970840678540243556224403584965673536656020978294721991364596684824772608.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(52,11,<11,0>,<11,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(52,12,<11,0>,<11,0>)],
+exprstmt(scalar(float(INF))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(65,7,<12,0>,<12,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(65,8,<12,0>,<12,0>)],
+exprstmt(scalar(float(18446744073709551616.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(186,20,<16,0>,<16,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(186,21,<16,0>,<16,0>)],
+exprstmt(scalar(float(18446744073709551616.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(208,18,<17,0>,<17,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(208,19,<17,0>,<17,0>)],
+exprstmt(scalar(float(18446744073709551616.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(228,23,<18,0>,<18,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(228,24,<18,0>,<18,0>)],
+exprstmt(scalar(float(18446744073709551616.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(253,25,<19,0>,<19,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(253,26,<19,0>,<19,0>)],
+exprstmt(scalar(float(18446744073709551616.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(280,66,<20,0>,<20,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(280,67,<20,0>,<20,0>)]])

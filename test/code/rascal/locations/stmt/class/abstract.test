@@ -1,0 +1,10 @@
+Abstract class
+-----
+<?php
+
+abstract class A {
+    public function a() {}
+    abstract public function b();
+}
+-----
+script([classDef(class("A",{abstract()},noName(),[],[method("a",{\public()},false,[],[])[@at=|file:///tmp/AbstractClass.php|(30,22,<4,0>,<4,0>)],method("b",{\public(),abstract()},false,[],[])[@at=|file:///tmp/AbstractClass.php|(57,29,<5,0>,<5,0>)]])[@at=|file:///tmp/AbstractClass.php|(7,81,<3,0>,<3,0>)])[@at=|file:///tmp/AbstractClass.php|(7,81,<3,0>,<3,0>)]])

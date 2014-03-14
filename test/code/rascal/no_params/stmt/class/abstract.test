@@ -1,0 +1,10 @@
+Abstract class
+-----
+<?php
+
+abstract class A {
+    public function a() {}
+    abstract public function b();
+}
+-----
+script([classDef(class("A",{abstract()},noName(),[],[method("a",{\public()},false,[],[]),method("b",{\public(),abstract()},false,[],[])]))])

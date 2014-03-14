@@ -1,0 +1,31 @@
+Encapsed strings
+-----
+<?php
+
+"$A";
+"$A->B";
+"$A[B]";
+"$A[0]";
+"$A[0x0]";
+"$A[$B]";
+"{$A}";
+"{$A['B']}";
+"${A}";
+"${A['B']}";
+"${$A}";
+"A $B C";
+b"$A";
+-----
+script([exprstmt(scalar(encapsed([var(name(name("A")))]))),
+exprstmt(scalar(encapsed([propertyFetch(var(name(name("A"))),name(name("B")))]))),
+exprstmt(scalar(encapsed([fetchArrayDim(var(name(name("A"))),someExpr(scalar(string("B"))))]))),
+exprstmt(scalar(encapsed([fetchArrayDim(var(name(name("A"))),someExpr(scalar(string("0"))))]))),
+exprstmt(scalar(encapsed([fetchArrayDim(var(name(name("A"))),someExpr(scalar(string("0x0"))))]))),
+exprstmt(scalar(encapsed([fetchArrayDim(var(name(name("A"))),someExpr(var(name(name("B")))))]))),
+exprstmt(scalar(encapsed([var(name(name("A")))]))),
+exprstmt(scalar(encapsed([fetchArrayDim(var(name(name("A"))),someExpr(scalar(string("B"))))]))),
+exprstmt(scalar(encapsed([var(name(name("A")))]))),
+exprstmt(scalar(encapsed([fetchArrayDim(var(name(name("A"))),someExpr(scalar(string("B"))))]))),
+exprstmt(scalar(encapsed([var(expr(var(name(name("A")))))]))),
+exprstmt(scalar(encapsed([scalar(string("A ")),var(name(name("B"))),scalar(string(" C"))]))),
+exprstmt(scalar(encapsed([var(name(name("A")))])))])

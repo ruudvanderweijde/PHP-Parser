@@ -1,0 +1,13 @@
+Braced namespaces
+-----
+<?php
+
+namespace Foo\Bar {
+    foo;
+}
+namespace {
+    bar;
+}
+-----
+script([namespace(someName(name("Foo::Bar")),[exprstmt(fetchConst(name("foo")))]),
+namespace(noName(),[exprstmt(fetchConst(name("bar")))])])

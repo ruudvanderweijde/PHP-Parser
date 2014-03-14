@@ -1,0 +1,6 @@
+Error suppression
+-----
+<?php
+@$a;
+-----
+script([exprstmt(suppress(var(name(name("a")))))])

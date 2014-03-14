@@ -1,0 +1,29 @@
+Invalid modifier combination
+-----
+<?php class A { public public $a; }
+-----
+errscript("Multiple access type modifiers are not allowed on line 1")
+-----
+<?php class A { public protected $a; }
+-----
+errscript("Multiple access type modifiers are not allowed on line 1")
+-----
+<?php class A { abstract abstract a(); }
+-----
+errscript("Multiple abstract modifiers are not allowed on line 1")
+-----
+<?php class A { static static $a; }
+-----
+errscript("Multiple static modifiers are not allowed on line 1")
+-----
+<?php class A { final final a() {} }
+-----
+errscript("Multiple final modifiers are not allowed on line 1")
+-----
+<?php class A { abstract final a(); }
+-----
+errscript("Cannot use the final modifier on an abstract class member on line 1")
+-----
+<?php abstract final class A { }
+-----
+errscript("Syntax error, unexpected T_FINAL, expecting T_CLASS on line 1")

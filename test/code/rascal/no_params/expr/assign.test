@@ -1,0 +1,55 @@
+Assignments
+-----
+<?php
+// simple assign
+$a = $b;
+
+// combined assign
+$a &= $b;
+$a |= $b;
+$a ^= $b;
+$a .= $b;
+$a /= $b;
+$a -= $b;
+$a %= $b;
+$a *= $b;
+$a += $b;
+$a <<= $b;
+$a >>= $b;
+
+// by ref assign
+$a =& $b;
+$a =& new B;
+
+// list() assign
+list($a) = $b;
+list($a, , $b) = $c;
+list($a, list(, $c), $d) = $e;
+
+// inc/dec
+++$a;
+$a++;
+--$a;
+$a--;
+-----
+script([exprstmt(assign(var(name(name("a"))),var(name(name("b"))))),
+exprstmt(assignWOp(var(name(name("a"))),var(name(name("b"))),bitwiseAnd())),
+exprstmt(assignWOp(var(name(name("a"))),var(name(name("b"))),bitwiseOr())),
+exprstmt(assignWOp(var(name(name("a"))),var(name(name("b"))),bitwiseXor())),
+exprstmt(assignWOp(var(name(name("a"))),var(name(name("b"))),concat())),
+exprstmt(assignWOp(var(name(name("a"))),var(name(name("b"))),div())),
+exprstmt(assignWOp(var(name(name("a"))),var(name(name("b"))),minus())),
+exprstmt(assignWOp(var(name(name("a"))),var(name(name("b"))),\mod())),
+exprstmt(assignWOp(var(name(name("a"))),var(name(name("b"))),mul())),
+exprstmt(assignWOp(var(name(name("a"))),var(name(name("b"))),plus())),
+exprstmt(assignWOp(var(name(name("a"))),var(name(name("b"))),leftShift())),
+exprstmt(assignWOp(var(name(name("a"))),var(name(name("b"))),rightShift())),
+exprstmt(refAssign(var(name(name("a"))),var(name(name("b"))))),
+exprstmt(refAssign(var(name(name("a"))),new(name(name("B")),[]))),
+exprstmt(assign(listExpr([someExpr(var(name(name("a"))))]),var(name(name("b"))))),
+exprstmt(assign(listExpr([someExpr(var(name(name("a")))),noExpr(),someExpr(var(name(name("b"))))]),var(name(name("c"))))),
+exprstmt(assign(listExpr([someExpr(var(name(name("a")))),someExpr(listExpr([noExpr(),someExpr(var(name(name("c"))))])),someExpr(var(name(name("d"))))]),var(name(name("e"))))),
+exprstmt(unaryOperation(var(name(name("a"))),preInc())),
+exprstmt(unaryOperation(var(name(name("a"))),postInc())),
+exprstmt(unaryOperation(var(name(name("a"))),preDec())),
+exprstmt(unaryOperation(var(name(name("a"))),postDec()))])

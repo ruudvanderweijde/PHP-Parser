@@ -1,0 +1,27 @@
+Control flow statements
+-----
+<?php
+
+break;
+break 2;
+
+continue;
+continue 2;
+
+return;
+return $a;
+
+throw $e;
+
+label:
+goto label;
+-----
+script([\break(noExpr()),
+\break(someExpr(scalar(integer(2)))),
+\continue(noExpr()),
+\continue(someExpr(scalar(integer(2)))),
+\return(noExpr()),
+\return(someExpr(var(name(name("a"))))),
+\throw(var(name(name("e")))),
+label("label"),
+goto("label")])

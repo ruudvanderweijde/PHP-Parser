@@ -1,0 +1,16 @@
+Inline HTML
+-----
+<?php
+$a;
+?>
+B
+<?php
+$c;
+?>
+<?php
+$d;
+-----
+script([exprstmt(var(name(name("a")))),
+inlineHTML("B\n"),
+exprstmt(var(name(name("c")))),
+exprstmt(var(name(name("d"))))])

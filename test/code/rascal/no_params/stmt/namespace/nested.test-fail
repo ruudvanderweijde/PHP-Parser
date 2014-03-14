@@ -1,0 +1,10 @@
+Nested namespaces are not allowed
+-----
+<?php
+namespace A {
+    namespace B {
+
+    }
+}
+-----
+errscript("Namespace declarations cannot be nested on line 3")

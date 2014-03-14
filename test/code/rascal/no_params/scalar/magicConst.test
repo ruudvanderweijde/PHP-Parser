@@ -1,0 +1,21 @@
+Magic constants
+-----
+<?php
+
+__CLASS__;
+__DIR__;
+__FILE__;
+__FUNCTION__;
+__LINE__;
+__METHOD__;
+__NAMESPACE__;
+__TRAIT__;
+-----
+script([exprstmt(scalar(classConstant()[@actualValue=""])),
+exprstmt(scalar(dirConstant()[@actualValue="{dirname(/tmp/MagicConstants.php)}"])),
+exprstmt(scalar(fileConstant()[@actualValue="/tmp/MagicConstants.php"])),
+exprstmt(scalar(funcConstant()[@actualValue=""])),
+exprstmt(scalar(lineConstant()[@actualValue="7"])),
+exprstmt(scalar(methodConstant()[@actualValue=""])),
+exprstmt(scalar(namespaceConstant()[@actualValue=""])),
+exprstmt(scalar(traitConstant()[@actualValue=""]))])

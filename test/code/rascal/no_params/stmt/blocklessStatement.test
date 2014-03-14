@@ -1,0 +1,24 @@
+Blockless statements for if/for/etc
+-----
+<?php
+
+if ($a) $A;
+elseif ($b) $B;
+else $C;
+
+for (;;) $foo;
+
+foreach ($a as $b) $AB;
+
+while ($a) $A;
+
+do $A; while ($a);
+
+declare (a='b') $C;
+-----
+script([\if(var(name(name("a"))),[exprstmt(var(name(name("A"))))],[elseIf(var(name(name("b"))),[exprstmt(var(name(name("B"))))])],someElse(\else([exprstmt(var(name(name("C"))))]))),
+\for([],[],[],[exprstmt(var(name(name("foo"))))]),
+foreach(var(name(name("a"))),noExpr(),false,var(name(name("b"))),[exprstmt(var(name(name("AB"))))]),
+\while(var(name(name("a"))),[exprstmt(var(name(name("A"))))]),
+\do(var(name(name("a"))),[exprstmt(var(name(name("A"))))]),
+declare([declaration("a", scalar(string("b")))],[exprstmt(var(name(name("C"))))])])

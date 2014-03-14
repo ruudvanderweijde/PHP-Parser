@@ -1,0 +1,26 @@
+Casts
+-----
+<?php
+(array)   $a;
+(bool)    $a;
+(boolean) $a;
+(real)    $a;
+(double)  $a;
+(float)   $a;
+(int)     $a;
+(integer) $a;
+(object)  $a;
+(string)  $a;
+(unset)   $a;
+-----
+script([exprstmt(cast(array(),var(name(name("a")))[@at=|file:///tmp/Casts.php|(16,2,<2,0>,<2,0>)])[@at=|file:///tmp/Casts.php|(6,12,<2,0>,<2,0>)])[@at=|file:///tmp/Casts.php|(6,13,<2,0>,<2,0>)],
+exprstmt(cast(\bool(),var(name(name("a")))[@at=|file:///tmp/Casts.php|(30,2,<3,0>,<3,0>)])[@at=|file:///tmp/Casts.php|(20,12,<3,0>,<3,0>)])[@at=|file:///tmp/Casts.php|(20,13,<3,0>,<3,0>)],
+exprstmt(cast(\bool(),var(name(name("a")))[@at=|file:///tmp/Casts.php|(44,2,<4,0>,<4,0>)])[@at=|file:///tmp/Casts.php|(34,12,<4,0>,<4,0>)])[@at=|file:///tmp/Casts.php|(34,13,<4,0>,<4,0>)],
+exprstmt(cast(float(),var(name(name("a")))[@at=|file:///tmp/Casts.php|(58,2,<5,0>,<5,0>)])[@at=|file:///tmp/Casts.php|(48,12,<5,0>,<5,0>)])[@at=|file:///tmp/Casts.php|(48,13,<5,0>,<5,0>)],
+exprstmt(cast(float(),var(name(name("a")))[@at=|file:///tmp/Casts.php|(72,2,<6,0>,<6,0>)])[@at=|file:///tmp/Casts.php|(62,12,<6,0>,<6,0>)])[@at=|file:///tmp/Casts.php|(62,13,<6,0>,<6,0>)],
+exprstmt(cast(float(),var(name(name("a")))[@at=|file:///tmp/Casts.php|(86,2,<7,0>,<7,0>)])[@at=|file:///tmp/Casts.php|(76,12,<7,0>,<7,0>)])[@at=|file:///tmp/Casts.php|(76,13,<7,0>,<7,0>)],
+exprstmt(cast(\int(),var(name(name("a")))[@at=|file:///tmp/Casts.php|(100,2,<8,0>,<8,0>)])[@at=|file:///tmp/Casts.php|(90,12,<8,0>,<8,0>)])[@at=|file:///tmp/Casts.php|(90,13,<8,0>,<8,0>)],
+exprstmt(cast(\int(),var(name(name("a")))[@at=|file:///tmp/Casts.php|(114,2,<9,0>,<9,0>)])[@at=|file:///tmp/Casts.php|(104,12,<9,0>,<9,0>)])[@at=|file:///tmp/Casts.php|(104,13,<9,0>,<9,0>)],
+exprstmt(cast(object(),var(name(name("a")))[@at=|file:///tmp/Casts.php|(128,2,<10,0>,<10,0>)])[@at=|file:///tmp/Casts.php|(118,12,<10,0>,<10,0>)])[@at=|file:///tmp/Casts.php|(118,13,<10,0>,<10,0>)],
+exprstmt(cast(string(),var(name(name("a")))[@at=|file:///tmp/Casts.php|(142,2,<11,0>,<11,0>)])[@at=|file:///tmp/Casts.php|(132,12,<11,0>,<11,0>)])[@at=|file:///tmp/Casts.php|(132,13,<11,0>,<11,0>)],
+exprstmt(cast(unset(),var(name(name("a")))[@at=|file:///tmp/Casts.php|(156,2,<12,0>,<12,0>)])[@at=|file:///tmp/Casts.php|(146,12,<12,0>,<12,0>)])[@at=|file:///tmp/Casts.php|(146,13,<12,0>,<12,0>)]])

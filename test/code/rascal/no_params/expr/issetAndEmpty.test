@@ -1,0 +1,15 @@
+isset() and empty()
+-----
+<?php
+isset($a);
+isset($a, $b, $c);
+
+empty($a);
+empty(foo());
+empty(array(1, 2, 3));
+-----
+script([exprstmt(isSet([var(name(name("a")))])),
+exprstmt(isSet([var(name(name("a"))),var(name(name("b"))),var(name(name("c")))])),
+exprstmt(empty(var(name(name("a"))))),
+exprstmt(empty(call(name(name("foo")),[]))),
+exprstmt(empty(array([arrayElement(noExpr(),scalar(integer(1)),false),arrayElement(noExpr(),scalar(integer(2)),false),arrayElement(noExpr(),scalar(integer(3)),false)])))])

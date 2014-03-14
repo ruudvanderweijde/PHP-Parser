@@ -1,0 +1,11 @@
+Declare
+-----
+<?php
+
+declare (A='B', C='D') {}
+
+declare (A='B', C='D'):
+enddeclare;
+-----
+script([declare([declaration("A", scalar(string("B"))[@at=|file:///tmp/Declare.php|(18,3,<3,0>,<3,0>)])[@at=|file:///tmp/Declare.php|(16,5,<3,0>,<3,0>)],declaration("C", scalar(string("D"))[@at=|file:///tmp/Declare.php|(25,3,<3,0>,<3,0>)])[@at=|file:///tmp/Declare.php|(23,5,<3,0>,<3,0>)]],[])[@at=|file:///tmp/Declare.php|(7,25,<3,0>,<3,0>)],
+declare([declaration("A", scalar(string("B"))[@at=|file:///tmp/Declare.php|(45,3,<5,0>,<5,0>)])[@at=|file:///tmp/Declare.php|(43,5,<5,0>,<5,0>)],declaration("C", scalar(string("D"))[@at=|file:///tmp/Declare.php|(52,3,<5,0>,<5,0>)])[@at=|file:///tmp/Declare.php|(50,5,<5,0>,<5,0>)]],[])[@at=|file:///tmp/Declare.php|(34,35,<5,0>,<5,0>)]])

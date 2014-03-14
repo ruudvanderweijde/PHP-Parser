@@ -1,0 +1,30 @@
+Static calls
+-----
+<?php
+
+// method name variations
+A::b();
+A::{'b'}();
+A::$b();
+A::$b['c']();
+A::$b['c']['d']();
+
+// array dereferencing
+A::b()['c'];
+
+// class name variations
+static::b();
+$a::b();
+${'a'}::b();
+$a['b']::c();
+-----
+script([exprstmt(staticCall(name(name("A")),name(name("b")),[])),
+exprstmt(staticCall(name(name("A")),expr(scalar(string("b"))),[])),
+exprstmt(staticCall(name(name("A")),expr(var(name(name("b")))),[])),
+exprstmt(staticCall(name(name("A")),expr(fetchArrayDim(var(name(name("b"))),someExpr(scalar(string("c"))))),[])),
+exprstmt(staticCall(name(name("A")),expr(fetchArrayDim(fetchArrayDim(var(name(name("b"))),someExpr(scalar(string("c")))),someExpr(scalar(string("d"))))),[])),
+exprstmt(fetchArrayDim(staticCall(name(name("A")),name(name("b")),[]),someExpr(scalar(string("c"))))),
+exprstmt(staticCall(name(name("static")),name(name("b")),[])),
+exprstmt(staticCall(expr(var(name(name("a")))),name(name("b")),[])),
+exprstmt(staticCall(expr(var(expr(scalar(string("a"))))),name(name("b")),[])),
+exprstmt(staticCall(expr(fetchArrayDim(var(name(name("a"))),someExpr(scalar(string("b"))))),name(name("c")),[]))])

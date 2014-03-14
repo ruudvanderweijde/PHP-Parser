@@ -1,0 +1,23 @@
+If/Elseif/Else
+-----
+<?php
+
+if      ($a) {}
+elseif  ($b) {}
+elseif  ($c) {}
+else         {}
+
+if ($a) {} // without else
+
+if      ($a):
+elseif  ($b):
+elseif  ($c):
+else        :
+endif;
+
+if ($a): endif; // without else
+-----
+script([\if(var(name(name("a")))[@at=|file:///tmp/IfElseifElse.php|(16,2,<3,0>,<3,0>)],[],[elseIf(var(name(name("b")))[@at=|file:///tmp/IfElseifElse.php|(32,2,<4,0>,<4,0>)],[])[@at=|file:///tmp/IfElseifElse.php|(23,15,<4,0>,<4,0>)],elseIf(var(name(name("c")))[@at=|file:///tmp/IfElseifElse.php|(48,2,<5,0>,<5,0>)],[])[@at=|file:///tmp/IfElseifElse.php|(39,15,<5,0>,<5,0>)]],someElse(\else([])[@at=|file:///tmp/IfElseifElse.php|(55,15,<6,0>,<6,0>)]))[@at=|file:///tmp/IfElseifElse.php|(7,63,<3,0>,<3,0>)],
+\if(var(name(name("a")))[@at=|file:///tmp/IfElseifElse.php|(76,2,<8,0>,<8,0>)],[],[],noElse())[@at=|file:///tmp/IfElseifElse.php|(72,10,<8,0>,<8,0>)],
+\if(var(name(name("a")))[@at=|file:///tmp/IfElseifElse.php|(109,2,<10,0>,<10,0>)],[],[elseIf(var(name(name("b")))[@at=|file:///tmp/IfElseifElse.php|(123,2,<11,0>,<11,0>)],[])[@at=|file:///tmp/IfElseifElse.php|(114,13,<11,0>,<11,0>)],elseIf(var(name(name("c")))[@at=|file:///tmp/IfElseifElse.php|(137,2,<12,0>,<12,0>)],[])[@at=|file:///tmp/IfElseifElse.php|(128,13,<12,0>,<12,0>)]],someElse(\else([])[@at=|file:///tmp/IfElseifElse.php|(142,13,<13,0>,<13,0>)]))[@at=|file:///tmp/IfElseifElse.php|(100,62,<10,0>,<10,0>)],
+\if(var(name(name("a")))[@at=|file:///tmp/IfElseifElse.php|(168,2,<16,0>,<16,0>)],[],[],noElse())[@at=|file:///tmp/IfElseifElse.php|(164,15,<16,0>,<16,0>)]])

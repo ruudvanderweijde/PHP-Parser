@@ -1,0 +1,7 @@
+Type hints
+-----
+<?php
+
+function a($b, array $c, callable $d, E $f) {}
+-----
+script([function("a",false,[param("b",noExpr(),noName(),false),param("c",noExpr(),someName(name("array")),false),param("d",noExpr(),someName(name("callable")),false),param("f",noExpr(),someName(name("E")),false)],[])])

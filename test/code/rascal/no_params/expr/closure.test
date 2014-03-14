@@ -1,0 +1,14 @@
+Closures
+-----
+<?php
+function($a) { $a; };
+function($a) use($b) {};
+function() use($a, &$b) {};
+function &($a) {};
+static function() {};
+-----
+script([exprstmt(closure([exprstmt(var(name(name("a"))))],[param("a",noExpr(),noName(),false)],[],false,false)),
+exprstmt(closure([],[param("a",noExpr(),noName(),false)],[closureUse("b",false)],false,false)),
+exprstmt(closure([],[],[closureUse("a",false),closureUse("b",true)],false,false)),
+exprstmt(closure([],[param("a",noExpr(),noName(),false)],[],true,false)),
+exprstmt(closure([],[],[],false,true))])

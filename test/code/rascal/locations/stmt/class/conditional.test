@@ -1,0 +1,9 @@
+Conditional class definition
+-----
+<?php
+
+if (true) {
+    class A {}
+}
+-----
+script([\if(fetchConst(name("true")[@at=|file:///tmp/ConditionalClassDefinition.php|(11,4,<3,0>,<3,0>)])[@at=|file:///tmp/ConditionalClassDefinition.php|(11,4,<3,0>,<3,0>)],[classDef(class("A",{},noName(),[],[])[@at=|file:///tmp/ConditionalClassDefinition.php|(23,10,<4,0>,<4,0>)])[@at=|file:///tmp/ConditionalClassDefinition.php|(23,10,<4,0>,<4,0>)]],[],noElse())[@at=|file:///tmp/ConditionalClassDefinition.php|(7,28,<3,0>,<3,0>)]])

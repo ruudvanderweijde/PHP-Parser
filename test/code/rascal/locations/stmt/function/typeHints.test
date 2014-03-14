@@ -1,0 +1,7 @@
+Type hints
+-----
+<?php
+
+function a($b, array $c, callable $d, E $f) {}
+-----
+script([function("a",false,[param("b",noExpr(),noName(),false)[@at=|file:///tmp/TypeHints.php|(18,2,<3,0>,<3,0>)],param("c",noExpr(),someName(name("array")),false)[@at=|file:///tmp/TypeHints.php|(22,8,<3,0>,<3,0>)],param("d",noExpr(),someName(name("callable")),false)[@at=|file:///tmp/TypeHints.php|(32,11,<3,0>,<3,0>)],param("f",noExpr(),someName(name("E")[@at=|file:///tmp/TypeHints.php|(45,1,<3,0>,<3,0>)]),false)[@at=|file:///tmp/TypeHints.php|(45,4,<3,0>,<3,0>)]],[])[@at=|file:///tmp/TypeHints.php|(7,46,<3,0>,<3,0>)]])
