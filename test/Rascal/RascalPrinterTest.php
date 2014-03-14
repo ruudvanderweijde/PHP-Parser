@@ -7,7 +7,7 @@ use PhpParser\Lexer;
 
 require_once __DIR__ . '/CodeTestAbstract.php';
 
-class AST2RascalTest extends CodeTestAbstract
+class RascalPrinterTest extends CodeTestAbstract
 {
     protected $parser;
 

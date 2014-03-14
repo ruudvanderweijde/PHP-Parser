@@ -112,7 +112,7 @@ namespace(noName(),[use([use(name("Animal::Bear"),someName(name("Bear")))]),use(
             unset($opts);
 
         ob_start();
-        require('../../lib/Rascal/AST2Rascal.php');
+        require(__DIR__ . '/../../lib/Rascal/AST2Rascal.php');
         $output = ob_get_clean();
         unset($argv, $opts);
         return $output;
