@@ -1503,6 +1503,14 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
+    public function pprintExprStmt(\PhpParser\Node\Stmt\Expr $node)
+    {
+        $fragment = "exprstmt(" . $this->pprint($node->expr) . ")";
+        $fragment .= $this->annotateASTNode($node);
+        
+        return $fragment;
+    }
+
     public function pprintForStmt(\PhpParser\Node\Stmt\For_ $node)
     {
         $stmts = array();

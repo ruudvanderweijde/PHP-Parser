@@ -119,6 +119,7 @@ interface IVisitor
 	public function enterEchoStmt(\PhpParser\Node\Stmt\Echo_ $node);
 	public function enterElseStmt(\PhpParser\Node\Stmt\Else_ $node);
 	public function enterElseIfStmt(\PhpParser\Node\Stmt\ElseIf_ $node);
+	public function enterExprStmt(\PhpParser\Node\Stmt\Expr $node);
 	public function enterForStmt(\PhpParser\Node\Stmt\For_ $node);
 	public function enterForeachStmt(\PhpParser\Node\Stmt\Foreach_ $node);
 	public function enterFunctionStmt(\PhpParser\Node\Stmt\Function_ $node);
@@ -266,6 +267,7 @@ interface IVisitor
 	public function leaveEchoStmt(\PhpParser\Node\Stmt\Echo_ $node);
 	public function leaveElseStmt(\PhpParser\Node\Stmt\Else_ $node);
 	public function leaveElseIfStmt(\PhpParser\Node\Stmt\ElseIf_ $node);
+	public function leaveExprStmt(\PhpParser\Node\Stmt\Expr $node);
 	public function leaveForStmt(\PhpParser\Node\Stmt\For_ $node);
 	public function leaveForeachStmt(\PhpParser\Node\Stmt\Foreach_ $node);
 	public function leaveFunctionStmt(\PhpParser\Node\Stmt\Function_ $node);
