@@ -18,9 +18,10 @@ if (count($argv) < 2) {
 }
 
 if (!isset($opts))
-    $opts = getopt("f:lirp:", array(
+    $opts = getopt("f:lslirp:", array(
         "file:",
         "enableLocations",
+        "enableLocationScheme",
         "uniqueIds",
         "relativeLocations",
         "prefix:",
@@ -44,6 +45,10 @@ else
 $enableLocations = false;
 if (isset($opts["l"]) || isset($opts["enableLocations"]))
     $enableLocations = true;
+
+$enableLocationScheme = false;
+if (isset($opts["s"]) || isset($opts["enableLocationScheme"]))
+    $enableLocationScheme = true;
 
 $uniqueIds = false;
 if (isset($opts["i"]) || isset($opts["uniqueIds"]))
@@ -86,7 +91,7 @@ else
 $resolveNamespaces = isset($opts['resolve-namespaces']) ? true : false;
 
 $parser = new Parser(new Lexer\Emulative);
-$printer = new RascalPrinter($file, $enableLocations, $relativeLocations, $uniqueIds, $prefix, $addPHPDocs);
+$printer = new RascalPrinter($file, $enableLocations, $relativeLocations, $uniqueIds, $prefix, $addPHPDocs, $enableLocationScheme);
 
 try {
     $stmts = $parser->parse($inputCode);

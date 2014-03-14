@@ -1,6 +1,6 @@
 <?php
-namespace Rascal;
 
+namespace Rascal;
 
 class AST2RascalTest extends \PHPUnit_Framework_TestCase {
     const TEMP_FILE_NAME = "/tmp/ns.php";
@@ -107,6 +107,7 @@ namespace(noName(),[use([use(name("Animal::Bear"),someName(name("Bear")))]),use(
             0 => __DIR__ . '/../../lib/Rascal/AST2Rascal.php',
             1 => self::TEMP_FILE_NAME,
         );
+
         if (is_null($opts))
             unset($opts);
 

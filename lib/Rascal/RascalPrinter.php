@@ -9,6 +9,8 @@ class RascalPrinter extends BasePrinter
 
     private $addLocations = false;
 
+    private $addLocationSchemes = false;
+
     private $relativeLocations = false;
 
     private $addIds = false;
@@ -38,10 +40,11 @@ class RascalPrinter extends BasePrinter
      * @param string $prefix
      * @param bool $docs
      */
-    public function __construct($str, $locs, $rel, $ids, $prefix, $docs)
+    public function __construct($str, $locs, $rel, $ids, $prefix, $docs = false, $locScheme = false)
     {
         $this->filename = $str;
         $this->addLocations = $locs;
+        $this->addLocationSchemes = $locScheme;
         $this->relativeLocations = $rel;
         $this->addIds = $ids;
         $this->idPrefix = $prefix;
@@ -57,6 +60,37 @@ class RascalPrinter extends BasePrinter
     {
         $idToAdd = uniqid($this->idPrefix, true);
         return "@id=\"{$this->rascalizeString($idToAdd)}\"";
+    }
+
+    private function addLocationScheme(\PhpParser\Node $node)
+    {
+        $currentNamespace = str_replace('\\', '/', $this->currentNamespace);
+        $currentClass = str_replace('{$currentNamespace}', '', str_replace('\\', '/', $this->currentClass));
+        $currentTrait = str_replace('{$currentNamespace}', '', str_replace('\\', '/', $this->currentTrait));
+        if (empty($currentClass) && !empty($currentTrait)) {
+            // use trait as className when there is a currentTrait but no currentClass
+            $currentClass = $currentTrait;
+        }
+        $filename = str_replace(array('/', '\\'), '_', $this->filename);
+        $decl = "@decl=|php+%s:///{$filename}/%s|";
+        if ($node instanceof \PhpParser\Node\Stmt\Namespace_)
+            return $this->rascalizeString(sprintf($decl, "namespace", $currentNamespace));
+        else if ($node instanceof \PhpParser\Node\Stmt\Class_)
+            return $this->rascalizeString(sprintf($decl, "class", $currentNamespace . "/" . $currentClass));
+        else if ($node instanceof \PhpParser\Node\Stmt\Interface_)
+            return $this->rascalizeString(sprintf($decl, "interface", $currentNamespace . "/" . $currentClass));
+        else if ($node instanceof \PhpParser\Node\Stmt\Trait_)
+            return $this->rascalizeString(sprintf($decl, "trait", $currentNamespace . "/" . $currentTrait));
+        else if ($node instanceof \PhpParser\Node\Stmt\PropertyProperty)
+            return $this->rascalizeString(sprintf($decl, "field", $currentNamespace. "/" . $currentClass . "/" . $node->name));
+        else if ($node instanceof \PhpParser\Node\Stmt\ClassMethod)
+            return $this->rascalizeString(sprintf($decl, "method", $currentNamespace. "/" . $currentClass . "/" . $this->currentMethod));
+        else if ($node instanceof \PhpParser\Node\Stmt\Function_)
+            return $this->rascalizeString(sprintf($decl, "function", $currentNamespace. "/" . $currentClass . "/" . $this->currentMethod . "/" . $this->currentFunction));
+        else if ($node instanceof \PhpParser\Node\Expr\Variable)
+            return $this->rascalizeString(sprintf($decl, "variable", $currentNamespace. "/" . $currentClass . "/" . $this->currentMethod . "/" . $this->currentFunction . "/" . $node->name));
+        else
+            return $this->rascalizeString(sprintf($decl, "unknown", ""));
     }
 
     private function addLocationTag(\PhpParser\Node $node)
@@ -93,6 +127,8 @@ class RascalPrinter extends BasePrinter
         $tagsToAdd = array();
         if ($this->addLocations)
             $tagsToAdd[] = $this->addLocationTag($node);
+        if ($this->addLocationSchemes)
+            $tagsToAdd[] = $this->addLocationScheme($node);
         if ($this->addIds)
             $tagsToAdd[] = $this->addUniqueId();
         if ($this->addPhpDocs)
