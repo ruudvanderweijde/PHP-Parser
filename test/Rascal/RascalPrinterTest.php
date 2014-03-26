@@ -27,42 +27,42 @@ class RascalPrinterTest extends CodeTestAbstract
     /**
      * @dataProvider provideRascalFilesNoParams
      */
-//    public function testParseSuccessNoParams($name, $code, $expected) {
-//        $actual = $this->getRascalScript($code, $this->getPrinterForNameNoParam($name));
-//        $this->assertEquals($expected, $actual, $name);
-//    }
+    public function testParseSuccessNoParams($name, $code, $expected) {
+        $actual = $this->getRascalScript($code, $this->getPrinterForNameNoParam($name));
+        $this->assertEquals($expected, $actual, $name);
+    }
 
     /**
      * @dataProvider provideRascalFailedFilesWithLocations
      */
-//    public function testParseFailWithLocations($name, $code, $msg) {
-//        $printer = $this->getPrinterForNameWithLocation($name);
-//
-//        try {
-//            $this->parser->parse($code);
-//
-//            $this->fail(sprintf('"%s": Expected Error', $name));
-//        } catch (\PhpParser\Error $e) {
-//            $errorMsg = "errscript(\"" . $printer->rascalizeString($e->getMessage()) . "\")";
-//            $this->assertEquals($msg, $errorMsg, $name);
-//        }
-//    }
+    public function testParseFailWithLocations($name, $code, $msg) {
+        $printer = $this->getPrinterForNameWithLocation($name);
+
+        try {
+            $this->parser->parse($code);
+
+            $this->fail(sprintf('"%s": Expected Error', $name));
+        } catch (\PhpParser\Error $e) {
+            $errorMsg = "errscript(\"" . $printer->rascalizeString($e->getMessage()) . "\")";
+            $this->assertEquals($msg, $errorMsg, $name);
+        }
+    }
 
     /**
      * @dataProvider provideRascalFailedFilesNoParams
      */
-//    public function testParseFailNoParams($name, $code, $msg) {
-//        $printer = $this->getPrinterForNameNoParam($name);
-//
-//        try {
-//            $this->parser->parse($code);
-//
-//            $this->fail(sprintf('"%s": Expected Error', $name));
-//        } catch (\PhpParser\Error $e) {
-//            $errorMsg = "errscript(\"" . $printer->rascalizeString($e->getMessage()) . "\")";
-//            $this->assertEquals($msg, $errorMsg, $name);
-//        }
-//    }
+    public function testParseFailNoParams($name, $code, $msg) {
+        $printer = $this->getPrinterForNameNoParam($name);
+
+        try {
+            $this->parser->parse($code);
+
+            $this->fail(sprintf('"%s": Expected Error', $name));
+        } catch (\PhpParser\Error $e) {
+            $errorMsg = "errscript(\"" . $printer->rascalizeString($e->getMessage()) . "\")";
+            $this->assertEquals($msg, $errorMsg, $name);
+        }
+    }
 
     public function provideRascalFilesWithLocations() {
         return $this->provideRascalFiles('locations', 'test');
