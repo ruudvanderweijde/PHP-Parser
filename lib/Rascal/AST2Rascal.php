@@ -4,6 +4,7 @@ namespace Rascal;
 
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\NameResolver;
+use Rascal\NodeVisitor\NameResolver as NameResolverRascal;
 use PhpParser\Parser;
 use PhpParser\Lexer;
 
@@ -21,12 +22,12 @@ if (!isset($opts))
     $opts = getopt("f:lslirp:", array(
         "file:",
         "enableLocations",
-        "enableLocationScheme",
+        "addDecl",
         "uniqueIds",
         "relativeLocations",
         "prefix:",
         "phpdocs",
-        "resolve-namespaces"
+        "resolveNames"
     ));
 
 if (isset($opts["f"]))
@@ -39,16 +40,16 @@ else
             $file = $argv[1];
         } else {
             echo "errscript(\"The file must be provided using either -f or --file\")";
-            exit() - 1;
+            exit(-1);
         }
 
 $enableLocations = false;
 if (isset($opts["l"]) || isset($opts["enableLocations"]))
     $enableLocations = true;
 
-$enableLocationScheme = false;
-if (isset($opts["s"]) || isset($opts["enableLocationScheme"]))
-    $enableLocationScheme = true;
+$addDeclarations = false;
+if (isset($opts["addDecl"]))
+    $addDeclarations = true;
 
 $uniqueIds = false;
 if (isset($opts["i"]) || isset($opts["uniqueIds"]))
@@ -64,7 +65,7 @@ else
     }
 
 $relativeLocations = false;
-if (isset($opts["r"]) || isset($opts["relativelocations"]))
+if (isset($opts["r"]) || isset($opts["relativeLocations"]))
     $relativeLocations = true;
 
 $addPHPDocs = false;
@@ -85,31 +86,31 @@ else
         $inputCode = file_get_contents($homedir . $file);
     else {
         echo "errscript(\"The given file, $file, does not exist\")";
-        exit() - 1;
+        exit(-1);
     }
 
-$resolveNamespaces = isset($opts['resolve-namespaces']) ? true : false;
+$resolveNames = isset($opts['resolveNames']) ? true : false;
 
 $parser = new Parser(new Lexer\Emulative);
-$printer = new RascalPrinter($file, $enableLocations, $relativeLocations, $uniqueIds, $prefix, $addPHPDocs, $enableLocationScheme);
+$printer = new RascalPrinter($file, $enableLocations, $relativeLocations, $uniqueIds, $prefix, $addPHPDocs, $addDeclarations);
 
 try {
-    $stmts = $parser->parse($inputCode);
+    $parseTree = $parser->parse($inputCode);
 
-    if ($resolveNamespaces) {
+    if ($resolveNames) {
         $traverser = new NodeTraverser;
         $traverser->addVisitor(new NameResolver);
-        $traverser->traverse($stmts);
+        $traverser->addVisitor(new NameResolverRascal);
+        $traverser->traverse($parseTree);
     }
 
-    $strStmts = array();
-    foreach ($stmts as $stmt)
-        $strStmts[] = $printer->pprint($stmt);
-    $script = implode(",\n", $strStmts);
+    $stmts = array();
+    foreach ($parseTree as $stmt)
+        $stmts[] = $printer->pprint($stmt);
+    $script = implode(",\n", $stmts);
     echo "script([" . $script . "])";
 } catch (\PhpParser\Error $e) {
     echo "errscript(\"" . $printer->rascalizeString($e->getMessage()) . "\")";
 } catch (\Exception $e) {
     echo "errscript(\"" . $printer->rascalizeString($e->getMessage()) . "\")";
 }
-?>
