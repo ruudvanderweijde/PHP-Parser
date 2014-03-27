@@ -20,12 +20,13 @@ class Standard extends PrettyPrinterAbstract
     public function pParam(Node\Param $node) {
         return ($node->type ? (is_string($node->type) ? $node->type : $this->p($node->type)) . ' ' : '')
              . ($node->byRef ? '&' : '')
+             . ($node->variadic ? '... ' : '')
              . '$' . $node->name
              . ($node->default ? ' = ' . $this->p($node->default) : '');
     }
 
     public function pArg(Node\Arg $node) {
-        return ($node->byRef ? '&' : '') . $this->p($node->value);
+        return ($node->byRef ? '&' : '') . ($node->unpack ? '...' : '') . $this->p($node->value);
     }
 
     public function pConst(Node\Const_ $node) {
@@ -155,6 +156,10 @@ class Standard extends PrettyPrinterAbstract
         return $this->pInfixOp('Expr_AssignOp_ShiftRight', $node->var, ' >>= ', $node->expr);
     }
 
+    public function pExpr_AssignOp_Pow(AssignOp\Pow $node) {
+        return $this->pInfixOp('Expr_AssignOp_Pow', $node->var, ' **= ', $node->expr);
+    }
+
     // Binary expressions
 
     public function pExpr_BinaryOp_Plus(BinaryOp\Plus $node) {
@@ -207,6 +212,10 @@ class Standard extends PrettyPrinterAbstract
 
     public function pExpr_BinaryOp_ShiftRight(BinaryOp\ShiftRight $node) {
         return $this->pInfixOp('Expr_BinaryOp_ShiftRight', $node->left, ' >> ', $node->right);
+    }
+
+    public function pExpr_BinaryOp_Pow(BinaryOp\Pow $node) {
+        return $this->pInfixOp('Expr_BinaryOp_Pow', $node->left, ' ** ', $node->right);
     }
 
     public function pExpr_BinaryOp_LogicalAnd(BinaryOp\LogicalAnd $node) {
@@ -487,7 +496,10 @@ class Standard extends PrettyPrinterAbstract
     }
 
     public function pStmt_Use(Stmt\Use_ $node) {
-        return 'use ' . $this->pCommaSeparated($node->uses) . ';';
+        return 'use '
+             . ($node->type === Stmt\Use_::TYPE_FUNCTION ? 'function ' : '')
+             . ($node->type === Stmt\Use_::TYPE_CONSTANT ? 'const ' : '')
+             . $this->pCommaSeparated($node->uses) . ';';
     }
 
     public function pStmt_UseUse(Stmt\UseUse $node) {
