@@ -1710,7 +1710,7 @@ class RascalPrinter extends BasePrinter
             if (null != $node->name)
                 $fragment = "namespaceHeader({$this->pprint($node->name)})";
             else
-                $fragment = "namespaceHeader({$this->pprint("")})";
+                $fragment = "namespaceHeader(noName())";
 
         $fragment .= $this->annotateASTNode($node);
 
