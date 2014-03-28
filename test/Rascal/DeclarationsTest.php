@@ -1,0 +1,320 @@
+<?php
+
+namespace Rascal;
+
+
+class DeclarationsTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @var \PhpParser\Parser $parser
+     */
+    private $parser;
+
+    /**
+     * @var \Rascal\RascalPrinter
+     */
+    private $printer;
+
+    public function setUp()
+    {
+        $this->parser = new \PhpParser\Parser(new \PhpParser\Lexer);
+        $this->printer = new RascalPrinter(
+            $fileName = "",
+            $addLocations = false,
+            $relativeLocations = false,
+            $addIds = false,
+            $idPrefix = false,
+            $addPhpDocs = false,
+            $addDeclarations = true
+        );
+    }
+
+    /**
+     * @dataProvider getTestCode
+     */
+    public function testClassDeclarations($code, $expectedDeclarations)
+    {
+        try {
+            $this->parseAndValidateResults($code, $expectedDeclarations);
+        } catch (\PhpParser\Error $e) {
+            $this->fail("Error in parsing: " . $e->getMessage());
+        } catch (\Exception $e) {
+            $this->fail("General error: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Test data: array(code, expectedDeclarations);
+     *
+     * @return array
+     */
+    public function getTestCode()
+    {
+        return array(
+            // namespace tests
+            array(
+                '<?php namespace ns1;',
+                array(
+                    '@decl=|php+namespace:////ns1|'
+                )
+            ),
+            array(
+                '<?php namespace ns2;',
+                array(
+                    '@decl=|php+namespace:////ns2|',
+                )
+            ),
+            array(
+                '<?php namespace ns1\ns2;',
+                array(
+                    '@decl=|php+namespace:////ns1\\\\ns2|',
+                )
+            ),
+            array(
+                '<?php namespace ns1 {} namespace ns2 {}',
+                array(
+                    '@decl=|php+namespace:////ns1|',
+                    '@decl=|php+namespace:////ns2|',
+                )
+            ),
+            array(
+                '<?php namespace ns1 {} namespace ns2 {} namespace {}',
+                array(
+                    '@decl=|php+namespace:////ns1|',
+                    '@decl=|php+namespace:////ns2|',
+                    '@decl=|php+namespace:////|',
+                )
+            ),
+            array(
+                '<?php namespace {}',
+                array(
+                    '@decl=|php+namespace:////|',
+                )
+            ),
+
+            // class tests (and namespace)
+            array(
+                'code' => '<?php class cl1 {}',
+                array(
+                    '@decl=|php+class://///cl1|',
+                )
+            ),
+            array(
+                'code' => '<?php namespace ns1; class cl2 {}',
+                array(
+                    '@decl=|php+class:////ns1/cl2|',
+                    '@decl=|php+namespace:////ns1|',
+                )
+            ),
+            array(
+                'code' => '<?php namespace ns1\ns2; class cl3 {}',
+                array(
+                    '@decl=|php+class:////ns1\\\\ns2/cl3|',
+                    '@decl=|php+namespace:////ns1\\\\ns2|',
+                )
+            ),
+            array(
+                'code' => '<?php namespace ns1 { class cl1 {} } namespace ns2 { class cl2{} }',
+                array(
+                    '@decl=|php+class:////ns1/cl1|',
+                    '@decl=|php+namespace:////ns1|',
+                    '@decl=|php+class:////ns2/cl2|',
+                    '@decl=|php+namespace:////ns2|',
+                )
+            ),
+            array(
+                'code' => '<?php namespace ns1 { } namespace { class cl2 {} }',
+                array(
+                    '@decl=|php+namespace:////ns1|',
+                    '@decl=|php+class://///cl2|',
+                    '@decl=|php+namespace:////|',
+                )
+            ),
+            array(
+                'code' => '<?php namespace ns1 { class cl1 {} } namespace ns1\subNs { class cl2 {} } namespace ns1\subNs\subSubNs { class cl3 {} }',
+                array(
+                    '@decl=|php+class:////ns1/cl1|',
+                    '@decl=|php+namespace:////ns1|',
+                    '@decl=|php+class:////ns1\\\\subNs/cl2|',
+                    '@decl=|php+namespace:////ns1\\\\subNs|',
+                    '@decl=|php+class:////ns1\\\\subNs\\\\subSubNs/cl3|',
+                    '@decl=|php+namespace:////ns1\\\\subNs\\\\subSubNs|',
+                )
+            ),
+            array(
+                'code' => '<?php namespace ns1 { class cl1 {} } namespace ns2 { class cl1 {} }',
+                array(
+                    '@decl=|php+class:////ns1/cl1|',
+                    '@decl=|php+namespace:////ns1|',
+                    '@decl=|php+class:////ns2/cl1|',
+                    '@decl=|php+namespace:////ns2|',
+                )
+            ),
+
+            // interface test
+            array(
+                'code' => '<?php namespace ns1 { interface if1 {} } namespace ns2 { interface if1 {} }',
+                array(
+                    '@decl=|php+interface:////ns1/if1|',
+                    '@decl=|php+namespace:////ns1|',
+                    '@decl=|php+interface:////ns2/if1|',
+                    '@decl=|php+namespace:////ns2|',
+                )
+            ),
+
+            // trait test
+            array(
+                'code' => '<?php namespace ns1 { trait tr1 {} } namespace ns2 { trait tr1 {} }',
+                array(
+                    '@decl=|php+trait:////ns1/tr1|',
+                    '@decl=|php+namespace:////ns1|',
+                    '@decl=|php+trait:////ns2/tr1|',
+                    '@decl=|php+namespace:////ns2|',
+                )
+            ),
+
+            // class method tests
+            array(
+                'code' => '<?php class cl1 { public function m1() {} protected function m2() {} private function m3() {} }',
+                array(
+                    '@decl=|php+method://///cl1/m1|',
+                    '@decl=|php+method://///cl1/m2|',
+                    '@decl=|php+method://///cl1/m3|',
+                    '@decl=|php+class://///cl1|',
+                )
+            ),
+            array( // inside namespace
+                'code' => '<?php namespace ns1 { class cl1 { public function m1() {} protected function m2() {} private function m3() {} } }',
+                array(
+                    '@decl=|php+method:////ns1/cl1/m1|',
+                    '@decl=|php+method:////ns1/cl1/m2|',
+                    '@decl=|php+method:////ns1/cl1/m3|',
+                    '@decl=|php+class:////ns1/cl1|',
+                    '@decl=|php+namespace:////ns1|',
+                )
+            ),
+
+            // class field tests
+            array(
+                'code' => '<?php class cl1 { public $m1; protected $m2; private $m3; }',
+                array(
+                    '@decl=|php+field://///cl1/m1|',
+                    '@decl=|php+field://///cl1/m2|',
+                    '@decl=|php+field://///cl1/m3|',
+                    '@decl=|php+class://///cl1|',
+                )
+            ),
+            array( // inside namespace
+                'code' => '<?php namespace ns1 { class cl1 { public $m1; protected $m2; private $m3; } }',
+                array(
+                    '@decl=|php+field:////ns1/cl1/m1|',
+                    '@decl=|php+field:////ns1/cl1/m2|',
+                    '@decl=|php+field:////ns1/cl1/m3|',
+                    '@decl=|php+class:////ns1/cl1|',
+                    '@decl=|php+namespace:////ns1|',
+                )
+            ),
+
+            // var and function tests
+            array(
+                'code' => '<?php $one; class cl1 { } $two;',
+                array(
+                    '@decl=|php+variable:////////one|',
+                    '@decl=|php+class://///cl1|',
+                    '@decl=|php+variable:////////two|',
+                )
+            ),
+            array(
+                'code' => '<?php $one; class cl1 { public function x() { $three; } }',
+                array(
+                    '@decl=|php+variable:////////one|',
+                    '@decl=|php+variable://///cl1/x//three|',
+                    '@decl=|php+method://///cl1/x|',
+                    '@decl=|php+class://///cl1|',
+                )
+            ),
+            array(
+                'code' => '<?php $one; class cl1 { public function x() { $two; function y() { $three; } } }',
+                array(
+                    '@decl=|php+variable:////////one|',
+                    '@decl=|php+variable://///cl1/x//two|',
+                    '@decl=|php+variable://///cl1/x/y/three|',
+                    '@decl=|php+function://///cl1/x/y|',
+                    '@decl=|php+method://///cl1/x|',
+                    '@decl=|php+class://///cl1|',
+                )
+            ),
+
+            // method and function parameters
+            array(
+                'code' => '<?php $one; function two ($three) { $four; } $five;',
+                array(
+                    '@decl=|php+variable:////////one|',
+                    '@decl=|php+param:///////two/three|',
+                    '@decl=|php+variable:///////two/four|',
+                    '@decl=|php+function:///////two|',
+                    '@decl=|php+variable:////////five|',
+                )
+            ),
+            array(
+                'code' => '<?php $one; class two { public function three ($four) { function five ($six) { $seven; } $eight; } } $nine;',
+                array(
+                    '@decl=|php+variable:////////one|',
+                    '@decl=|php+param://///two/three//four|',
+                    '@decl=|php+param://///two/three/five/six|',
+                    '@decl=|php+variable://///two/three/five/seven|',
+                    '@decl=|php+function://///two/three/five|',
+                    '@decl=|php+variable://///two/three//eight|',
+                    '@decl=|php+method://///two/three|',
+                    '@decl=|php+class://///two|',
+                    '@decl=|php+variable:////////nine|',
+                )
+            ),
+            array(
+                'code' => '<?php function f ($a, $b, array $c) {}',
+                array(
+                    '@decl=|php+param:///////f/a|',
+                    '@decl=|php+param:///////f/b|',
+                    '@decl=|php+param:///////f/c|',
+                    '@decl=|php+function:///////f|',
+                )
+            ),
+        );
+    }
+
+    /**
+     * @param string $code
+     * @param string $expectedDeclarations
+     */
+    private function parseAndValidateResults($code, $expectedDeclarations)
+    {
+        $stmtStr = $this->codeToRascalAST($code);
+
+        if (preg_match_all('/\[(@decl=\|([^|]*)?\|)\]/', $stmtStr, $matches)) {
+            $declarations = $matches[1];
+            $this->assertEquals(count($declarations), count($expectedDeclarations));
+
+            foreach ($declarations as $declaration) {
+                $this->assertContains($declaration, $expectedDeclarations);
+            }
+
+        } else {
+            $this->fail("No declarations found in code: " . $code);
+        }
+    }
+
+    /**
+     * @param string $code
+     * @return string
+     */
+    private function codeToRascalAST($code)
+    {
+        $parseTree = $this->parser->parse($code);
+        $stmtStr = '';
+        foreach ($parseTree as $node) {
+            $stmtStr .= $this->printer->pprint($node);
+        }
+        return $stmtStr;
+    }
+}
+ 
