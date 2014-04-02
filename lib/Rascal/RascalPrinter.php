@@ -1694,7 +1694,7 @@ class RascalPrinter extends BasePrinter
             $this->currentNamespace = $this->implodeName($node->name);
         else
             $this->currentNamespace = "";
-var_dump($this->currentNamespace);
+
         $body = array();
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
