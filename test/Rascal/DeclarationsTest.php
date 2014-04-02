@@ -3,6 +3,10 @@
 namespace Rascal;
 
 
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\NameResolver;
+use Rascal\NodeVisitor\NameResolver as NameResolverRascal;
+
 class DeclarationsTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -150,6 +154,15 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+namespace:////ns2|',
                 )
             ),
+            array(
+                'code' => '<?php namespace ns1; use Main\Sub\Class2 as Cl2; class Class1 { public function __construct() { $cl2 = new Cl2; } }',
+                array(
+                    '@decl=|php+namespace:////ns1|',
+                    '@decl=|php+class:////ns1/Class1|',
+                    '@decl=|php+method:////ns1/Class1/__construct|',
+                    '@decl=|php+variable:////ns1/Class1/__construct//cl2|',
+                )
+            ),
 
             // interface test
             array(
@@ -217,7 +230,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
 
             // var and function tests
             array(
-                'code' => '<?php $one; class cl1 { } $two;',
+                'code' => '<?php $one=1; class cl1 { } $two=2;',
                 array(
                     '@decl=|php+variable:////////one|',
                     '@decl=|php+class://///cl1|',
@@ -225,7 +238,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             array(
-                'code' => '<?php $one; class cl1 { public function x() { $three; } }',
+                'code' => '<?php $one=1; class cl1 { public function x() { $three=3; } }',
                 array(
                     '@decl=|php+variable:////////one|',
                     '@decl=|php+variable://///cl1/x//three|',
@@ -234,7 +247,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             array(
-                'code' => '<?php $one; class cl1 { public function x() { $two; function y() { $three; } } }',
+                'code' => '<?php $one=1; class cl1 { public function x() { $two=2; function y() { $three=3; } } }',
                 array(
                     '@decl=|php+variable:////////one|',
                     '@decl=|php+variable://///cl1/x//two|',
@@ -244,10 +257,32 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+class://///cl1|',
                 )
             ),
+            array(
+                'code' => '<?php $one=1; interface cl1 { public function x() { $two=2; function y() { $three=3; } } }',
+                array(
+                    '@decl=|php+variable:////////one|',
+                    '@decl=|php+variable://///cl1/x//two|',
+                    '@decl=|php+variable://///cl1/x/y/three|',
+                    '@decl=|php+function://///cl1/x/y|',
+                    '@decl=|php+method://///cl1/x|',
+                    '@decl=|php+interface://///cl1|',
+                )
+            ),
+            array(
+                'code' => '<?php $one=1; trait cl1 { public function x() { $two=2; function y() { $three=3; } } }',
+                array(
+                    '@decl=|php+variable:////////one|',
+                    '@decl=|php+variable://///cl1/x//two|',
+                    '@decl=|php+variable://///cl1/x/y/three|',
+                    '@decl=|php+function://///cl1/x/y|',
+                    '@decl=|php+method://///cl1/x|',
+                    '@decl=|php+trait://///cl1|',
+                )
+            ),
 
             // method and function parameters
             array(
-                'code' => '<?php $one; function two ($three) { $four; } $five;',
+                'code' => '<?php $one=1; function two ($three) { $four=4; } $five=5;',
                 array(
                     '@decl=|php+variable:////////one|',
                     '@decl=|php+param:///////two/three|',
@@ -257,7 +292,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             array(
-                'code' => '<?php $one; class two { public function three ($four) { function five ($six) { $seven; } $eight; } } $nine;',
+                'code' => '<?php $one=1; class two { public function three ($four) { function five ($six) { $seven=7; } $eight=8; } } $nine=9;',
                 array(
                     '@decl=|php+variable:////////one|',
                     '@decl=|php+param://///two/three//four|',
@@ -277,6 +312,41 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+param:///////f/b|',
                     '@decl=|php+param:///////f/c|',
                     '@decl=|php+function:///////f|',
+                )
+            ),
+
+            // variable declarations
+            array(
+                'code' => '<?php $a = 1; $b = $a;',
+                array(
+                    '@decl=|php+variable:////////a|',
+                    '@decl=|php+variable:////////b|',
+                )
+            ),
+            array(
+                'code' => '<?php $a = 1; $b = $a;',
+                array(
+                    '@decl=|php+variable:////////a|',
+                    '@decl=|php+variable:////////b|',
+                )
+            ),
+
+            // variable variables
+            array(
+                'code' => '<?php $c="CEE"; $a = "c"; $a = $$a;',
+                array(
+                    '@decl=|php+variable:////////c|',
+                    '@decl=|php+variable:////////a|',
+                    '@decl=|php+variable:////////a|',
+                )
+            ),
+
+            // variables in eval
+            array(
+                'code' => '<?php  eval("\$a = \'a\';"); $b = $a;',
+                array(
+                    //'@decl=|php+variable:////////a|', GETTING DECLARATIONS FROM EVAL DOES NOT WORK!!!
+                    '@decl=|php+variable:////////b|',
                 )
             ),
         );
@@ -310,10 +380,17 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
     private function codeToRascalAST($code)
     {
         $parseTree = $this->parser->parse($code);
+
+        $traverser = new NodeTraverser;
+        $traverser->addVisitor(new NameResolver);
+        $traverser->addVisitor(new NameResolverRascal);
+        $traverser->traverse($parseTree);
+
         $stmtStr = '';
         foreach ($parseTree as $node) {
             $stmtStr .= $this->printer->pprint($node);
         }
+
         return $stmtStr;
     }
 }

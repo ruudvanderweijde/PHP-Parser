@@ -105,10 +105,14 @@ try {
     }
 
     $stmts = array();
+
     foreach ($parseTree as $stmt)
         $stmts[] = $printer->pprint($stmt);
+
     $script = implode(",\n", $stmts);
-    echo "script([" . $script . "])";
+
+    echo sprintf("script([%s])", $script);
+
 } catch (\PhpParser\Error $e) {
     echo "errscript(\"" . $printer->rascalizeString($e->getMessage()) . "\")";
 } catch (\Exception $e) {

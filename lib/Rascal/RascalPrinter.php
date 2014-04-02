@@ -33,6 +33,8 @@ class RascalPrinter extends BasePrinter
 
     private $currentNamespace = "";
 
+    private $addVarDeclaration = false;
+
     /**
      *
      * @param string $str
@@ -66,37 +68,44 @@ class RascalPrinter extends BasePrinter
 
     private function addDeclaration(\PhpParser\Node $node)
     {
-        $currentNamespace = str_replace('\\', '/', $this->currentNamespace);
-        $currentClass = str_replace('{$currentNamespace}', '', str_replace('\\', '/', $this->currentClass));
-        $currentTrait = str_replace('{$currentNamespace}', '', str_replace('\\', '/', $this->currentTrait));
-        $currentInterface = str_replace('{$currentNamespace}', '', str_replace('\\', '/', $this->currentInterface));
+        $namespace = $this->currentNamespace;
+        $class = $this->currentClass;
+        $trait = $this->currentTrait;
+        $interface = $this->currentInterface;
+        $method = $this->currentMethod;
+        $function = $this->currentFunction;
+        
+        $tempNs = str_replace('\\', '/', $this->currentNamespace);
+        $class= str_replace('{$tempNs}', '', str_replace('\\', '/', $class));
+        $trait= str_replace('{$tempNs}', '', str_replace('\\', '/', $trait));
+        $interface = str_replace('{$tempNs}', '', str_replace('\\', '/', $interface));
+        
 
-        if (empty($currentClass) && !empty($currentTrait)) {
-            // use trait as className when there is a currentTrait but no currentClass
-            $currentClass = $currentTrait;
-        } else if (empty($currentClass) && !empty($currentTrait)) {
-            // use trait as className when there is a currentTrait but no currentClass
-            $currentClass = $currentTrait;
+        if (empty($class) && (!empty($trait) || !empty($interface))) {
+            $class = !empty($trait) ? $trait : $interface;
+            // use trait or interface as className when there is a currentTrait or currentInterface but no currentClass
         }
 
         $filename = str_replace(array('/', '\\'), '_', $this->filename);
         $decl = "@decl=|php+%s:///{$filename}/%s|";
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_)
-            return $this->rascalizeString(sprintf($decl, "namespace", $currentNamespace));
+            return $this->rascalizeString(sprintf($decl, "namespace", $namespace));
         else if ($node instanceof \PhpParser\Node\Stmt\Class_)
-            return $this->rascalizeString(sprintf($decl, "class", $currentNamespace . "/" . $currentClass));
+            return $this->rascalizeString(sprintf($decl, "class", $namespace . "/" . $class));
         else if ($node instanceof \PhpParser\Node\Stmt\Interface_)
-            return $this->rascalizeString(sprintf($decl, "interface", $currentNamespace . "/" . $currentInterface));
+            return $this->rascalizeString(sprintf($decl, "interface", $namespace . "/" . $interface));
         else if ($node instanceof \PhpParser\Node\Stmt\Trait_)
-            return $this->rascalizeString(sprintf($decl, "trait", $currentNamespace . "/" . $currentTrait));
+            return $this->rascalizeString(sprintf($decl, "trait", $namespace . "/" . $trait));
         else if ($node instanceof \PhpParser\Node\Stmt\PropertyProperty)
-            return $this->rascalizeString(sprintf($decl, "field", $currentNamespace. "/" . $currentClass . "/" . $node->name));
+            return $this->rascalizeString(sprintf($decl, "field", $namespace. "/" . $class . "/" . $node->name));
         else if ($node instanceof \PhpParser\Node\Stmt\ClassMethod)
-            return $this->rascalizeString(sprintf($decl, "method", $currentNamespace. "/" . $currentClass . "/" . $this->currentMethod));
+            return $this->rascalizeString(sprintf($decl, "method", $namespace. "/" . $class . "/" . $method));
         else if ($node instanceof \PhpParser\Node\Stmt\Function_)
-            return $this->rascalizeString(sprintf($decl, "function", $currentNamespace. "/" . $currentClass . "/" . $this->currentMethod . "/" . $this->currentFunction));
-        else if ($node instanceof \PhpParser\Node\Expr\Variable)
-            return $this->rascalizeString(sprintf($decl, "variable", $currentNamespace. "/" . $currentClass . "/" . $this->currentMethod . "/" . $this->currentFunction . "/" . $node->name));
+            return $this->rascalizeString(sprintf($decl, "function", $namespace. "/" . $class . "/" . $method . "/" . $function));
+        else if ($node instanceof \PhpParser\Node\Expr\Variable && $this->addVarDeclaration)
+            return $this->rascalizeString(sprintf($decl, "variable", $namespace. "/" . $class . "/" . $method . "/" . $function . "/" . $node->name));
+        else if ($node instanceof \PhpParser\Node\Param)
+            return $this->rascalizeString(sprintf($decl, "param", $namespace. "/" . $class . "/" . $method . "/" . $function . "/" . $node->name));
     }
 
     private function addLocationTag(\PhpParser\Node $node)
@@ -216,7 +225,9 @@ class RascalPrinter extends BasePrinter
     public function pprintAssignExpr(\PhpParser\Node\Expr\Assign $node)
     {
         $assignExpr = $this->pprint($node->expr);
+        $this->addVarDeclaration = true;
         $assignVar = $this->pprint($node->var);
+        $this->addVarDeclaration = false;
 
         $fragment = "assign(" . $assignVar . "," . $assignExpr . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -1106,10 +1117,7 @@ class RascalPrinter extends BasePrinter
 
     public function pprintName(\PhpParser\Node\Name $node)
     {
-        if (is_array($node->parts))
-            $fragment = implode("::", $node->parts);
-        else
-            $fragment = $node->parts;
+        $fragment = $this->implodeName($node);
         $fragment = "name(\"" . $fragment . "\")";
         $fragment .= $this->annotateASTNode($node);
 
@@ -1683,10 +1691,10 @@ class RascalPrinter extends BasePrinter
 // namespace { global stuff }
         $priorNamespace = $this->currentNamespace;
         if (null != $node->name)
-            $this->currentNamespace = $node->name;
+            $this->currentNamespace = $this->implodeName($node->name);
         else
             $this->currentNamespace = "";
-
+var_dump($this->currentNamespace);
         $body = array();
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
@@ -1985,6 +1993,22 @@ class RascalPrinter extends BasePrinter
 
         $fragment = "\\while(" . $this->pprint($node->cond) . ",[" . implode(",", $stmts) . "])";
         $fragment .= $this->annotateAstNode($node);
+
+        return $fragment;
+    }
+
+    /**
+     * @param \PhpParser\Node\Name $node
+     * @return array|string
+     */
+    public function implodeName($node)
+    {
+        if (is_string($node))
+            $fragment = $node;
+        else if (is_array($node->parts))
+            $fragment = implode("\\", $node->parts);
+        else
+            $fragment = $node->parts;
 
         return $fragment;
     }
