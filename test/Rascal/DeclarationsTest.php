@@ -323,20 +323,26 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+variable:////////b|',
                 )
             ),
-            array(
-                'code' => '<?php $a = 1; $b = $a;',
-                array(
-                    '@decl=|php+variable:////////a|',
-                    '@decl=|php+variable:////////b|',
-                )
-            ),
 
             // variable variables
+            // TODO: these are not properly handled in RascalPrinter
             array(
                 'code' => '<?php $c="CEE"; $a = "c"; $a = $$a;',
                 array(
                     '@decl=|php+variable:////////c|',
                     '@decl=|php+variable:////////a|',
+                    '@decl=|php+variable:////////a|',
+                )
+            ),
+            array(
+                'code' => '<?php $$a = 1;',
+                array(
+                    '@decl=|php+variable:////////a|',
+                )
+            ),
+            array(
+                'code' => '<?php $$$a = 1;',
+                array(
                     '@decl=|php+variable:////////a|',
                 )
             ),
@@ -354,9 +360,9 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $code
-     * @param string $expectedDeclarations
+     * @param array $expectedDeclarations
      */
-    private function parseAndValidateResults($code, $expectedDeclarations)
+    private function parseAndValidateResults($code, array $expectedDeclarations)
     {
         $stmtStr = $this->codeToRascalAST($code);
 
@@ -366,6 +372,9 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
 
             foreach ($declarations as $declaration) {
                 $this->assertContains($declaration, $expectedDeclarations);
+            }
+            foreach ($expectedDeclarations as $declaration) {
+                $this->assertContains($declaration, $declarations);
             }
 
         } else {

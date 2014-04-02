@@ -33,7 +33,7 @@ class RascalPrinter extends BasePrinter
 
     private $currentNamespace = "";
 
-    private $addVarDeclaration = false;
+    private $inAssignExpr = false;
 
     /**
      *
@@ -102,7 +102,7 @@ class RascalPrinter extends BasePrinter
             return $this->rascalizeString(sprintf($decl, "method", $namespace. "/" . $class . "/" . $method));
         else if ($node instanceof \PhpParser\Node\Stmt\Function_)
             return $this->rascalizeString(sprintf($decl, "function", $namespace. "/" . $class . "/" . $method . "/" . $function));
-        else if ($node instanceof \PhpParser\Node\Expr\Variable && $this->addVarDeclaration)
+        else if ($node instanceof \PhpParser\Node\Expr\Variable && $this->inAssignExpr && !$node->name instanceof \PhpParser\Node\Expr)
             return $this->rascalizeString(sprintf($decl, "variable", $namespace. "/" . $class . "/" . $method . "/" . $function . "/" . $node->name));
         else if ($node instanceof \PhpParser\Node\Param)
             return $this->rascalizeString(sprintf($decl, "param", $namespace. "/" . $class . "/" . $method . "/" . $function . "/" . $node->name));
@@ -225,9 +225,9 @@ class RascalPrinter extends BasePrinter
     public function pprintAssignExpr(\PhpParser\Node\Expr\Assign $node)
     {
         $assignExpr = $this->pprint($node->expr);
-        $this->addVarDeclaration = true;
+        $this->inAssignExpr = true;
         $assignVar = $this->pprint($node->var);
-        $this->addVarDeclaration = false;
+        $this->inAssignExpr = false;
 
         $fragment = "assign(" . $assignVar . "," . $assignExpr . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -1196,7 +1196,9 @@ class RascalPrinter extends BasePrinter
         if ($this->insideTrait) {
             $fragment = "classConstant()";
         } else {
-            $fragment = "classConstant()[@actualValue=\"{$this->currentClass}\"]";
+            $ns = $this->currentNamespace;
+            $currentClass = strlen($ns) > 0 ? $ns . "\\" . $this->currentClass : $this->currentClass;
+            $fragment = "classConstant()[@actualValue=\"{$currentClass}\"]";
         }
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -1998,8 +2000,8 @@ class RascalPrinter extends BasePrinter
     }
 
     /**
-     * @param \PhpParser\Node\Name $node
-     * @return array|string
+     * @param string|\PhpParser\Node\Name $node
+     * @return string
      */
     public function implodeName($node)
     {
