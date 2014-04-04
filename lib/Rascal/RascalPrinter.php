@@ -322,7 +322,9 @@ class RascalPrinter extends BasePrinter
     private function handleAssignOpExpression(\PhpParser\Node\Expr\AssignOp $node, $operation)
     {
         $assignExpr = $this->pprint($node->expr);
+        $this->inAssignExpr = true;
         $assignVar = $this->pprint($node->var);
+        $this->inAssignExpr = false;
 
         $fragment = "assignWOp(" . $assignVar . "," . $assignExpr . "," . $operation . "())";
         $fragment .= $this->annotateASTNode($node);

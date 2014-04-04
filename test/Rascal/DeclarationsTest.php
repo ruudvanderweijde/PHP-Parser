@@ -57,24 +57,6 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
         return array(
             // namespace tests
             array(
-                '<?php namespace ns1;',
-                array(
-                    '@decl=|php+namespace:///ns1|'
-                )
-            ),
-            array(
-                '<?php namespace ns2;',
-                array(
-                    '@decl=|php+namespace:///ns2|',
-                )
-            ),
-            array(
-                '<?php namespace ns1\ns2;',
-                array(
-                    '@decl=|php+namespace:///ns1\\\\ns2|',
-                )
-            ),
-            array(
                 '<?php namespace ns1 {} namespace ns2 {}',
                 array(
                     '@decl=|php+namespace:///ns1|',
@@ -89,51 +71,8 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+namespace:///-|',
                 )
             ),
-            array(
-                '<?php namespace {}',
-                array(
-                    '@decl=|php+namespace:///-|',
-                )
-            ),
 
             // class tests (and namespace)
-            array(
-                'code' => '<?php class cl1 {}',
-                array(
-                    '@decl=|php+class:///-/cl1|',
-                )
-            ),
-            array(
-                'code' => '<?php namespace ns1; class cl2 {}',
-                array(
-                    '@decl=|php+class:///ns1/cl2|',
-                    '@decl=|php+namespace:///ns1|',
-                )
-            ),
-            array(
-                'code' => '<?php namespace ns1\ns2; class cl3 {}',
-                array(
-                    '@decl=|php+class:///ns1\\\\ns2/cl3|',
-                    '@decl=|php+namespace:///ns1\\\\ns2|',
-                )
-            ),
-            array(
-                'code' => '<?php namespace ns1 { class cl1 {} } namespace ns2 { class cl2{} }',
-                array(
-                    '@decl=|php+class:///ns1/cl1|',
-                    '@decl=|php+namespace:///ns1|',
-                    '@decl=|php+class:///ns2/cl2|',
-                    '@decl=|php+namespace:///ns2|',
-                )
-            ),
-            array(
-                'code' => '<?php namespace ns1 { } namespace { class cl2 {} }',
-                array(
-                    '@decl=|php+namespace:///ns1|',
-                    '@decl=|php+class:///-/cl2|',
-                    '@decl=|php+namespace:///-|',
-                )
-            ),
             array(
                 'code' => '<?php namespace ns1 { class cl1 {} } namespace ns1\subNs { class cl2 {} } namespace ns1\subNs\subSubNs { class cl3 {} }',
                 array(
@@ -143,15 +82,6 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+namespace:///ns1\\\\subNs|',
                     '@decl=|php+class:///ns1\\\\subNs\\\\subSubNs/cl3|',
                     '@decl=|php+namespace:///ns1\\\\subNs\\\\subSubNs|',
-                )
-            ),
-            array(
-                'code' => '<?php namespace ns1 { class cl1 {} } namespace ns2 { class cl1 {} }',
-                array(
-                    '@decl=|php+class:///ns1/cl1|',
-                    '@decl=|php+namespace:///ns1|',
-                    '@decl=|php+class:///ns2/cl1|',
-                    '@decl=|php+namespace:///ns2|',
                 )
             ),
             array(
@@ -323,9 +253,39 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+variable:///-/-/-/-/b|',
                 )
             ),
+            /**
+             * test :
+                "PhpParser\Node\Expr\AssignOp\BitwiseAnd"   &=
+                "PhpParser\Node\Expr\AssignOp\BitwiseOr"    |=
+                "PhpParser\Node\Expr\AssignOp\BitwiseXor"   ^=
+                "PhpParser\Node\Expr\AssignOp\Concat"       .=
+                "PhpParser\Node\Expr\AssignOp\Div"          /=
+                "PhpParser\Node\Expr\AssignOp\Minus"        -=
+                "PhpParser\Node\Expr\AssignOp\Mod"          \=
+                "PhpParser\Node\Expr\AssignOp\Mul"          *=
+                "PhpParser\Node\Expr\AssignOp\Plus"         +=
+                "PhpParser\Node\Expr\AssignOp\ShiftLeft"    <<=
+                "PhpParser\Node\Expr\AssignOp\ShiftRight"   >>=
+             */
+            array(
+                'code' => '<?php $a &= 1; $b |= 1; $c ^= 1; $d .= 1; $e /= 1; $f -= 1; $g %= 1; $h *= 1; $i += 1; $j <<= 1; $k >>= 1;',
+                array(
+                    '@decl=|php+variable:///-/-/-/-/a|',
+                    '@decl=|php+variable:///-/-/-/-/b|',
+                    '@decl=|php+variable:///-/-/-/-/c|',
+                    '@decl=|php+variable:///-/-/-/-/d|',
+                    '@decl=|php+variable:///-/-/-/-/e|',
+                    '@decl=|php+variable:///-/-/-/-/f|',
+                    '@decl=|php+variable:///-/-/-/-/g|',
+                    '@decl=|php+variable:///-/-/-/-/h|',
+                    '@decl=|php+variable:///-/-/-/-/i|',
+                    '@decl=|php+variable:///-/-/-/-/j|',
+                    '@decl=|php+variable:///-/-/-/-/k|',
+                )
+            ),
 
             // variable variables
-            // TODO: these are not properly handled in RascalPrinter
+            // TODO: variable variables are not properly handled in RascalPrinter
             array(
                 'code' => '<?php $c="CEE"; $a = "c"; $a = $$a;',
                 array(
