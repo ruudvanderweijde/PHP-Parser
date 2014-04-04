@@ -1063,7 +1063,8 @@ class RascalPrinter extends BasePrinter
 
     public function pprintMethodMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Method $node)
     {
-        return $this->handleMagicConstExpression($node, "methodConstant", $this->currentMethod);
+        return $this->handleMagicConstExpression($node, "methodConstant",
+            $this->currentMethod ? $this->currentClass . "::" . $this->currentMethod : "");
     }
 
     public function pprintNamespaceMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Namespace_ $node)
