@@ -66,6 +66,22 @@ class RascalPrinter extends BasePrinter
         return "@id=\"{$this->rascalizeString($idToAdd)}\"";
     }
 
+    private function addScopeInformation()
+    {
+        $ns = empty($this->currentNamespace) ? '-' : $this->currentNamespace;
+        $cl = empty($this->currentClass) ? '-' : $this->currentClass;
+        $cl = empty($this->currentInterface) ? $cl : $this->currentInterface;
+        $cl = empty($this->currentTrait) ? $cl : $this->currentTrait;
+        $mt = empty($this->currentMethod) ? '-' : $this->currentMethod;
+        $fn = empty($this->currentFunction) ? '-' : $this->currentFunction;
+        return sprintf("@scope=scope(\"%s\",\"%s\",\"%s\",\"%s\")",
+            $this->rascalizeString($ns),
+            $this->rascalizeString($cl),
+            $this->rascalizeString($mt),
+            $this->rascalizeString($fn)
+        );
+        
+    }
     private function addDeclaration(\PhpParser\Node $node)
     {
         $namespace = $this->currentNamespace;
@@ -75,37 +91,41 @@ class RascalPrinter extends BasePrinter
         $method = $this->currentMethod;
         $function = $this->currentFunction;
         
-        $tempNs = str_replace('\\', '/', $this->currentNamespace);
-        $class= str_replace('{$tempNs}', '', str_replace('\\', '/', $class));
-        $trait= str_replace('{$tempNs}', '', str_replace('\\', '/', $trait));
-        $interface = str_replace('{$tempNs}', '', str_replace('\\', '/', $interface));
-        
+        $tempNs = str_replace('\\', '/', $namespace);
+        $class= str_replace("{$tempNs}", '', str_replace('\\', '/', $class));
+        $trait= str_replace("{$tempNs}", '', str_replace('\\', '/', $trait));
+        $interface = str_replace("{$tempNs}", '', str_replace('\\', '/', $interface));
 
         if (empty($class) && (!empty($trait) || !empty($interface))) {
-            $class = !empty($trait) ? $trait : $interface;
             // use trait or interface as className when there is a currentTrait or currentInterface but no currentClass
+            $class = !empty($trait) ? $trait : $interface;
         }
 
-        $filename = str_replace(array('/', '\\'), '_', $this->filename);
-        $decl = "@decl=|php+%s:///{$filename}/%s|";
+        // if they are empty, define some invalid name
+        $namespace = empty($namespace) ? '-' : $namespace;
+        $class = empty($class) ? '-' : $class;
+        $method = empty($method) ? '-' : $method;
+        $function = empty($function) ? '-' : $function;
+
+        $decl = "@decl=|php+%s:///%s|";
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_)
             return $this->rascalizeString(sprintf($decl, "namespace", $namespace));
         else if ($node instanceof \PhpParser\Node\Stmt\Class_)
             return $this->rascalizeString(sprintf($decl, "class", $namespace . "/" . $class));
         else if ($node instanceof \PhpParser\Node\Stmt\Interface_)
-            return $this->rascalizeString(sprintf($decl, "interface", $namespace . "/" . $interface));
+            return $this->rascalizeString(sprintf($decl, "interface", $namespace . "/" . $class));
         else if ($node instanceof \PhpParser\Node\Stmt\Trait_)
-            return $this->rascalizeString(sprintf($decl, "trait", $namespace . "/" . $trait));
+            return $this->rascalizeString(sprintf($decl, "trait", $namespace . "/" . $class));
         else if ($node instanceof \PhpParser\Node\Stmt\PropertyProperty)
-            return $this->rascalizeString(sprintf($decl, "field", $namespace. "/" . $class . "/" . $node->name));
+            return $this->rascalizeString(sprintf($decl, "field", $namespace . "/" . $class . "/" . $node->name));
         else if ($node instanceof \PhpParser\Node\Stmt\ClassMethod)
-            return $this->rascalizeString(sprintf($decl, "method", $namespace. "/" . $class . "/" . $method));
+            return $this->rascalizeString(sprintf($decl, "method", $namespace . "/" . $class . "/" . $method));
         else if ($node instanceof \PhpParser\Node\Stmt\Function_)
-            return $this->rascalizeString(sprintf($decl, "function", $namespace. "/" . $class . "/" . $method . "/" . $function));
+            return $this->rascalizeString(sprintf($decl, "function", $namespace . "/" . $class . "/" . $method . "/" . $function));
         else if ($node instanceof \PhpParser\Node\Expr\Variable && $this->inAssignExpr && !$node->name instanceof \PhpParser\Node\Expr)
-            return $this->rascalizeString(sprintf($decl, "variable", $namespace. "/" . $class . "/" . $method . "/" . $function . "/" . $node->name));
+            return $this->rascalizeString(sprintf($decl, "variable", $namespace . "/" . $class . "/" . $method . "/" . $function . "/" . $node->name));
         else if ($node instanceof \PhpParser\Node\Param)
-            return $this->rascalizeString(sprintf($decl, "param", $namespace. "/" . $class . "/" . $method . "/" . $function . "/" . $node->name));
+            return $this->rascalizeString(sprintf($decl, "parameter", $namespace . "/" . $class . "/" . $method . "/" . $function . "/" . $node->name));
     }
 
     private function addLocationTag(\PhpParser\Node $node)
@@ -142,8 +162,12 @@ class RascalPrinter extends BasePrinter
         $tagsToAdd = array();
         if ($this->addLocations)
             $tagsToAdd[] = $this->addLocationTag($node);
-        if ($this->addDeclarations && $decl = $this->addDeclaration($node))
+        if ($this->addDeclarations) {
+            $tagsToAdd[] = $this->addScopeInformation();
+            if ($decl = $this->addDeclaration($node)) {
             $tagsToAdd[] = $decl;
+            }
+        }
         if ($this->addIds)
             $tagsToAdd[] = $this->addUniqueId();
         if ($this->addPhpDocs)
