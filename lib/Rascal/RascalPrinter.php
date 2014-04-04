@@ -1192,7 +1192,7 @@ class RascalPrinter extends BasePrinter
 
     public function pprintDirMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Dir $node)
     {
-        $fragment = "dirConstant()[@actualValue=\"{dirname($this->filename)}\"]";
+        $fragment = "dirConstant()[@actualValue=\"" . dirname($this->filename) . "\"]";
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
 
@@ -1228,7 +1228,7 @@ class RascalPrinter extends BasePrinter
 
     public function pprintMethodMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Method $node)
     {
-        $fragment = "methodConstant()[@actualValue=\"{$this->currentMethod}\"]";
+        $fragment = "methodConstant()[@actualValue=\"" . $this->currentClass . "::" . $this->currentMethod . "\"]";
         $fragment = "scalar(" . $fragment . ")";
         $fragment .= $this->annotateASTNode($node);
 
