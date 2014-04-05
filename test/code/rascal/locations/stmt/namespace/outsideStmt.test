@@ -10,5 +10,5 @@ __halt_compiler()
 Hi!
 -----
 script([declare([declaration("A", scalar(string("B"))[@at=|file:///tmp/SomeStatementsMayOccurOutsideOfNamespaces.php|(16,3,<2,0>,<2,0>)])[@at=|file:///tmp/SomeStatementsMayOccurOutsideOfNamespaces.php|(14,5,<2,0>,<2,0>)]],[])[@at=|file:///tmp/SomeStatementsMayOccurOutsideOfNamespaces.php|(6,15,<2,0>,<2,0>)],
-namespaceHeader(name("B")[@at=|file:///tmp/SomeStatementsMayOccurOutsideOfNamespaces.php|(22,16,<3,0>,<3,0>)])[@at=|file:///tmp/SomeStatementsMayOccurOutsideOfNamespaces.php|(22,16,<3,0>,<3,0>)],
+namespaceHeader(name("B")[@at=|file:///tmp/SomeStatementsMayOccurOutsideOfNamespaces.php|(32,1,<3,0>,<3,0>)])[@at=|file:///tmp/SomeStatementsMayOccurOutsideOfNamespaces.php|(22,16,<3,0>,<3,0>)],
 haltCompiler("Hi!")[@at=|file:///tmp/SomeStatementsMayOccurOutsideOfNamespaces.php|(39,15,<6,0>,<6,0>)]])

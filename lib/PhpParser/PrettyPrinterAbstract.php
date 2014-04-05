@@ -9,6 +9,7 @@ abstract class PrettyPrinterAbstract
 {
     protected $precedenceMap = array(
         // [precedence, associativity] where for the latter -1 is %left, 0 is %nonassoc and 1 is %right
+        'Expr_BinaryOp_Pow'            => array( 0,  1),
         'Expr_BitwiseNot'              => array( 1,  1),
         'Expr_PreInc'                  => array( 1,  1),
         'Expr_PreDec'                  => array( 1,  1),
@@ -62,6 +63,7 @@ abstract class PrettyPrinterAbstract
         'Expr_AssignOp_BitwiseXor'     => array(15,  1),
         'Expr_AssignOp_ShiftLeft'      => array(15,  1),
         'Expr_AssignOp_ShiftRight'     => array(15,  1),
+        'Expr_AssignOp_Pow'            => array(15,  1),
         'Expr_BinaryOp_LogicalAnd'     => array(16, -1),
         'Expr_BinaryOp_LogicalXor'     => array(17, -1),
         'Expr_BinaryOp_LogicalOr'      => array(18, -1),
@@ -85,7 +87,7 @@ abstract class PrettyPrinterAbstract
     public function prettyPrint(array $stmts) {
         $this->preprocessNodes($stmts);
 
-        return str_replace("\n" . $this->noIndentToken, "\n", $this->pStmts($stmts, false));
+        return trim(str_replace("\n" . $this->noIndentToken, "\n", $this->pStmts($stmts, false)));
     }
 
     /**
@@ -107,7 +109,7 @@ abstract class PrettyPrinterAbstract
      * @return string Pretty printed statements
      */
     public function prettyPrintFile(array $stmts) {
-        $p = trim($this->prettyPrint($stmts));
+        $p = $this->prettyPrint($stmts);
 
         $p = preg_replace('/^\?>\n?/', '', $p, -1, $count);
         $p = preg_replace('/<\?php$/', '', $p);
@@ -143,21 +145,18 @@ abstract class PrettyPrinterAbstract
      * @return string Pretty printed statements
      */
     protected function pStmts(array $nodes, $indent = true) {
-        $pNodes = array();
+        $result = '';
         foreach ($nodes as $node) {
-            $pNodes[] = $this->pComments($node->getAttribute('comments', array()))
-                      . $this->p($node)
-                      . ($node instanceof Expr ? ';' : '');
+            $result .= "\n"
+                    . $this->pComments($node->getAttribute('comments', array()))
+                    . $this->p($node)
+                    . ($node instanceof Expr ? ';' : '');
         }
 
         if ($indent) {
-            return '    ' . preg_replace(
-                '~\n(?!$|' . $this->noIndentToken . ')~',
-                "\n" . '    ',
-                implode("\n", $pNodes)
-            );
+            return preg_replace('~\n(?!$|' . $this->noIndentToken . ')~', "\n    ", $result);
         } else {
-            return implode("\n", $pNodes);
+            return $result;
         }
     }
 

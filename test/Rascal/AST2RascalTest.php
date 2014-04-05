@@ -2,120 +2,100 @@
 
 namespace Rascal;
 
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\NameResolver;
+use Rascal\NodeVisitor\NameResolver as NameResolverRascal;
+use PhpParser\Parser;
+use PhpParser\Lexer;
+
 class AST2RascalTest extends \PHPUnit_Framework_TestCase {
-    const TEMP_FILE_NAME = "/tmp/ns.php";
+    protected $baseFolder;
+    protected $parser;
+    protected $traverser;
 
-    const SOURCE_CODE = <<<CODE
-<?php
-namespace Animal { class Ape {} }
 
-namespace Animal { class Bear {} }
-namespace Animal\Bear { class Panda extends \Animal\Bear {} }
+    public function setUp() {
+        $this->baseFolder = __DIR__ . "/../code/rascal/name_resolver/";
 
-namespace City { class Bear {} }
+        $this->parser = new Parser(new Lexer\Emulative);
 
-namespace Car { class Panda {} }
-
-namespace {
-    use Animal\Bear;
-    use City\Bear as CityBear;
-
-    use \Animal\Bear\Panda as PandaBear;
-    use \Car\Panda;
-
-    echo "Animal\\Bear = " . get_class(new Bear) . "\\n";
-    echo "Animal\\Bear = " . get_class(new Animal\Bear) . "\\n";
-    echo "Animal\\Bear = " . get_class(new \Animal\Bear) . "\\n";
-    echo "-------------------\\n";
-    echo "City\\Bear = " . get_class(new CityBear) . "\\n";
-    echo "City\\Bear = " . get_class(new City\Bear) . "\\n";
-    echo "City\\Bear = " . get_class(new \City\Bear) . "\\n";
-    echo "-------------------\\n";
-    echo "Animal\\Bear\\Panda = " . get_class(new PandaBear) . "\\n";
-    echo "Animal\\Bear\\Panda = " . get_class(new Bear\Panda) . "\\n";
-    echo "Animal\\Bear\\Panda = " . get_class(new Animal\Bear\Panda) . "\\n";
-    echo "Animal\\Bear\\Panda = " . get_class(new \Animal\Bear\Panda) . "\\n";
-    echo "-------------------\\n";
-    echo "Car\\Panda = " . get_class(new Panda) . "\\n";
-    echo "Car\\Panda = " . get_class(new Car\Panda) . "\\n";
-    echo "Car\\Panda = " . get_class(new \Car\Panda) . "\\n";
-}
-CODE;
-
-    const PARSED_RESULT_WITH_RESOLVED_NAMESPACES = 'script([namespace(someName(name("Animal")),[classDef(class("Ape",{},noName(),[],[]))]),
-namespace(someName(name("Animal")),[classDef(class("Bear",{},noName(),[],[]))]),
-namespace(someName(name("Animal::Bear")),[classDef(class("Panda",{},someName(name("Animal::Bear")),[],[]))]),
-namespace(someName(name("City")),[classDef(class("Bear",{},noName(),[],[]))]),
-namespace(someName(name("Car")),[classDef(class("Panda",{},noName(),[],[]))]),
-namespace(noName(),[use([use(name("Animal::Bear"),someName(name("Bear")))]),use([use(name("City::Bear"),someName(name("CityBear")))]),use([use(name("Animal::Bear::Panda"),someName(name("PandaBear")))]),use([use(name("Car::Panda"),someName(name("Panda")))]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear = ")),call(name(name("get_class")),[actualParameter(new(name(name("Animal::Bear")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear = ")),call(name(name("get_class")),[actualParameter(new(name(name("Animal::Bear")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear = ")),call(name(name("get_class")),[actualParameter(new(name(name("Animal::Bear")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([scalar(string("-------------------\\n"))]),echo([binaryOperation(binaryOperation(scalar(string("City\\\\Bear = ")),call(name(name("get_class")),[actualParameter(new(name(name("City::Bear")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("City\\\\Bear = ")),call(name(name("get_class")),[actualParameter(new(name(name("City::Bear")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("City\\\\Bear = ")),call(name(name("get_class")),[actualParameter(new(name(name("City::Bear")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([scalar(string("-------------------\\n"))]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("Animal::Bear::Panda")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("Animal::Bear::Panda")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("Animal::Bear::Panda")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("Animal::Bear::Panda")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([scalar(string("-------------------\\n"))]),echo([binaryOperation(binaryOperation(scalar(string("Car\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("Car::Panda")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Car\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("Car::Panda")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Car\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("Car::Panda")),[]),false)]),concat()),scalar(string("\\n")),concat())])])])';
-
-    const PARSED_RESULT_WITHOUT_RESOLVED_NAMESPACES = 'script([namespace(someName(name("Animal")),[classDef(class("Ape",{},noName(),[],[]))]),
-namespace(someName(name("Animal")),[classDef(class("Bear",{},noName(),[],[]))]),
-namespace(someName(name("Animal::Bear")),[classDef(class("Panda",{},someName(name("Animal::Bear")),[],[]))]),
-namespace(someName(name("City")),[classDef(class("Bear",{},noName(),[],[]))]),
-namespace(someName(name("Car")),[classDef(class("Panda",{},noName(),[],[]))]),
-namespace(noName(),[use([use(name("Animal::Bear"),someName(name("Bear")))]),use([use(name("City::Bear"),someName(name("CityBear")))]),use([use(name("Animal::Bear::Panda"),someName(name("PandaBear")))]),use([use(name("Car::Panda"),someName(name("Panda")))]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear = ")),call(name(name("get_class")),[actualParameter(new(name(name("Bear")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear = ")),call(name(name("get_class")),[actualParameter(new(name(name("Animal::Bear")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear = ")),call(name(name("get_class")),[actualParameter(new(name(name("Animal::Bear")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([scalar(string("-------------------\\n"))]),echo([binaryOperation(binaryOperation(scalar(string("City\\\\Bear = ")),call(name(name("get_class")),[actualParameter(new(name(name("CityBear")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("City\\\\Bear = ")),call(name(name("get_class")),[actualParameter(new(name(name("City::Bear")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("City\\\\Bear = ")),call(name(name("get_class")),[actualParameter(new(name(name("City::Bear")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([scalar(string("-------------------\\n"))]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("PandaBear")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("Bear::Panda")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("Animal::Bear::Panda")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Animal\\\\Bear\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("Animal::Bear::Panda")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([scalar(string("-------------------\\n"))]),echo([binaryOperation(binaryOperation(scalar(string("Car\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("Panda")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Car\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("Car::Panda")),[]),false)]),concat()),scalar(string("\\n")),concat())]),echo([binaryOperation(binaryOperation(scalar(string("Car\\\\Panda = ")),call(name(name("get_class")),[actualParameter(new(name(name("Car::Panda")),[]),false)]),concat()),scalar(string("\\n")),concat())])])])';
-
-    public static function setUpBeforeClass() {
-        file_put_contents(self::TEMP_FILE_NAME, self::SOURCE_CODE);
-        chmod(self::TEMP_FILE_NAME, "0777");
+        $this->traverser = new NodeTraverser;
+        $this->traverser->addVisitor(new NameResolver);
+        $this->traverser->addVisitor(new NameResolverRascal);
     }
 
-    public static function tearDownAfterClass() {
-        unlink(self::TEMP_FILE_NAME);
+    public function testParserNameSpace1() {
+        $fileName = "names_1.php";
+        $parseTree = $this->parserFile($fileName);
+
+        $printer = $this->getPrinter($fileName);
+
+        $this->assertSame("PhpParser\\Node\\Stmt\\Namespace_", get_class($parseTree[0]), "Namespace object-type check");
+        $this->assertSame("PhpParser\\Node\\Stmt\\Use_", get_class($parseTree[0]->stmts[0]), "Class object-type check");
+        $this->assertSame("PhpParser\\Node\\Stmt\\Use_", get_class($parseTree[0]->stmts[1]), "Class object-type check");
+        $this->assertSame("PhpParser\\Node\\Stmt\\Class_", get_class($parseTree[0]->stmts[2]), "Class object-type check");
+
+        // pre traverse check
+        $namePartsDummy  = $parseTree[0]->stmts[2]->stmts[0]->stmts[0]->expr->expr->class->parts;
+        $namePartsDummy2 = $parseTree[0]->stmts[2]->stmts[0]->stmts[2]->expr->expr->class->parts;
+        $this->assertSame(array(0 => "Dummy"),  $namePartsDummy);
+        $this->assertSame(array(0 => "Dummy2"), $namePartsDummy2);
+
+        $prePrint = $printer->pprint($parseTree[0]);
+        $this->traverser->traverse($parseTree);
+        $postPrint = $printer->pprint($parseTree[0]);
+
+        // post traverse check
+        $namePartsDummy  = $parseTree[0]->stmts[2]->stmts[0]->stmts[0]->expr->expr->class->parts;
+        $namePartsDummy2 = $parseTree[0]->stmts[2]->stmts[0]->stmts[2]->expr->expr->class->parts;
+        $this->assertSame(array(0 => "Test", "Dummy"),  $namePartsDummy);
+        $this->assertSame(array(0 => "Test2", "Dummy"), $namePartsDummy2);
+
+        // test printer output
+        $this->assertTrue(1 === substr_count($prePrint, "Test2\\Dummy"));
+        $this->assertTrue(2 === substr_count($postPrint, "Test2\\Dummy"));
+
+        $this->assertTrue(2 === substr_count($prePrint, "Dummy2"));
+        $this->assertTrue(1 === substr_count($postPrint, "Dummy2"));
+
+
     }
 
-    public function testAST2Racal() {
-        $output = $this->getParsedTempFile();
-        $this->assertEquals(self::PARSED_RESULT_WITHOUT_RESOLVED_NAMESPACES, $output);
+    public function parserFile($fileName) {
+        $inputCode = file_get_contents($this->baseFolder.$fileName);
+
+        return $this->parser->parse($inputCode);
     }
 
-    public function testAST2RacalResolveNamespaces() {
-        $output = $this->getParsedTempFileWithResolvedNamespaces();
-        $this->assertEquals(self::PARSED_RESULT_WITH_RESOLVED_NAMESPACES, $output);
-    }
-
-    /**
-     * @return string
-     */
-    protected function getParsedTempFile()
-    {
-        $output = $this->getOutput();
-        return $output;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getParsedTempFileWithResolvedNamespaces()
-    {
-        $opts = array(
-            'resolve-namespaces' => true,
+    private function getPrinter($fileName) {
+        return new RascalPrinter(
+            $fileName,
+            $enableLocations = true,
+            $relativeLocations = false,
+            $uniqueIds = true,
+            $prefix = true,
+            $addPHPDocs = true,
+            $enableLocationInfo = true
         );
-        $output = $this->getOutput($opts);
-
-        return $output;
     }
 
-    /**
-     * @param array $opts
-     * @return string
-     */
-    protected function getOutput($opts = null)
+    public function provideTestFiles()
     {
-        $argv = array(
-            0 => __DIR__ . '/../../lib/Rascal/AST2Rascal.php',
-            1 => self::TEMP_FILE_NAME,
-        );
-
-        if (is_null($opts))
-            unset($opts);
-
-        ob_start();
-        require(__DIR__ . '/../../lib/Rascal/AST2Rascal.php');
-        $output = ob_get_clean();
-        unset($argv, $opts);
-        return $output;
+        $baseFolder = __DIR__ . "/../code/rascal/name_resolver/";
+        return $this->readDirectory($baseFolder);
     }
 
+    private function readDirectory($dir)
+    {
+        $files = array();
+        if ($handle = opendir($dir)) {
+            while (false !== ($entry = readdir($handle)))
+                if (preg_match('/\.php$/', $entry))
+                    $files[] = array($entry);
+
+            closedir($handle);
+        }
+        return $files;
+    }
 }
+ 
