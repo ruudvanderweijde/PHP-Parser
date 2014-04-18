@@ -69,11 +69,11 @@ class RascalPrinter extends BasePrinter
     private function addScopeInformation()
     {
         $ns = empty($this->currentNamespace) ? '-' : $this->currentNamespace;
-        $cl = empty($this->currentClass) ? '-' : $this->currentClass;
+        $cl = empty($this->currentClass)     ? '-' : $this->currentClass;
         $cl = empty($this->currentInterface) ? $cl : $this->currentInterface;
-        $cl = empty($this->currentTrait) ? $cl : $this->currentTrait;
-        $mt = empty($this->currentMethod) ? '-' : $this->currentMethod;
-        $fn = empty($this->currentFunction) ? '-' : $this->currentFunction;
+        $cl = empty($this->currentTrait)     ? $cl : $this->currentTrait;
+        $mt = empty($this->currentMethod)    ? '-' : $this->currentMethod;
+        $fn = empty($this->currentFunction)  ? '-' : $this->currentFunction;
         return sprintf("@scope=scope(\"%s\",\"%s\",\"%s\",\"%s\")",
             $this->rascalizeString($ns),
             $this->rascalizeString($cl),
@@ -92,9 +92,9 @@ class RascalPrinter extends BasePrinter
         $function = $this->currentFunction;
 
         $tempNs = str_replace('\\', '/', $namespace);
-        $class= str_replace("{$tempNs}", '', str_replace('\\', '/', $class));
-        $trait= str_replace("{$tempNs}", '', str_replace('\\', '/', $trait));
-        $interface = str_replace("{$tempNs}", '', str_replace('\\', '/', $interface));
+        $class= str_replace("{$tempNs}/", '', str_replace('\\', '/', $class));
+        $trait= str_replace("{$tempNs}/", '', str_replace('\\', '/', $trait));
+        $interface = str_replace("{$tempNs}/", '', str_replace('\\', '/', $interface));
 
         if (empty($class) && (!empty($trait) || !empty($interface))) {
             // use trait or interface as className when there is a currentTrait or currentInterface but no currentClass
@@ -102,7 +102,7 @@ class RascalPrinter extends BasePrinter
         }
 
         // if they are empty, define some invalid name
-        $namespace = empty($namespace) ? '-' : $namespace;
+        $namespace = empty($namespace) ? '\\' : $namespace;
         $class = empty($class) ? '-' : $class;
         $method = empty($method) ? '-' : $method;
         $function = empty($function) ? '-' : $function;
@@ -118,6 +118,8 @@ class RascalPrinter extends BasePrinter
             return $this->rascalizeString(sprintf($decl, "trait", $namespace . "/" . $class));
         else if ($node instanceof \PhpParser\Node\Stmt\PropertyProperty)
             return $this->rascalizeString(sprintf($decl, "field", $namespace . "/" . $class . "/" . $node->name));
+        else if ($node instanceof \PhpParser\Node\Const_)
+            return $this->rascalizeString(sprintf($decl, "constant", $namespace . "/" . $class . "/" . $node->name));
         else if ($node instanceof \PhpParser\Node\Stmt\ClassMethod)
             return $this->rascalizeString(sprintf($decl, "method", $namespace . "/" . $class . "/" . $method));
         else if ($node instanceof \PhpParser\Node\Stmt\Function_)
@@ -1742,7 +1744,13 @@ class RascalPrinter extends BasePrinter
         foreach ($node->insteadof as $item)
             $insteadOf[] = $this->pprint($item);
 
-        $fragment = "traitPrecedence(" . $this->pprint($node->trait) . ",\"" . $node->method . "\",[" . implode(",", $insteadOf) . "])";
+        if (null != $node->trait) {
+            $trait = "someName(" . $this->pprint($node->trait) . ")";
+        } else {
+            $trait = "noName()";
+        }
+
+        $fragment = "traitPrecedence(" . $trait . ",\"" . $node->method . "\",{" . implode(",", $insteadOf) . "})";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
