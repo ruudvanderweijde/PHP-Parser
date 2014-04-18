@@ -84,6 +84,17 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+namespace:///ns1\subNs\subSubNs|',
                 )
             ),
+            array( // same as the test above, except for curly braces around namespaces
+                'code' => '<?php namespace ns1; class cl1 {} namespace ns1\subNs; class cl2 {} namespace ns1\subNs\subSubNs; class cl3 {}',
+                array(
+                    '@decl=|php+class:///ns1/cl1|',
+                    '@decl=|php+namespace:///ns1|',
+                    '@decl=|php+class:///ns1\subNs/cl2|',
+                    '@decl=|php+namespace:///ns1\subNs|',
+                    '@decl=|php+class:///ns1\subNs\subSubNs/cl3|',
+                    '@decl=|php+namespace:///ns1\subNs\subSubNs|',
+                )
+            ),
             array(
                 'code' => '<?php namespace ns1; use Main\Sub\Class2 as Cl2; class Class1 { public function __construct() { $cl2 = new Cl2; } }',
                 array(
