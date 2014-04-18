@@ -123,7 +123,7 @@ class RascalPrinter extends BasePrinter
         else if ($node instanceof \PhpParser\Node\Stmt\ClassMethod)
             return $this->rascalizeString(sprintf($decl, "method", $namespace . "/" . $class . "/" . $method));
         else if ($node instanceof \PhpParser\Node\Stmt\Function_)
-            return $this->rascalizeString(sprintf($decl, "function", $namespace . "/" . $class . "/" . $method . "/" . $function));
+            return $this->rascalizeString(sprintf($decl, "function", $namespace . "/" . $function));
         else if ($node instanceof \PhpParser\Node\Expr\Variable && $this->inAssignExpr && !$node->name instanceof \PhpParser\Node\Expr)
             return $this->rascalizeString(sprintf($decl, "variable", $namespace . "/" . $class . "/" . $method . "/" . $function . "/" . $node->name));
         else if ($node instanceof \PhpParser\Node\Param)

@@ -193,7 +193,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+variable:///\/-/-/-/one|',
                     '@decl=|php+variable:///\/cl1/x/-/two|',
                     '@decl=|php+variable:///\/cl1/x/y/three|',
-                    '@decl=|php+function:///\/cl1/x/y|',
+                    '@decl=|php+function:///\/y|',
                     '@decl=|php+method:///\/cl1/x|',
                     '@decl=|php+class:///\/cl1|',
                 )
@@ -204,7 +204,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+variable:///\/-/-/-/one|',
                     '@decl=|php+variable:///\/cl1/x/-/two|',
                     '@decl=|php+variable:///\/cl1/x/y/three|',
-                    '@decl=|php+function:///\/cl1/x/y|',
+                    '@decl=|php+function:///\/y|',
                     '@decl=|php+method:///\/cl1/x|',
                     '@decl=|php+interface:///\/cl1|',
                 )
@@ -215,7 +215,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+variable:///\/-/-/-/one|',
                     '@decl=|php+variable:///\/cl1/x/-/two|',
                     '@decl=|php+variable:///\/cl1/x/y/three|',
-                    '@decl=|php+function:///\/cl1/x/y|',
+                    '@decl=|php+function:///\/y|',
                     '@decl=|php+method:///\/cl1/x|',
                     '@decl=|php+trait:///\/cl1|',
                 )
@@ -228,7 +228,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+variable:///\/-/-/-/one|',
                     '@decl=|php+parameter:///\/-/-/two/three|',
                     '@decl=|php+variable:///\/-/-/two/four|',
-                    '@decl=|php+function:///\/-/-/two|',
+                    '@decl=|php+function:///\/two|',
                     '@decl=|php+variable:///\/-/-/-/five|',
                 )
             ),
@@ -239,7 +239,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+parameter:///\/two/three/-/four|',
                     '@decl=|php+parameter:///\/two/three/five/six|',
                     '@decl=|php+variable:///\/two/three/five/seven|',
-                    '@decl=|php+function:///\/two/three/five|',
+                    '@decl=|php+function:///\/five|',
                     '@decl=|php+variable:///\/two/three/-/eight|',
                     '@decl=|php+method:///\/two/three|',
                     '@decl=|php+class:///\/two|',
@@ -252,7 +252,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+parameter:///\/-/-/f/a|',
                     '@decl=|php+parameter:///\/-/-/f/b|',
                     '@decl=|php+parameter:///\/-/-/f/c|',
-                    '@decl=|php+function:///\/-/-/f|',
+                    '@decl=|php+function:///\/f|',
                 )
             ),
 
