@@ -21,6 +21,8 @@ class RascalPrinter extends BasePrinter
 
     private $insideTrait = false;
 
+    private $insideFunction = false;
+
     private $currentFunction = "";
 
     private $currentClass = "";
@@ -103,9 +105,9 @@ class RascalPrinter extends BasePrinter
 
         // if they are empty, define some invalid name
         $namespace = empty($namespace) ? '\\' : $namespace;
-        $class = empty($class) ? '-' : $class;
-        $method = empty($method) ? '-' : $method;
-        $function = empty($function) ? '-' : $function;
+//        $class = empty($class) ? '-' : $class;
+//        $method = empty($method) ? '-' : $method;
+//        $function = empty($function) ? '' : $function;
 
         $decl = "@decl=|php+%s:///%s|";
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_)
@@ -124,10 +126,22 @@ class RascalPrinter extends BasePrinter
             return $this->rascalizeString(sprintf($decl, "method", $namespace . "/" . $class . "/" . $method));
         else if ($node instanceof \PhpParser\Node\Stmt\Function_)
             return $this->rascalizeString(sprintf($decl, "function", $namespace . "/" . $function));
-        else if ($node instanceof \PhpParser\Node\Expr\Variable && $this->inAssignExpr && !$node->name instanceof \PhpParser\Node\Expr)
-            return $this->rascalizeString(sprintf($decl, "variable", $namespace . "/" . $class . "/" . $method . "/" . $function . "/" . $node->name));
-        else if ($node instanceof \PhpParser\Node\Param)
-            return $this->rascalizeString(sprintf($decl, "parameter", $namespace . "/" . $class . "/" . $method . "/" . $function . "/" . $node->name));
+        else if ($node instanceof \PhpParser\Node\Expr\Variable && $this->inAssignExpr && !$node->name instanceof \PhpParser\Node\Expr) {
+            // only declare variables that are inside an assign expression, and the name must not be an expression
+            // (we are not able to handle this, atleast for now)
+            if ($this->insideFunction) // function variable
+                return $this->rascalizeString(sprintf($decl, "variable", $namespace . "/" . $function . "/" . $node->name));
+            else if ($this->currentMethod) // method variable
+                return $this->rascalizeString(sprintf($decl, "variable", $namespace . "/" . $class . "/" . $method . "/" . $node->name));
+            else // global var
+                return $this->rascalizeString(sprintf($decl, "variable", $namespace . "/" . $node->name));
+        }
+        else if ($node instanceof \PhpParser\Node\Param) {
+            if ($this->insideFunction) // function parameter
+                return $this->rascalizeString(sprintf($decl, "parameter", $namespace . "/" . $function . "/" . $node->name));
+            if ($this->currentMethod) // method parameter
+                return $this->rascalizeString(sprintf($decl, "parameter", $namespace . "/" . $class . "/" . $method . "/" . $node->name));
+        }
     }
 
     private function addLocationTag(\PhpParser\Node $node)
@@ -1204,6 +1218,9 @@ class RascalPrinter extends BasePrinter
         $priorMethod = $this->currentMethod;
         $this->currentMethod = $node->name;
 
+        $priorInsideFunction = $this->insideFunction;
+        $this->insideFunction = false;
+
         $body = array();
         if (null != $node->stmts)
             foreach ($node->stmts as $thestmt)
@@ -1235,6 +1252,7 @@ class RascalPrinter extends BasePrinter
         $fragment .= $this->annotateASTNode($node);
 
         $this->currentMethod = $priorMethod;
+        $this->insideFunction = $priorInsideFunction;
 
         return $fragment;
     }
@@ -1395,6 +1413,9 @@ class RascalPrinter extends BasePrinter
         $priorFunction = $this->currentFunction;
         $this->currentFunction = $node->name;
 
+        $priorInsideFunction = $this->insideFunction;
+        $this->insideFunction = true;
+
         $body = array();
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
@@ -1411,6 +1432,7 @@ class RascalPrinter extends BasePrinter
         $fragment .= $this->annotateASTNode($node);
 
         $this->currentFunction = $priorFunction;
+        $this->insideFunction = $priorInsideFunction;
 
         return $fragment;
     }
