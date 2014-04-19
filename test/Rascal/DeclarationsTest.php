@@ -305,10 +305,13 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
 
             // variable declarations
             array(
-                'code' => '<?php $a = 1; $b = $a;',
+                'code' => '<?php $a = 1; $b = $a; function f ($p) { $v=4; }',
                 array(
                     '@decl=|php+variable:///a|',
                     '@decl=|php+variable:///b|',
+                    '@decl=|php+function:///f|',
+                    '@decl=|php+parameter:///f/p|',
+                    '@decl=|php+variable:///f/v|',
                 )
             ),
             /**
