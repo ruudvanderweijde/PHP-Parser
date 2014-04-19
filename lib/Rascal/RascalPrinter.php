@@ -93,51 +93,46 @@ class RascalPrinter extends BasePrinter
         $method = $this->currentMethod;
         $function = $this->currentFunction;
 
-        $tempNs = str_replace('\\', '/', $namespace);
-        $class= str_replace("{$tempNs}/", '', str_replace('\\', '/', $class));
-        $trait= str_replace("{$tempNs}/", '', str_replace('\\', '/', $trait));
-        $interface = str_replace("{$tempNs}/", '', str_replace('\\', '/', $interface));
+        // define the namespace name with a trailing slash, or leave empty for global namespace
+        $ns = empty($namespace) ? '' : $namespace . "/";
 
         if (empty($class) && (!empty($trait) || !empty($interface))) {
             // use trait or interface as className when there is a currentTrait or currentInterface but no currentClass
             $class = !empty($trait) ? $trait : $interface;
         }
 
-        // if they are empty, define some invalid name
-        $namespace = empty($namespace) ? '\\' : $namespace;
-
         $decl = "@decl=|php+%s:///%s|";
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_)
             return $this->rascalizeString(sprintf($decl, "namespace", $namespace));
         else if ($node instanceof \PhpParser\Node\Stmt\Class_)
-            return $this->rascalizeString(sprintf($decl, "class", $namespace . "/" . $class));
+            return $this->rascalizeString(sprintf($decl, "class", $ns . $class));
         else if ($node instanceof \PhpParser\Node\Stmt\Interface_)
-            return $this->rascalizeString(sprintf($decl, "interface", $namespace . "/" . $class));
+            return $this->rascalizeString(sprintf($decl, "interface", $ns . $class));
         else if ($node instanceof \PhpParser\Node\Stmt\Trait_)
-            return $this->rascalizeString(sprintf($decl, "trait", $namespace . "/" . $class));
+            return $this->rascalizeString(sprintf($decl, "trait", $ns . $class));
         else if ($node instanceof \PhpParser\Node\Stmt\PropertyProperty)
-            return $this->rascalizeString(sprintf($decl, "field", $namespace . "/" . $class . "/" . $node->name));
+            return $this->rascalizeString(sprintf($decl, "field", $ns . $class . "/" . $node->name));
         else if ($node instanceof \PhpParser\Node\Const_)
-            return $this->rascalizeString(sprintf($decl, "constant", $namespace . "/" . $class . "/" . $node->name));
+            return $this->rascalizeString(sprintf($decl, "constant", $ns . $class . "/" . $node->name));
         else if ($node instanceof \PhpParser\Node\Stmt\ClassMethod)
-            return $this->rascalizeString(sprintf($decl, "method", $namespace . "/" . $class . "/" . $method));
+            return $this->rascalizeString(sprintf($decl, "method", $ns . $class . "/" . $method));
         else if ($node instanceof \PhpParser\Node\Stmt\Function_)
-            return $this->rascalizeString(sprintf($decl, "function", $namespace . "/" . $function));
+            return $this->rascalizeString(sprintf($decl, "function", $ns . $function));
         else if ($node instanceof \PhpParser\Node\Expr\Variable && $this->inAssignExpr && !$node->name instanceof \PhpParser\Node\Expr) {
             // only declare variables that are inside an assign expression, and the name must not be an expression
             // (we are not able to handle this, atleast for now)
             if ($this->insideFunction) // function variable
-                return $this->rascalizeString(sprintf($decl, "variable", $namespace . "/" . $function . "/" . $node->name));
+                return $this->rascalizeString(sprintf($decl, "variable", $ns . $function . "/" . $node->name));
             else if ($this->currentMethod) // method variable
-                return $this->rascalizeString(sprintf($decl, "variable", $namespace . "/" . $class . "/" . $method . "/" . $node->name));
+                return $this->rascalizeString(sprintf($decl, "variable", $ns . $class . "/" . $method . "/" . $node->name));
             else // global var
-                return $this->rascalizeString(sprintf($decl, "variable", $namespace . "/" . $node->name));
+                return $this->rascalizeString(sprintf($decl, "variable", $ns . $node->name));
         }
         else if ($node instanceof \PhpParser\Node\Param) {
             if ($this->insideFunction) // function parameter
-                return $this->rascalizeString(sprintf($decl, "parameter", $namespace . "/" . $function . "/" . $node->name));
+                return $this->rascalizeString(sprintf($decl, "parameter", $ns . $function . "/" . $node->name));
             if ($this->currentMethod) // method parameter
-                return $this->rascalizeString(sprintf($decl, "parameter", $namespace . "/" . $class . "/" . $method . "/" . $node->name));
+                return $this->rascalizeString(sprintf($decl, "parameter", $ns . $class . "/" . $method . "/" . $node->name));
         }
     }
 
@@ -1857,7 +1852,7 @@ class RascalPrinter extends BasePrinter
         if (is_string($node))
             $fragment = $node;
         else if (is_array($node->parts))
-            $fragment = implode("\\", $node->parts);
+            $fragment = implode("::", $node->parts);
         else
             $fragment = $node->parts;
 
