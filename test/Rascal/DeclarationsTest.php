@@ -275,20 +275,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                 'code' => '<?php $greet = function($n) { echo $n; };',
                 array(
                     '@decl=|php+variable:///\/greet|',
-                )
-            ),
-            array( // todo handle closure
-                'code' => '<?php $one=1; class two { public function three ($four) { $five = function ($six) { $seven=7; }; $eight=8; } } $nine=9;',
-                array(
-                    '@decl=|php+variable:///\/one|',
-                    '@decl=|php+class:///\/two|',
-                    '@decl=|php+method:///\/two/three|',
-                    '@decl=|php+parameter:///\/two/three/four|',
-                    '@decl=|php+variable:///\/two/three/five|',
-//                    '@decl=|php+parameter:///\/two/three/six|', // check this out after commit
-                    '@decl=|php+variable:///\/two/three/seven|',
-                    '@decl=|php+variable:///\/two/three/eight|',
-                    '@decl=|php+variable:///\/nine|',
+                    // closure are not part of the declarations (yet)
                 )
             ),
             array(
