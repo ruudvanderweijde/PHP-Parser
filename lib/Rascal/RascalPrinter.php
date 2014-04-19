@@ -70,12 +70,12 @@ class RascalPrinter extends BasePrinter
 
     private function addScopeInformation()
     {
-        $ns = empty($this->currentNamespace) ? '-' : $this->currentNamespace;
-        $cl = empty($this->currentClass)     ? '-' : $this->currentClass;
+        $ns = $this->currentNamespace;
+        $cl = $this->currentClass;
         $cl = empty($this->currentInterface) ? $cl : $this->currentInterface;
         $cl = empty($this->currentTrait)     ? $cl : $this->currentTrait;
-        $mt = empty($this->currentMethod)    ? '-' : $this->currentMethod;
-        $fn = empty($this->currentFunction)  ? '-' : $this->currentFunction;
+        $mt = $this->currentMethod;
+        $fn = $this->currentFunction;
         return sprintf("@scope=scope(\"%s\",\"%s\",\"%s\",\"%s\")",
             $this->rascalizeString($ns),
             $this->rascalizeString($cl),
