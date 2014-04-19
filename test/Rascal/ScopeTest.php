@@ -73,8 +73,8 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
             array(
                 '<?php namespace ns1\ns2;',
                 array(
-                    '@scope=scope("ns1\\\\ns2","-","-","-")', // namespace node
-                    '@scope=scope("ns1\\\\ns2","-","-","-")', // namespace name node
+                    '@scope=scope("ns1::ns2","-","-","-")', // namespace node
+                    '@scope=scope("ns1::ns2","-","-","-")', // namespace name node
                 )
             ),
             array(
@@ -92,9 +92,9 @@ class ScopeTest extends \PHPUnit_Framework_TestCase
             array(
                 'code' => '<?php namespace ns1\ns2; class cl3 {}',
                 array(
-                    '@scope=scope("ns1\\\\ns2","-","-","-")', // namespace node
-                    '@scope=scope("ns1\\\\ns2","-","-","-")', // namespace name node
-                    '@scope=scope("ns1\\\\ns2","cl3","-","-")', // class node
+                    '@scope=scope("ns1::ns2","-","-","-")', // namespace node
+                    '@scope=scope("ns1::ns2","-","-","-")', // namespace name node
+                    '@scope=scope("ns1::ns2","cl3","-","-")', // class node
                 )
             ),
             array(
