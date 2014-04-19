@@ -105,9 +105,6 @@ class RascalPrinter extends BasePrinter
 
         // if they are empty, define some invalid name
         $namespace = empty($namespace) ? '\\' : $namespace;
-//        $class = empty($class) ? '-' : $class;
-//        $method = empty($method) ? '-' : $method;
-//        $function = empty($function) ? '' : $function;
 
         $decl = "@decl=|php+%s:///%s|";
         if ($node instanceof \PhpParser\Node\Stmt\Namespace_)
