@@ -345,6 +345,19 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                 )
             ),
 
+            // conditional declarations
+            array(
+                'code' => '<?php if (true) { $one=1; } if (1) { function two ($three) { $four=4; } } if (1) { class X {} } else { class X {} } ',
+                array(
+                    '@decl=|php+variable:///one|',
+                    '@decl=|php+parameter:///two/three|',
+                    '@decl=|php+variable:///two/four|',
+                    '@decl=|php+function:///two|',
+                    '@decl=|php+class:///X|',
+                    '@decl=|php+class:///X|',
+                )
+            ),
+
             // variable variables
             // TODO: variable variables are not properly handled in RascalPrinter
             array(
