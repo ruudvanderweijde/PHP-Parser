@@ -772,32 +772,34 @@ class RascalPrinter extends BasePrinter
 
     public function pprintPostDecExpr(\PhpParser\Node\Expr\PostDec $node)
     {
-        $operand = $this->pprint($node->var);
-        $fragment = "unaryOperation(" . $operand . ",postDec())";
-        $fragment .= $this->annotateASTNode($node);
-        return $fragment;
+        return $this->handleIncreaseDecreaseVarExpression($node, "postDec");
     }
 
     public function pprintPostIncExpr(\PhpParser\Node\Expr\PostInc $node)
     {
-        $operand = $this->pprint($node->var);
-        $fragment = "unaryOperation(" . $operand . ",postInc())";
-        $fragment .= $this->annotateASTNode($node);
-        return $fragment;
+        return $this->handleIncreaseDecreaseVarExpression($node, "postInc");
     }
 
     public function pprintPreDecExpr(\PhpParser\Node\Expr\PreDec $node)
     {
-        $operand = $this->pprint($node->var);
-        $fragment = "unaryOperation(" . $operand . ",preDec())";
-        $fragment .= $this->annotateASTNode($node);
-        return $fragment;
+        return $this->handleIncreaseDecreaseVarExpression($node, "preDec");
     }
 
     public function pprintPreIncExpr(\PhpParser\Node\Expr\PreInc $node)
     {
+        return $this->handleIncreaseDecreaseVarExpression($node, "preInc");
+    }
+
+    /**
+     * @param \PhpParser\Node\Expr\PostDec $node
+     * @return string
+     */
+    private function handleIncreaseDecreaseVarExpression(\PhpParser\Node\Expr $node, $operation)
+    {
+        $this->inAssignExpr = true;
         $operand = $this->pprint($node->var);
-        $fragment = "unaryOperation(" . $operand . ",preInc())";
+        $this->inAssignExpr = false;
+        $fragment = "unaryOperation(" . $operand . ",".$operation."())";
         $fragment .= $this->annotateASTNode($node);
         return $fragment;
     }
@@ -1793,7 +1795,6 @@ class RascalPrinter extends BasePrinter
 
         return $fragment;
     }
-
     public function pprintUnsetStmt(\PhpParser\Node\Stmt\Unset_ $node)
     {
         $vars = array();
@@ -1805,6 +1806,7 @@ class RascalPrinter extends BasePrinter
 
         return $fragment;
     }
+
     public function pprintUseStmt(\PhpParser\Node\Stmt\Use_ $node)
     {
         $uses = array();
@@ -1816,6 +1818,7 @@ class RascalPrinter extends BasePrinter
 
         return $fragment;
     }
+
 
     public function pprintUseUseStmt(\PhpParser\Node\Stmt\UseUse $node)
     {
@@ -1842,7 +1845,6 @@ class RascalPrinter extends BasePrinter
 
         return $fragment;
     }
-
     /**
      * @param string|\PhpParser\Node\Name $node
      * @return string

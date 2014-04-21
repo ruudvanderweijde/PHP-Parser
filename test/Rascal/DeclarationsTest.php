@@ -322,7 +322,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                 "PhpParser\Node\Expr\AssignOp\Concat"       .=
                 "PhpParser\Node\Expr\AssignOp\Div"          /=
                 "PhpParser\Node\Expr\AssignOp\Minus"        -=
-                "PhpParser\Node\Expr\AssignOp\Mod"          \=
+                "PhpParser\Node\Expr\AssignOp\Mod"          %=
                 "PhpParser\Node\Expr\AssignOp\Mul"          *=
                 "PhpParser\Node\Expr\AssignOp\Plus"         +=
                 "PhpParser\Node\Expr\AssignOp\ShiftLeft"    <<=
@@ -342,6 +342,15 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+variable:///i|',
                     '@decl=|php+variable:///j|',
                     '@decl=|php+variable:///k|',
+                )
+            ),
+            array(
+                'code' => '<?php $a++; ++$b; $c--; --$d;',
+                array(
+                    '@decl=|php+variable:///a|',
+                    '@decl=|php+variable:///b|',
+                    '@decl=|php+variable:///c|',
+                    '@decl=|php+variable:///d|',
                 )
             ),
 
