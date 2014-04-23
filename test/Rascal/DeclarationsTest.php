@@ -174,11 +174,12 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
 
             // class field tests
             array(
-                'code' => '<?php class cl1 { public $m1; protected $m2; private $m3; }',
+                'code' => '<?php class cl1 { public $m1; protected $m2; private $m3; static $m4; }',
                 array(
                     '@decl=|php+field:///cl1/m1|',
                     '@decl=|php+field:///cl1/m2|',
                     '@decl=|php+field:///cl1/m3|',
+                    '@decl=|php+field:///cl1/m4|',
                     '@decl=|php+class:///cl1|',
                 )
             ),
@@ -367,6 +368,16 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                 )
             ),
 
+            // static vars
+            array(
+                'code' => '<?php static $a; function b() { static $c = 1; }',
+                array(
+                    '@decl=|php+variable:///a|',
+                    '@decl=|php+function:///b|',
+                    '@decl=|php+variable:///b/c|',
+
+                ),
+            ),
             // variable variables
             // TODO: variable variables are not properly handled in RascalPrinter
             array(

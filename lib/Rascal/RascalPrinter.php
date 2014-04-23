@@ -118,7 +118,8 @@ class RascalPrinter extends BasePrinter
             return $this->rascalizeString(sprintf($decl, "method", $ns . $class . "/" . $method));
         else if ($node instanceof \PhpParser\Node\Stmt\Function_)
             return $this->rascalizeString(sprintf($decl, "function", $ns . $function));
-        else if ($node instanceof \PhpParser\Node\Expr\Variable && $this->inAssignExpr && !$node->name instanceof \PhpParser\Node\Expr) {
+        else if ($node instanceof \PhpParser\Node\Stmt\StaticVar
+                || ($node instanceof \PhpParser\Node\Expr\Variable && $this->inAssignExpr && !$node->name instanceof \PhpParser\Node\Expr)) {
             // only declare variables that are inside an assign expression, and the name must not be an expression
             // (we are not able to handle this, atleast for now)
             if ($this->insideFunction) // function variable
