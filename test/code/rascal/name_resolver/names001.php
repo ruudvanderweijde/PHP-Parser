@@ -12,5 +12,14 @@ class ClassInNameSpaceTest {
 
         $dummy2 = new Dummy2;
         $dummy2->exec();
+
+        $dummy3 = new Dummy2\Dummy3;
+        $dummy3->exec();
+
+        $dummy4 = new Dummy2\Dummy3\Dummy4;
+        $dummy4->exec();
+
+        $dummy5 = new Dummy5;
+        $dummy5->exec();
     }
 }
