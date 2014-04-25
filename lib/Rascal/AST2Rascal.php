@@ -111,7 +111,7 @@ try {
 
     $script = implode(",\n", $stmts);
 
-    echo sprintf("script([%s])", $script);
+    echo sprintf("script([%s])[@decl=|php+namespace:///|]", $script);
 
 } catch (\PhpParser\Error $e) {
     echo "errscript(\"" . $printer->rascalizeString($e->getMessage()) . "\")";

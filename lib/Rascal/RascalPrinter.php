@@ -112,8 +112,12 @@ class RascalPrinter extends BasePrinter
             return $this->rascalizeString(sprintf($decl, "trait", $ns . $class));
         else if ($node instanceof \PhpParser\Node\Stmt\PropertyProperty)
             return $this->rascalizeString(sprintf($decl, "field", $ns . $class . "/" . $node->name));
-        else if ($node instanceof \PhpParser\Node\Const_)
-            return $this->rascalizeString(sprintf($decl, "constant", $ns . $class . "/" . $node->name));
+        else if ($node instanceof \PhpParser\Node\Const_) {
+            if ($class) // class constant
+                return $this->rascalizeString(sprintf($decl, "classConstant", $ns . $class . "/" . $node->name));
+            else //global constant
+                return $this->rascalizeString(sprintf($decl, "constant", $ns . $node->name));
+        }
         else if ($node instanceof \PhpParser\Node\Stmt\ClassMethod)
             return $this->rascalizeString(sprintf($decl, "method", $ns . $class . "/" . $method));
         else if ($node instanceof \PhpParser\Node\Stmt\Function_)
@@ -123,17 +127,17 @@ class RascalPrinter extends BasePrinter
             // only declare variables that are inside an assign expression, and the name must not be an expression
             // (we are not able to handle this, atleast for now)
             if ($this->insideFunction) // function variable
-                return $this->rascalizeString(sprintf($decl, "variable", $ns . $function . "/" . $node->name));
+                return $this->rascalizeString(sprintf($decl, "functionVar", $ns . $function . "/" . $node->name));
             else if ($this->currentMethod) // method variable
-                return $this->rascalizeString(sprintf($decl, "variable", $ns . $class . "/" . $method . "/" . $node->name));
+                return $this->rascalizeString(sprintf($decl, "methodVar", $ns . $class . "/" . $method . "/" . $node->name));
             else // global var
-                return $this->rascalizeString(sprintf($decl, "variable", $ns . $node->name));
+                return $this->rascalizeString(sprintf($decl, "globalVar", $ns . $node->name));
         }
         else if ($node instanceof \PhpParser\Node\Param) {
             if ($this->insideFunction) // function parameter
-                return $this->rascalizeString(sprintf($decl, "parameter", $ns . $function . "/" . $node->name));
+                return $this->rascalizeString(sprintf($decl, "functionParam", $ns . $function . "/" . $node->name));
             if ($this->currentMethod) // method parameter
-                return $this->rascalizeString(sprintf($decl, "parameter", $ns . $class . "/" . $method . "/" . $node->name));
+                return $this->rascalizeString(sprintf($decl, "methodParam", $ns . $class . "/" . $method . "/" . $node->name));
         }
     }
 
@@ -1855,7 +1859,7 @@ class RascalPrinter extends BasePrinter
         if (is_string($node))
             $fragment = $node;
         else if (is_array($node->parts))
-            $fragment = implode("::", $node->parts);
+            $fragment = implode("/", $node->parts);
         else
             $fragment = $node->parts;
 
