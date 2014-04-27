@@ -8,8 +8,7 @@ use Rascal\NodeVisitor\NameResolver as NameResolverRascal;
 use PhpParser\Parser;
 use PhpParser\Lexer;
 
-class AST2RascalTest extends \PHPUnit_Framework_TestCase {
-    protected $baseFolder;
+class AST2RascalNameResolverTest extends \PHPUnit_Framework_TestCase {
     protected $parser;
     protected $traverser;
 
@@ -17,8 +16,6 @@ class AST2RascalTest extends \PHPUnit_Framework_TestCase {
     private $parseTree;
 
     public function setUp() {
-        $this->baseFolder = __DIR__ . "/../code/rascal/name_resolver/";
-
         $this->parser = new Parser(new Lexer\Emulative);
 
         $this->traverser = new NodeTraverser;
@@ -42,7 +39,8 @@ class AST2RascalTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function parserFile() {
-        $inputCode = file_get_contents($this->baseFolder.$this->fileName);
+        $baseFolder = __DIR__ . "/../code/rascal/name_resolver/";
+        $inputCode = file_get_contents($baseFolder.$this->fileName);
 
         return $this->parser->parse($inputCode);
     }
@@ -83,18 +81,18 @@ class AST2RascalTest extends \PHPUnit_Framework_TestCase {
                 //use Test2\Dummy as Dummy2;
                 "file" => "names001.php",
                 "preTraverse" => array(
-                    "Dummy",                            //new Dummy;
-                    "Dummy2",                           //new Dummy2;
-                    "Dummy2::Dummy3",                   //new Dummy2\Dummy3;
-                    "Dummy2::Dummy3::Dummy4",           //new Dummy2\Dummy3\Dummy4;
-                    "Dummy5",                           //new Dummy5;
+                    "Dummy",                         //new Dummy;
+                    "Dummy2",                        //new Dummy2;
+                    "Dummy2/Dummy3",                 //new Dummy2\Dummy3;
+                    "Dummy2/Dummy3/Dummy4",          //new Dummy2\Dummy3\Dummy4;
+                    "Dummy5",                        //new Dummy5;
                 ),
                 "postTraverse" => array(
-                    "Test::Dummy",                      //new Dummy;
-                    "Test2::Dummy",                     //new Dummy2;
-                    "Test2::Dummy::Dummy3",             //new Dummy2\Dummy3;
-                    "Test2::Dummy::Dummy3::Dummy4",     //new Dummy2\Dummy3\Dummy4;
-                    "Test::Dummy5",                     //new Dummy5;
+                    "Test/Dummy",                    //new Dummy;
+                    "Test2/Dummy",                   //new Dummy2;
+                    "Test2/Dummy/Dummy3",            //new Dummy2\Dummy3;
+                    "Test2/Dummy/Dummy3/Dummy4",     //new Dummy2\Dummy3\Dummy4;
+                    "Test/Dummy5",                   //new Dummy5;
                 ),
             ),
             array(
@@ -102,20 +100,20 @@ class AST2RascalTest extends \PHPUnit_Framework_TestCase {
                 //use Car\Panda;
                 "file" => "names002.php",
                 "preTraverse" => array(
-                    "Bear",                             //new Bear;
-                    "Bear::Panda",                      //new Bear\Panda;
-                    "Bear::Panda::GiantPanda",          //new Bear\Panda\GiantPanda;
-                    "Animal::Bear::Panda::GiantPanda",  //new \Animal\Bear\Panda\GiantPanda;
-                    "Panda",                            //new Panda;
-                    "Car::Panda",                       //new \Car\Panda;
+                    "Bear",                          //new Bear;
+                    "Bear/Panda",                    //new Bear\Panda;
+                    "Bear/Panda/GiantPanda",         //new Bear\Panda\GiantPanda;
+                    "Animal/Bear/Panda/GiantPanda",  //new \Animal\Bear\Panda\GiantPanda;
+                    "Panda",                         //new Panda;
+                    "Car/Panda",                     //new \Car\Panda;
                 ),
                 "postTraverse" => array(
-                    "Animal::Bear",                     //new Bear;
-                    "Animal::Bear::Panda",              //new Bear\Panda;
-                    "Animal::Bear::Panda::GiantPanda",  //new Bear\Panda\GiantPanda;
-                    "Animal::Bear::Panda::GiantPanda",  //new \Animal\Bear\Panda\GiantPanda;
-                    "Car::Panda",                       //new Panda;
-                    "Car::Panda",                       //new \Car\Panda;
+                    "Animal/Bear",                   //new Bear;
+                    "Animal/Bear/Panda",             //new Bear\Panda;
+                    "Animal/Bear/Panda/GiantPanda",  //new Bear\Panda\GiantPanda;
+                    "Animal/Bear/Panda/GiantPanda",  //new \Animal\Bear\Panda\GiantPanda;
+                    "Car/Panda",                     //new Panda;
+                    "Car/Panda",                     //new \Car\Panda;
                 ),
             ),
 
