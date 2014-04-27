@@ -86,12 +86,12 @@ class RascalPrinter extends BasePrinter
     }
     private function addDeclaration(\PhpParser\Node $node)
     {
-        $namespace = $this->currentNamespace;
-        $class = $this->currentClass;
-        $trait = $this->currentTrait;
-        $interface = $this->currentInterface;
-        $method = $this->currentMethod;
-        $function = $this->currentFunction;
+        $namespace = strtolower($this->currentNamespace);
+        $class = strtolower($this->currentClass);
+        $trait = strtolower($this->currentTrait);
+        $interface = strtolower($this->currentInterface);
+        $method = strtolower($this->currentMethod);
+        $function = strtolower($this->currentFunction);
 
         // define the namespace name with a trailing slash, or leave empty for global namespace
         $ns = empty($namespace) ? '' : $namespace . "/";

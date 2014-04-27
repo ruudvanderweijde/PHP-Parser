@@ -90,10 +90,10 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                 array(
                     '@decl=|php+class:///ns1/cl1|',
                     '@decl=|php+namespace:///ns1|',
-                    '@decl=|php+class:///ns1/subNs/cl2|',
-                    '@decl=|php+namespace:///ns1/subNs|',
-                    '@decl=|php+class:///ns1/subNs/subSubNs/cl3|',
-                    '@decl=|php+namespace:///ns1/subNs/subSubNs|',
+                    '@decl=|php+class:///ns1/subns/cl2|',
+                    '@decl=|php+namespace:///ns1/subns|',
+                    '@decl=|php+class:///ns1/subns/subsubns/cl3|',
+                    '@decl=|php+namespace:///ns1/subns/subsubns|',
                 )
             ),
             array( // same as the test above, except for curly braces around namespaces
@@ -101,19 +101,19 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                 array(
                     '@decl=|php+class:///ns1/cl1|',
                     '@decl=|php+namespace:///ns1|',
-                    '@decl=|php+class:///ns1/subNs/cl2|',
-                    '@decl=|php+namespace:///ns1/subNs|',
-                    '@decl=|php+class:///ns1/subNs/subSubNs/cl3|',
-                    '@decl=|php+namespace:///ns1/subNs/subSubNs|',
+                    '@decl=|php+class:///ns1/subns/cl2|',
+                    '@decl=|php+namespace:///ns1/subns|',
+                    '@decl=|php+class:///ns1/subns/subsubns/cl3|',
+                    '@decl=|php+namespace:///ns1/subns/subsubns|',
                 )
             ),
             array(
                 'code' => '<?php namespace ns1; use Main\Sub\Class2 as Cl2; class Class1 { public function __construct() { $cl2 = new Cl2; } }',
                 array(
                     '@decl=|php+namespace:///ns1|',
-                    '@decl=|php+class:///ns1/Class1|',
-                    '@decl=|php+method:///ns1/Class1/__construct|',
-                    '@decl=|php+methodVar:///ns1/Class1/__construct/cl2|',
+                    '@decl=|php+class:///ns1/class1|',
+                    '@decl=|php+method:///ns1/class1/__construct|',
+                    '@decl=|php+methodVar:///ns1/class1/__construct/cl2|',
                 )
             ),
 
@@ -248,16 +248,16 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
             array(
                 'code' => '<?php function One() { $_1=1; function Two() { $_2=2; class Three { public $_3=3; public function Four() { $_4=4; function Five() {$_5=5;} } } } }',
                 array(
-                    '@decl=|php+function:///One|',
-                    '@decl=|php+function:///Two|',
-                    '@decl=|php+class:///Three|',
-                    '@decl=|php+method:///Three/Four|',
-                    '@decl=|php+function:///Five|',
-                    '@decl=|php+functionVar:///One/_1|',
-                    '@decl=|php+functionVar:///Two/_2|',
-                    '@decl=|php+field:///Three/_3|',
-                    '@decl=|php+methodVar:///Three/Four/_4|',
-                    '@decl=|php+functionVar:///Five/_5|',
+                    '@decl=|php+function:///one|',
+                    '@decl=|php+function:///two|',
+                    '@decl=|php+class:///three|',
+                    '@decl=|php+method:///three/four|',
+                    '@decl=|php+function:///five|',
+                    '@decl=|php+functionVar:///one/_1|',
+                    '@decl=|php+functionVar:///two/_2|',
+                    '@decl=|php+field:///three/_3|',
+                    '@decl=|php+methodVar:///three/four/_4|',
+                    '@decl=|php+functionVar:///five/_5|',
                 )
             ),
 
@@ -363,8 +363,8 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                     '@decl=|php+functionParam:///two/three|',
                     '@decl=|php+functionVar:///two/four|',
                     '@decl=|php+function:///two|',
-                    '@decl=|php+class:///X|',
-                    '@decl=|php+class:///X|',
+                    '@decl=|php+class:///x|',
+                    '@decl=|php+class:///x|',
                 )
             ),
 
