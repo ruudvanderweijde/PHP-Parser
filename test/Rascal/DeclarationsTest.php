@@ -394,7 +394,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                 ),
             ),
             // globalVar variables
-            // TODO: variable variables are not properly handled in RascalPrinter
+            // TODO: declarations of variable variables are not properly handled in RascalPrinter
             array(
                 'code' => '<?php $c="CEE"; $a = "c"; $a = $$a;',
                 array(
