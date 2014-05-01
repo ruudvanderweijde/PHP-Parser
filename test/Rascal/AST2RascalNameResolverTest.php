@@ -77,43 +77,68 @@ class AST2RascalNameResolverTest extends \PHPUnit_Framework_TestCase {
     {
         return array(
             array(
+                //namespace Test;
                 //use Test\Dummy;
                 //use Test2\Dummy as Dummy2;
-                "file" => "names001.php",
-                "preTraverse" => array(
-                    "Dummy",                         //new Dummy;
-                    "Dummy2",                        //new Dummy2;
-                    "Dummy2/Dummy3",                 //new Dummy2\Dummy3;
-                    "Dummy2/Dummy3/Dummy4",          //new Dummy2\Dummy3\Dummy4;
-                    "Dummy5",                        //new Dummy5;
+                'file' => 'names001.php',
+                'preTraverse' => array(
+                    'Dummy',                         //new Dummy;
+                    'Dummy2',                        //new Dummy2;
+                    'Dummy2/Dummy3',                 //new Dummy2\Dummy3;
+                    'Dummy2/Dummy3/Dummy4',          //new Dummy2\Dummy3\Dummy4;
+                    'Dummy5',                        //new Dummy5;
+                    'C',                             //new C;
+                    'C',                             //new \C;
                 ),
-                "postTraverse" => array(
-                    "Test/Dummy",                    //new Dummy;
-                    "Test2/Dummy",                   //new Dummy2;
-                    "Test2/Dummy/Dummy3",            //new Dummy2\Dummy3;
-                    "Test2/Dummy/Dummy3/Dummy4",     //new Dummy2\Dummy3\Dummy4;
-                    "Test/Dummy5",                   //new Dummy5;
+                'postTraverse' => array(
+                    'Test/Dummy',                    //new Dummy;
+                    'Test2/Dummy',                   //new Dummy2;
+                    'Test2/Dummy/Dummy3',            //new Dummy2\Dummy3;
+                    'Test2/Dummy/Dummy3/Dummy4',     //new Dummy2\Dummy3\Dummy4;
+                    'Test/Dummy5',                   //new Dummy5;
+                    'Test/C',                        //new C;
+                    'C',                             //new \C;
                 ),
             ),
             array(
                 //use Animal\Bear;
                 //use Car\Panda;
-                "file" => "names002.php",
-                "preTraverse" => array(
-                    "Bear",                          //new Bear;
-                    "Bear/Panda",                    //new Bear\Panda;
-                    "Bear/Panda/GiantPanda",         //new Bear\Panda\GiantPanda;
-                    "Animal/Bear/Panda/GiantPanda",  //new \Animal\Bear\Panda\GiantPanda;
-                    "Panda",                         //new Panda;
-                    "Car/Panda",                     //new \Car\Panda;
+                'file' => 'names002.php',
+                'preTraverse' => array(
+                    'Bear',                          //new Bear;
+                    'Bear/Panda',                    //new Bear\Panda;
+                    'Bear/Panda/GiantPanda',         //new Bear\Panda\GiantPanda;
+                    'Animal/Bear/Panda/GiantPanda',  //new \Animal\Bear\Panda\GiantPanda;
+                    'Panda',                         //new Panda;
+                    'Car/Panda',                     //new \Car\Panda;
                 ),
-                "postTraverse" => array(
-                    "Animal/Bear",                   //new Bear;
-                    "Animal/Bear/Panda",             //new Bear\Panda;
-                    "Animal/Bear/Panda/GiantPanda",  //new Bear\Panda\GiantPanda;
-                    "Animal/Bear/Panda/GiantPanda",  //new \Animal\Bear\Panda\GiantPanda;
-                    "Car/Panda",                     //new Panda;
-                    "Car/Panda",                     //new \Car\Panda;
+                'postTraverse' => array(
+                    'Animal/Bear',                   //new Bear;
+                    'Animal/Bear/Panda',             //new Bear\Panda;
+                    'Animal/Bear/Panda/GiantPanda',  //new Bear\Panda\GiantPanda;
+                    'Animal/Bear/Panda/GiantPanda',  //new \Animal\Bear\Panda\GiantPanda;
+                    'Car/Panda',                     //new Panda;
+                    'Car/Panda',                     //new \Car\Panda;
+                ),
+            ),
+            array(
+                // namespace A;
+                // use B;
+                // use X/Y/Z as Z;
+                'file' => 'names003.php',
+                'preTraverse' => array(
+                    'C',                             //new C;
+                    'B',                             //new B;
+                    'Z',                             //new Z;
+                    'Z/A',                           //new Z\A;
+                    'Z/A',                           //new \Z\A;
+                ),
+                'postTraverse' => array(
+                    'A/C',                           //new C;
+                    'B',                             //new B;
+                    'X/Y/Z',                         //new Z;
+                    'X/Y/Z/A',                       //new Z\A;
+                    'Z/A',                           //new \Z\A;
                 ),
             ),
 

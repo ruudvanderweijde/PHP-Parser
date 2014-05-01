@@ -21,5 +21,8 @@ class ClassInNameSpaceTest {
 
         $dummy5 = new Dummy5;
         $dummy5->exec();
+
+        $c = new C;
+        $c = new \C;
     }
 }
