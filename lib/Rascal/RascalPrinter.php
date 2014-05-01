@@ -957,7 +957,7 @@ class RascalPrinter extends BasePrinter
 
     public function pprintFullyQualifiedName(\PhpParser\Node\Name\FullyQualified $node)
     {
-        return $this->pprintName($node);
+        return $this->pprintName($node, $prefix = "\\");
     }
 
     public function pprintRelativeName(\PhpParser\Node\Name\Relative $node)
@@ -965,10 +965,10 @@ class RascalPrinter extends BasePrinter
         return $this->pprintName($node);
     }
 
-    public function pprintName(\PhpParser\Node\Name $node)
+    public function pprintName(\PhpParser\Node\Name $node, $prefix = "")
     {
         $fragment = $this->implodeName($node);
-        $fragment = "name(\"" . $fragment . "\")";
+        $fragment = "name(\"" . $prefix . $fragment . "\")";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
