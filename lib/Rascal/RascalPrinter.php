@@ -68,22 +68,6 @@ class RascalPrinter extends BasePrinter
         return "@id=\"{$this->rascalizeString($idToAdd)}\"";
     }
 
-    private function addScopeInformation()
-    {
-        $ns = $this->currentNamespace;
-        $cl = $this->currentClass;
-        $cl = empty($this->currentInterface) ? $cl : $this->currentInterface;
-        $cl = empty($this->currentTrait)     ? $cl : $this->currentTrait;
-        $mt = $this->currentMethod;
-        $fn = $this->currentFunction;
-        return sprintf("@scope=scope(\"%s\",\"%s\",\"%s\",\"%s\")",
-            $this->rascalizeString($ns),
-            $this->rascalizeString($cl),
-            $this->rascalizeString($mt),
-            $this->rascalizeString($fn)
-        );
-
-    }
     private function addDeclaration(\PhpParser\Node $node)
     {
         $namespace = strtolower($this->currentNamespace);
@@ -176,7 +160,6 @@ class RascalPrinter extends BasePrinter
         if ($this->addLocations)
             $tagsToAdd[] = $this->addLocationTag($node);
         if ($this->addDeclarations) {
-            $tagsToAdd[] = $this->addScopeInformation();
             if ($decl = $this->addDeclaration($node)) {
             $tagsToAdd[] = $decl;
             }
