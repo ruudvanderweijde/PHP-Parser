@@ -957,7 +957,7 @@ class RascalPrinter extends BasePrinter
 
     public function pprintFullyQualifiedName(\PhpParser\Node\Name\FullyQualified $node)
     {
-        return $this->pprintName($node, $prefix = "\\");
+        return $this->pprintName($node, $prefix = "/");
     }
 
     public function pprintRelativeName(\PhpParser\Node\Name\Relative $node)
