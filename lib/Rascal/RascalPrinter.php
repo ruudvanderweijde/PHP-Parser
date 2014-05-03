@@ -107,15 +107,17 @@ class RascalPrinter extends BasePrinter
         else if ($node instanceof \PhpParser\Node\Stmt\Function_)
             return $this->rascalizeString(sprintf($decl, "function", $ns . $function));
         else if ($node instanceof \PhpParser\Node\Stmt\StaticVar
-                || ($node instanceof \PhpParser\Node\Expr\Variable && $this->inAssignExpr && !$node->name instanceof \PhpParser\Node\Expr)) {
+                || ($node instanceof \PhpParser\Node\Expr\Variable && $this->inAssignExpr)) {
+            $prefix = ($node->name instanceof \PhpParser\Node\Expr) ? "unresolved+" : "";
+            $name = ($node->name instanceof \PhpParser\Node\Expr) ? "" : $node->name;
             // only declare variables that are inside an assign expression, and the name must not be an expression
             // (we are not able to handle this, atleast for now)
             if ($this->insideFunction) // function variable
-                return $this->rascalizeString(sprintf($decl, "functionVar", $ns . $function . "/" . $node->name));
+                return $this->rascalizeString(sprintf($decl, $prefix . "functionVar", $ns . $function . "/" . $name));
             else if ($this->currentMethod) // method variable
-                return $this->rascalizeString(sprintf($decl, "methodVar", $ns . $class . "/" . $method . "/" . $node->name));
+                return $this->rascalizeString(sprintf($decl, $prefix . "methodVar", $ns . $class . "/" . $method . "/" . $name));
             else // global var
-                return $this->rascalizeString(sprintf($decl, "globalVar", $ns . $node->name));
+                return $this->rascalizeString(sprintf($decl, $prefix . "globalVar", $ns . $name));
         }
         else if ($node instanceof \PhpParser\Node\Param) {
             if ($this->insideFunction) // function parameter
@@ -910,7 +912,10 @@ class RascalPrinter extends BasePrinter
     public function pprintVariableExpr(\PhpParser\Node\Expr\Variable $node)
     {
         if ($node->name instanceof \PhpParser\Node\Expr) {
+            $prevInAssignExpr = $this->inAssignExpr;
+            $this->inAssignExpr = false;
             $fragment = "expr(" . $this->pprint($node->name) . ")";
+            $this->inAssignExpr = $prevInAssignExpr;
         } else {
             $fragment = "name(name(\"" . $node->name . "\"))";
         }

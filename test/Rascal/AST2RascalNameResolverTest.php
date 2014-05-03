@@ -88,16 +88,16 @@ class AST2RascalNameResolverTest extends \PHPUnit_Framework_TestCase {
                     'Dummy2/Dummy3/Dummy4',          //new Dummy2\Dummy3\Dummy4;
                     'Dummy5',                        //new Dummy5;
                     'C',                             //new C;
-                    '\C',                             //new \C;
+                    '/C',                             //new \C;
                 ),
                 'postTraverse' => array(
-                    '\Test/Dummy',                    //new Dummy;
-                    '\Test2/Dummy',                   //new Dummy2;
-                    '\Test2/Dummy/Dummy3',            //new Dummy2\Dummy3;
-                    '\Test2/Dummy/Dummy3/Dummy4',     //new Dummy2\Dummy3\Dummy4;
-                    '\Test/Dummy5',                   //new Dummy5;
-                    '\Test/C',                        //new C;
-                    '\C',                             //new \C;
+                    '/Test/Dummy',                    //new Dummy;
+                    '/Test2/Dummy',                   //new Dummy2;
+                    '/Test2/Dummy/Dummy3',            //new Dummy2\Dummy3;
+                    '/Test2/Dummy/Dummy3/Dummy4',     //new Dummy2\Dummy3\Dummy4;
+                    '/Test/Dummy5',                   //new Dummy5;
+                    '/Test/C',                        //new C;
+                    '/C',                             //new \C;
                 ),
             ),
             array(
@@ -108,17 +108,17 @@ class AST2RascalNameResolverTest extends \PHPUnit_Framework_TestCase {
                     'Bear',                          //new Bear;
                     'Bear/Panda',                    //new Bear\Panda;
                     'Bear/Panda/GiantPanda',         //new Bear\Panda\GiantPanda;
-                    '\Animal/Bear/Panda/GiantPanda', //new \Animal\Bear\Panda\GiantPanda;
+                    '/Animal/Bear/Panda/GiantPanda', //new \Animal\Bear\Panda\GiantPanda;
                     'Panda',                         //new Panda;
-                    '\Car/Panda',                    //new \Car\Panda;
+                    '/Car/Panda',                    //new \Car\Panda;
                 ),
                 'postTraverse' => array(
-                    '\Animal/Bear',                   //new Bear;
-                    '\Animal/Bear/Panda',             //new Bear\Panda;
-                    '\Animal/Bear/Panda/GiantPanda',  //new Bear\Panda\GiantPanda;
-                    '\Animal/Bear/Panda/GiantPanda',  //new \Animal\Bear\Panda\GiantPanda;
-                    '\Car/Panda',                     //new Panda;
-                    '\Car/Panda',                     //new \Car\Panda;
+                    '/Animal/Bear',                   //new Bear;
+                    '/Animal/Bear/Panda',             //new Bear\Panda;
+                    '/Animal/Bear/Panda/GiantPanda',  //new Bear\Panda\GiantPanda;
+                    '/Animal/Bear/Panda/GiantPanda',  //new \Animal\Bear\Panda\GiantPanda;
+                    '/Car/Panda',                     //new Panda;
+                    '/Car/Panda',                     //new \Car\Panda;
                 ),
             ),
             array(
@@ -131,14 +131,14 @@ class AST2RascalNameResolverTest extends \PHPUnit_Framework_TestCase {
                     'B',                             //new B;
                     'Z',                             //new Z;
                     'Z/A',                           //new Z\A;
-                    '\Z/A',                           //new \Z\A;
+                    '/Z/A',                           //new \Z\A;
                 ),
                 'postTraverse' => array(
-                    '\A/C',                           //new C;
-                    '\B',                             //new B;
-                    '\X/Y/Z',                         //new Z;
-                    '\X/Y/Z/A',                       //new Z\A;
-                    '\Z/A',                          //new \Z\A;
+                    '/A/C',                           //new C;
+                    '/B',                             //new B;
+                    '/X/Y/Z',                         //new Z;
+                    '/X/Y/Z/A',                       //new Z\A;
+                    '/Z/A',                          //new \Z\A;
                 ),
             ),
 
