@@ -1002,8 +1002,12 @@ class RascalPrinter extends BasePrinter
 
     public function pprintDNumberScalar(\PhpParser\Node\Scalar\DNumber $node)
     {
-        $fragment = "float(" . sprintf('%f', $node->value) . ")";
-        $fragment = "scalar(" . $fragment . ")";
+    	if (is_infinite($node->value)) {
+	        $fragment = "fetchConst(name(\"INF\"))";
+	    } else {
+	    	$fragment = "float(" . sprintf('%f', $node->value) . ")";
+	        $fragment = "scalar(" . $fragment . ")";
+	    }
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
