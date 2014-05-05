@@ -733,6 +733,7 @@ class RascalPrinter extends BasePrinter
         } else {
             $name = "name(name(\"" . $node->name . "\"))";
         }
+        $name .= $this->annotateASTNode($node);
 
         $target = $this->pprint($node->var);
 
