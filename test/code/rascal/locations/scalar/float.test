@@ -30,7 +30,7 @@ exprstmt(scalar(float(0.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(30
 exprstmt(scalar(float(0.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(36,4,<9,0>,<9,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(36,5,<9,0>,<9,0>)],
 exprstmt(scalar(float(302000000000.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(42,8,<10,0>,<10,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(42,9,<10,0>,<10,0>)],
 exprstmt(scalar(float(3001999999999999857747461451822970840678540243556224403584965673536656020978294721991364596684824772608.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(52,11,<11,0>,<11,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(52,12,<11,0>,<11,0>)],
-exprstmt(scalar(float(INF))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(65,7,<12,0>,<12,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(65,8,<12,0>,<12,0>)],
+exprstmt(fetchConst(name("INF"))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(65,7,<12,0>,<12,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(65,8,<12,0>,<12,0>)],
 exprstmt(scalar(float(18446744073709551616.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(186,20,<16,0>,<16,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(186,21,<16,0>,<16,0>)],
 exprstmt(scalar(float(18446744073709551616.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(208,18,<17,0>,<17,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(208,19,<17,0>,<17,0>)],
 exprstmt(scalar(float(18446744073709551616.000000))[@at=|file:///tmp/DifferentFloatSyntaxes.php|(228,23,<18,0>,<18,0>)])[@at=|file:///tmp/DifferentFloatSyntaxes.php|(228,24,<18,0>,<18,0>)],
