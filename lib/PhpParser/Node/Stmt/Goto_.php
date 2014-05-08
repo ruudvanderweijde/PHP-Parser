@@ -2,6 +2,7 @@
 
 namespace PhpParser\Node\Stmt;
 
+use PhpParser\Node\Name;
 use PhpParser\Node\Stmt;
 
 /**
@@ -12,10 +13,10 @@ class Goto_ extends Stmt
     /**
      * Constructs a goto node.
      *
-     * @param string $name       Name of label to jump to
+     * @param Name   $name       Name of label to jump to
      * @param array  $attributes Additional attributes
      */
-    public function __construct($name, array $attributes = array()) {
+    public function __construct(Name $name, array $attributes = array()) {
         parent::__construct(
             array(
                 'name' => $name,

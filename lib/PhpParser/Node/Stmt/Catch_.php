@@ -3,6 +3,8 @@
 namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Name;
 
 /**
  * @property Node\Name $type  Class of exception
@@ -14,12 +16,12 @@ class Catch_ extends Node\Stmt
     /**
      * Constructs a catch node.
      *
-     * @param Node\Name $type       Class of exception
-     * @param string    $var        Variable for exception
+     * @param Name      $type       Class of exception
+     * @param Variable  $var        Variable for exception
      * @param Node[]    $stmts      Statements
      * @param array     $attributes Additional attributes
      */
-    public function __construct(Node\Name $type, $var, array $stmts = array(), array $attributes = array()) {
+    public function __construct(Node\Name $type, Variable $var, array $stmts = array(), array $attributes = array()) {
         parent::__construct(
             array(
                 'type'  => $type,

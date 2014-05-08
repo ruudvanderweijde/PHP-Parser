@@ -546,13 +546,15 @@ class RascalPrinter extends BasePrinter
     }
     public function pprintClassConstFetchExpr(\PhpParser\Node\Expr\ClassConstFetch $node)
     {
-        $name = $this->pprint($node->class);
+        $className = $this->pprint($node->class);
         if ($node->class instanceof \PhpParser\Node\Name)
-            $name = "name({$name})";
+            $className = "name({$className})";
         else
-            $name = "expr({$name})";
+            $className = "expr({$className})";
 
-        $fragment = "fetchClassConst(" . $name . ",\"" . $node->name . "\")";
+        $constName = $this->pprint($node->name);
+
+        $fragment = "fetchClassConst(" . $className . "," . $constName . ")";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
@@ -596,7 +598,7 @@ class RascalPrinter extends BasePrinter
 
     public function pprintClosureUseExpr(\PhpParser\Node\Expr\ClosureUse $node)
     {
-        $fragment = "closureUse(\"" . $node->var . "\",";
+        $fragment = "closureUse(" . $this->pprint($node->var) . ",";
         if ($node->byRef)
             $fragment .= "true";
         else
@@ -807,8 +809,10 @@ class RascalPrinter extends BasePrinter
     {
         if ($node->name instanceof \PhpParser\Node\Expr) {
             $fragment = "expr(" . $this->pprint($node->name) . ")";
+        } else if ($node->name instanceof \PhpParser\Node\Name) {
+            $fragment = "name(" . $this->pprint($node->name) . ")";
         } else {
-            $fragment = "name(name(\"" . $node->name . "\"))";
+            throw new \Exception("Name of PropertyFetch is no Name or Expr");
         }
 
         $fragment = "propertyFetch(" . $this->pprint($node->var) . "," . $fragment . ")";
@@ -1146,8 +1150,9 @@ class RascalPrinter extends BasePrinter
             $body[] = $this->pprint($stmt);
 
         $xtype = $this->pprint($node->type);
+        $xname = $this->pprint($node->var);
 
-        $fragment = "\\catch(" . $xtype . ",\"" . $node->var . "\",[" . implode(",", $body) . "])";
+        $fragment = "\\catch(" . $xtype . "," . $xname . ",[" . implode(",", $body) . "])";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
@@ -1443,7 +1448,7 @@ class RascalPrinter extends BasePrinter
 
     public function pprintGotoStmt(\PhpParser\Node\Stmt\Goto_ $node)
     {
-        $fragment = "goto(\"" . $node->name . "\")";
+        $fragment = "goto(" . $this->pprint($node->name) . ")";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
@@ -1714,7 +1719,7 @@ class RascalPrinter extends BasePrinter
     public function pprintAliasTraitUseAdaptationStmt(\PhpParser\Node\Stmt\TraitUseAdaptation\Alias $node)
     {
         if (null != $node->newName) {
-            $newName = "someName(name(\"" . $node->newName . "\"))";
+            $newName = "someName(" . $this->pprint($node->newName) . "))";
         } else {
             $newName = "noName()";
         }
@@ -1738,7 +1743,7 @@ class RascalPrinter extends BasePrinter
             $newModifier = "{ }";
         }
 
-        $newMethod = "\"" . $node->method . "\"";
+        $newMethod = $this->pprint($node->method);
 
         if (null != $node->trait) {
             $trait = "someName(" . $this->pprint($node->trait) . ")";

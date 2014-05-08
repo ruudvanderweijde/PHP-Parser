@@ -15,10 +15,10 @@ class ClassConstFetch extends Expr
      * Constructs a class const fetch node.
      *
      * @param Name|Expr $class      Class name
-     * @param string    $name       Constant name
+     * @param Name      $name       Constant name
      * @param array     $attributes Additional attributes
      */
-    public function __construct($class, $name, array $attributes = array()) {
+    public function __construct($class, Name $name, array $attributes = array()) {
         parent::__construct(
             array(
                 'class' => $class,

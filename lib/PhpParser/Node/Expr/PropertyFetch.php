@@ -3,6 +3,7 @@
 namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Expr;
+use PhpParser\Node\Name;
 
 /**
  * @property Expr        $var  Variable holding object
@@ -14,7 +15,7 @@ class PropertyFetch extends Expr
      * Constructs a function call node.
      *
      * @param Expr        $var        Variable holding object
-     * @param string|Expr $name       Property name
+     * @param Name|Expr   $name       Property name
      * @param array       $attributes Additional attributes
      */
     public function __construct(Expr $var, $name, array $attributes = array()) {

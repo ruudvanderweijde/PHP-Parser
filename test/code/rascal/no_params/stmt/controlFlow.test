@@ -24,4 +24,4 @@ script([\break(noExpr()),
 \return(someExpr(var(name(name("a"))))),
 \throw(var(name(name("e")))),
 label("label"),
-goto("label")])
+goto(name("label"))])
