@@ -729,13 +729,14 @@ class RascalPrinter extends BasePrinter
         foreach ($node->args as $arg)
             $args[] = $this->pprint($arg);
 
+        $name = $this->pprint($node->name);
         if ($node->name instanceof \PhpParser\Node\Expr) {
-            $name = $this->pprint($node->name);
             $name = "expr({$name})";
+        } else if ($node->name instanceof \PhpParser\Node\Name) {
+            $name = "name({$name})";
         } else {
-            $name = "name(name(\"" . $node->name . "\"))";
+            throw new \Exception(__CLASS__ . "::" . __METHOD__ . "::" . __LINE__);
         }
-        $name .= $this->annotateASTNode($node);
 
         $target = $this->pprint($node->var);
 
