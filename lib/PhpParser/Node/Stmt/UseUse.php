@@ -4,23 +4,24 @@ namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
 use PhpParser\Error;
+use PhpParser\Node\Name;
 
 /**
- * @property Node\Name $name  Namespace/Class to alias
- * @property string    $alias Alias
+ * @property Name $name  Namespace/Class to alias
+ * @property Name $alias Alias
  */
 class UseUse extends Node\Stmt
 {
     /**
      * Constructs an alias (use) node.
      *
-     * @param Node\Name   $name       Namespace/Class to alias
-     * @param null|string $alias      Alias
+     * @param Name        $name       Namespace/Class to alias
+     * @param Name        $alias      Alias
      * @param array       $attributes Additional attributes
      */
-    public function __construct(Node\Name $name, $alias = null, array $attributes = array()) {
-        if (null === $alias) {
-            $alias = $name->getLast();
+    public function __construct(Name $name, Name $alias, array $attributes = array()) {
+        if ("" === $alias->getLast()) {
+            $alias->set($name->getLast());
         }
 
         if ('self' == $alias || 'parent' == $alias) {

@@ -1075,10 +1075,7 @@ class RascalPrinter extends BasePrinter
         foreach ($node->implements as $implemented)
             $implements[] = $this->pprint($implemented);
 
-        if (null != $node->extends)
-            $extends = "someName(" . $this->pprint($node->extends) . ")";
-        else
-            $extends = "noName()";
+        $extends = $this->handlePossibleName($node->extends);
 
         $modifiers = array();
         if ($node->type & Node\Stmt\Class_::MODIFIER_ABSTRACT)
@@ -1440,12 +1437,7 @@ class RascalPrinter extends BasePrinter
 
 // Again check the name -- since it is optional, we return an OptionName
 // here, which could be noName() if this is a global namespace
-        if (null != $node->name) {
-            $headerName = $this->pprint($node->name);
-            $name = "someName({$headerName})";
-        } else {
-            $name = "noName()";
-        }
+        $name = $this->handlePossibleName($node->name);
 
 // The third option shouldn't occur, but is put in just in case; the first
 // option is the case where we have a body, the second is where we have
@@ -1603,11 +1595,7 @@ class RascalPrinter extends BasePrinter
 
     public function pprintAliasTraitUseAdaptationStmt(Node\Stmt\TraitUseAdaptation\Alias $node)
     {
-        if (null != $node->newName) {
-            $newName = "someName(" . $this->pprint($node->newName) . "))";
-        } else {
-            $newName = "noName()";
-        }
+        $newName = $this->handlePossibleName($node->newName);
 
         if (null != $node->newModifier) {
             $modifiers = array();
@@ -1629,12 +1617,7 @@ class RascalPrinter extends BasePrinter
         }
 
         $newMethod = $this->pprint($node->method);
-
-        if (null != $node->trait) {
-            $trait = "someName(" . $this->pprint($node->trait) . ")";
-        } else {
-            $trait = "noName()";
-        }
+        $trait = $this->handlePossibleName($node->trait);
 
         $fragment = "traitAlias(" . $trait . "," . $newMethod . "," . $newModifier . "," . $newName . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -1648,11 +1631,7 @@ class RascalPrinter extends BasePrinter
         foreach ($node->insteadof as $item)
             $insteadOf[] = $this->pprint($item);
 
-        if (null != $node->trait) {
-            $trait = "someName(" . $this->pprint($node->trait) . ")";
-        } else {
-            $trait = "noName()";
-        }
+        $trait = $this->handlePossibleName($node->trait);
 
         $fragment = "traitPrecedence(" . $trait . ",\"" . $node->method . "\",{" . implode(",", $insteadOf) . "})";
         $fragment .= $this->annotateASTNode($node);
@@ -1711,10 +1690,7 @@ class RascalPrinter extends BasePrinter
     public function pprintUseUseStmt(Node\Stmt\UseUse $node)
     {
         $name = $this->pprint($node->name);
-        if (null != $node->alias)
-            $alias = "someName(name(\"" . $node->alias . "\"))";
-        else
-            $alias = "noName()";
+        $alias = $this->handlePossibleName($node->alias);
 
         $fragment = "use(" . $name . "," . $alias . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -1767,19 +1743,36 @@ class RascalPrinter extends BasePrinter
     }
 
     /**
-     * @param Node\Expr|null $value
+     * @param Node\Expr|null $node
      * @throws Exception
      * @return string
      */
-    private function handlePossibleExpression($value)
+    private function handlePossibleExpression($node)
     {
-        if (is_null($value)) {
+        if (is_null($node)) {
             return "noExpr()";
-        } else if ($value instanceOf Node\Expr) {
-            $val = $this->pprint($value);
-            return "someExpr({$val})";
+        } else if ($node instanceOf Node\Expr) {
+            $value = $this->pprint($node);
+            return "someExpr({$value})";
         }
 
         throw new Exception("Invalid input, must be Expr or null. " . __METHOD__ . "::" . __LINE__);
+    }
+
+    /**
+     * @param Node\Name|null $node
+     * @throws Exception
+     * @return string
+     */
+    private function handlePossibleName($node)
+    {
+        if (is_null($node)) {
+            return "noName()";
+        } else if ($node instanceOf Node\Name) {
+            $value = $this->pprint($node);
+            return "someName({$value})";
+        }
+
+        throw new Exception("Invalid input: must be Name or null. " . __METHOD__ . "::" . __LINE__);
     }
 }
