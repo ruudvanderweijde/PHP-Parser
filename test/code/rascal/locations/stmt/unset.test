@@ -5,5 +5,5 @@ Unset
 unset($a);
 unset($b, $c);
 -----
-script([unset([var(name(name("a")))[@at=|file:///tmp/Unset.php|(13,2,<3,0>,<3,0>)]])[@at=|file:///tmp/Unset.php|(7,10,<3,0>,<3,0>)],
-unset([var(name(name("b")))[@at=|file:///tmp/Unset.php|(24,2,<4,0>,<4,0>)],var(name(name("c")))[@at=|file:///tmp/Unset.php|(28,2,<4,0>,<4,0>)]])[@at=|file:///tmp/Unset.php|(18,14,<4,0>,<4,0>)]])
+script([unset([var(name(name("a")[@at=|file:///tmp/Unset.php|(13,2,<3,0>,<3,0>)]))[@at=|file:///tmp/Unset.php|(13,2,<3,0>,<3,0>)]])[@at=|file:///tmp/Unset.php|(7,10,<3,0>,<3,0>)],
+unset([var(name(name("b")[@at=|file:///tmp/Unset.php|(24,2,<4,0>,<4,0>)]))[@at=|file:///tmp/Unset.php|(24,2,<4,0>,<4,0>)],var(name(name("c")[@at=|file:///tmp/Unset.php|(28,2,<4,0>,<4,0>)]))[@at=|file:///tmp/Unset.php|(28,2,<4,0>,<4,0>)]])[@at=|file:///tmp/Unset.php|(18,14,<4,0>,<4,0>)]])

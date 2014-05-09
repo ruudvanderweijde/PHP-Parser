@@ -4,4 +4,4 @@ Clone
 
 clone $a;
 -----
-script([exprstmt(clone(var(name(name("a")))[@at=|file:///tmp/Clone.php|(13,2,<3,0>,<3,0>)])[@at=|file:///tmp/Clone.php|(7,8,<3,0>,<3,0>)])[@at=|file:///tmp/Clone.php|(7,9,<3,0>,<3,0>)]])
+script([exprstmt(clone(var(name(name("a")[@at=|file:///tmp/Clone.php|(13,2,<3,0>,<3,0>)]))[@at=|file:///tmp/Clone.php|(13,2,<3,0>,<3,0>)])[@at=|file:///tmp/Clone.php|(7,8,<3,0>,<3,0>)])[@at=|file:///tmp/Clone.php|(7,9,<3,0>,<3,0>)]])

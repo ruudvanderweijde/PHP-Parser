@@ -21,7 +21,7 @@ script([\break(noExpr())[@at=|file:///tmp/ControlFlowStatements.php|(7,6,<3,0>,<
 \continue(noExpr())[@at=|file:///tmp/ControlFlowStatements.php|(24,9,<6,0>,<6,0>)],
 \continue(someExpr(scalar(integer(2))[@at=|file:///tmp/ControlFlowStatements.php|(43,1,<7,0>,<7,0>)]))[@at=|file:///tmp/ControlFlowStatements.php|(34,11,<7,0>,<7,0>)],
 \return(noExpr())[@at=|file:///tmp/ControlFlowStatements.php|(47,7,<9,0>,<9,0>)],
-\return(someExpr(var(name(name("a")))[@at=|file:///tmp/ControlFlowStatements.php|(62,2,<10,0>,<10,0>)]))[@at=|file:///tmp/ControlFlowStatements.php|(55,10,<10,0>,<10,0>)],
-\throw(var(name(name("e")))[@at=|file:///tmp/ControlFlowStatements.php|(73,2,<12,0>,<12,0>)])[@at=|file:///tmp/ControlFlowStatements.php|(67,9,<12,0>,<12,0>)],
+\return(someExpr(var(name(name("a")[@at=|file:///tmp/ControlFlowStatements.php|(62,2,<10,0>,<10,0>)]))[@at=|file:///tmp/ControlFlowStatements.php|(62,2,<10,0>,<10,0>)]))[@at=|file:///tmp/ControlFlowStatements.php|(55,10,<10,0>,<10,0>)],
+\throw(var(name(name("e")[@at=|file:///tmp/ControlFlowStatements.php|(73,2,<12,0>,<12,0>)]))[@at=|file:///tmp/ControlFlowStatements.php|(73,2,<12,0>,<12,0>)])[@at=|file:///tmp/ControlFlowStatements.php|(67,9,<12,0>,<12,0>)],
 label("label")[@at=|file:///tmp/ControlFlowStatements.php|(78,6,<14,0>,<14,0>)],
 goto(name("label")[@at=|file:///tmp/ControlFlowStatements.php|(90,5,<15,0>,<15,0>)])[@at=|file:///tmp/ControlFlowStatements.php|(85,11,<15,0>,<15,0>)]])

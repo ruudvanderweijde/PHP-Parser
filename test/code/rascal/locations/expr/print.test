@@ -3,4 +3,4 @@ Print
 <?php
 print $a;
 -----
-script([exprstmt(print(var(name(name("a")))[@at=|file:///tmp/Print.php|(12,2,<2,0>,<2,0>)])[@at=|file:///tmp/Print.php|(6,8,<2,0>,<2,0>)])[@at=|file:///tmp/Print.php|(6,9,<2,0>,<2,0>)]])
+script([exprstmt(print(var(name(name("a")[@at=|file:///tmp/Print.php|(12,2,<2,0>,<2,0>)]))[@at=|file:///tmp/Print.php|(12,2,<2,0>,<2,0>)])[@at=|file:///tmp/Print.php|(6,8,<2,0>,<2,0>)])[@at=|file:///tmp/Print.php|(6,9,<2,0>,<2,0>)]])
