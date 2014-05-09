@@ -2,6 +2,9 @@
 
 namespace Rascal;
 
+use Exception;
+use PhpParser\Node;
+
 class RascalPrinter extends BasePrinter
 {
 
@@ -35,7 +38,7 @@ class RascalPrinter extends BasePrinter
 
     private $currentNamespace = "";
 
-    private $inAssignExpr = false;
+    private $varIsDecl = false;
 
     /**
      *
@@ -68,7 +71,7 @@ class RascalPrinter extends BasePrinter
         return "@id=\"{$this->rascalizeString($idToAdd)}\"";
     }
 
-    private function addDeclaration(\PhpParser\Node $node)
+    private function addDeclaration(Node $node)
     {
         $namespace = strtolower($this->currentNamespace);
         $class = strtolower($this->currentClass);
@@ -86,30 +89,30 @@ class RascalPrinter extends BasePrinter
         }
 
         $decl = "@decl=|php+%s:///%s|";
-        if ($node instanceof \PhpParser\Node\Stmt\Namespace_)
+        if ($node instanceof Node\Stmt\Namespace_)
             return $this->rascalizeString(sprintf($decl, "namespace", $namespace));
-        else if ($node instanceof \PhpParser\Node\Stmt\Class_)
+        else if ($node instanceof Node\Stmt\Class_)
             return $this->rascalizeString(sprintf($decl, "class", $ns . $class));
-        else if ($node instanceof \PhpParser\Node\Stmt\Interface_)
+        else if ($node instanceof Node\Stmt\Interface_)
             return $this->rascalizeString(sprintf($decl, "interface", $ns . $class));
-        else if ($node instanceof \PhpParser\Node\Stmt\Trait_)
+        else if ($node instanceof Node\Stmt\Trait_)
             return $this->rascalizeString(sprintf($decl, "trait", $ns . $class));
-        else if ($node instanceof \PhpParser\Node\Stmt\PropertyProperty)
+        else if ($node instanceof Node\Stmt\PropertyProperty)
             return $this->rascalizeString(sprintf($decl, "field", $ns . $class . "/" . $node->name));
-        else if ($node instanceof \PhpParser\Node\Const_) {
+        else if ($node instanceof Node\Const_) {
             if ($class) // class constant
                 return $this->rascalizeString(sprintf($decl, "classConstant", $ns . $class . "/" . $node->name));
             else //global constant
                 return $this->rascalizeString(sprintf($decl, "constant", $ns . $node->name));
         }
-        else if ($node instanceof \PhpParser\Node\Stmt\ClassMethod)
+        else if ($node instanceof Node\Stmt\ClassMethod)
             return $this->rascalizeString(sprintf($decl, "method", $ns . $class . "/" . $method));
-        else if ($node instanceof \PhpParser\Node\Stmt\Function_)
+        else if ($node instanceof Node\Stmt\Function_)
             return $this->rascalizeString(sprintf($decl, "function", $ns . $function));
-        else if ($node instanceof \PhpParser\Node\Stmt\StaticVar
-                || ($node instanceof \PhpParser\Node\Expr\Variable && $this->inAssignExpr)) {
-            $prefix = ($node->name instanceof \PhpParser\Node\Expr) ? "unresolved+" : "";
-            $name = ($node->name instanceof \PhpParser\Node\Expr) ? "" : $node->name;
+        else if ($node instanceof Node\Stmt\StaticVar
+                || ($node instanceof Node\Expr\Variable && $this->varIsDecl)) {
+            $prefix = ($node->name instanceof Node\Expr) ? "unresolved+" : "";
+            $name = ($node->name instanceof Node\Expr) ? "" : $node->name;
             // only declare variables that are inside an assign expression, and the name must not be an expression
             // (we are not able to handle this, atleast for now)
             if ($this->insideFunction) // function variable
@@ -119,7 +122,7 @@ class RascalPrinter extends BasePrinter
             else // global var
                 return $this->rascalizeString(sprintf($decl, $prefix . "globalVar", $ns . $name));
         }
-        else if ($node instanceof \PhpParser\Node\Param) {
+        else if ($node instanceof Node\Param) {
             if ($this->insideFunction) // function parameter
                 return $this->rascalizeString(sprintf($decl, "functionParam", $ns . $function . "/" . $node->name));
             if ($this->currentMethod) // method parameter
@@ -127,7 +130,7 @@ class RascalPrinter extends BasePrinter
         }
     }
 
-    private function addLocationTag(\PhpParser\Node $node)
+    private function addLocationTag(Node $node)
     {
         if ($this->relativeLocations) {
             return "@at=|home://{$this->filename}|({$node->getOffset()},{$node->getLength()},<{$node->getLine()},0>,<{$node->getLine()},0>)";
@@ -144,19 +147,19 @@ class RascalPrinter extends BasePrinter
      *
      * @return string
      */
-    private function addPhpDocForNode(\PHPParser\Node $node)
+    private function addPhpDocForNode(Node $node)
     {
         $docString = "@phpdoc=\"%s\"";
-        if ($node instanceof \PhpParser\Node\Stmt\Class_ ||
-            $node instanceof \PhpParser\Node\Stmt\Interface_ ||
-            $node instanceof \PhpParser\Node\Expr\Variable
+        if ($node instanceof Node\Stmt\Class_ ||
+            $node instanceof Node\Stmt\Interface_ ||
+            $node instanceof Node\Expr\Variable
         )
             if ($doc = $node->getDocComment())
                 return sprintf($docString, $this->rascalizeString($doc));
         return sprintf($docString, null);
     }
 
-    private function annotateASTNode(\PhpParser\Node $node)
+    private function annotateASTNode(Node $node)
     {
         $tagsToAdd = array();
         if ($this->addLocations)
@@ -176,14 +179,10 @@ class RascalPrinter extends BasePrinter
         return "";
     }
 
-    public function pprintArg(\PhpParser\Node\Arg $node)
+    public function pprintArg(Node\Arg $node)
     {
         $argValue = $this->pprint($node->value);
-
-        if ($node->byRef)
-            $byRef = "true";
-        else
-            $byRef = "false";
+        $byRef = $node->byRef ? "true" : "false";
 
         $fragment = "actualParameter(" . $argValue . "," . $byRef . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -191,7 +190,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintConst(\PhpParser\Node\Const_ $node)
+    public function pprintConst(Node\Const_ $node)
     {
         $fragment = "const(\"" . $node->name . "\"," . $this->pprint($node->value) . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -199,7 +198,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintArrayExpr(\PhpParser\Node\Expr\Array_ $node)
+    public function pprintArrayExpr(Node\Expr\Array_ $node)
     {
         $items = array();
         foreach ($node->items as $item)
@@ -211,12 +210,9 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintArrayDimFetchExpr(\PhpParser\Node\Expr\ArrayDimFetch $node)
+    public function pprintArrayDimFetchExpr(Node\Expr\ArrayDimFetch $node)
     {
-        if (null != $node->dim)
-            $dim = "someExpr(" . $this->pprint($node->dim) . ")";
-        else
-            $dim = "noExpr()";
+        $dim = $this->handlePossibleExpression($node->dim);
 
         $fragment = "fetchArrayDim(" . $this->pprint($node->var) . "," . $dim . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -224,19 +220,11 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintArrayItemExpr(\PhpParser\Node\Expr\ArrayItem $node)
+    public function pprintArrayItemExpr(Node\Expr\ArrayItem $node)
     {
         $nodeValue = $this->pprint($node->value);
-
-        if (null == $node->key)
-            $key = "noExpr()";
-        else
-            $key = "someExpr(" . $this->pprint($node->key) . ")";
-
-        if ($node->byRef)
-            $byRef = "true";
-        else
-            $byRef = "false";
+        $key = $this->handlePossibleExpression($node->key);
+        $byRef = $node->byRef ? "true" : "false";
 
         $fragment = "arrayElement(" . $key . "," . $nodeValue . "," . $byRef . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -244,12 +232,12 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintAssignExpr(\PhpParser\Node\Expr\Assign $node)
+    public function pprintAssignExpr(Node\Expr\Assign $node)
     {
         $assignExpr = $this->pprint($node->expr);
-        $this->inAssignExpr = true;
+        $this->varIsDecl = true;
         $assignVar = $this->pprint($node->var);
-        $this->inAssignExpr = false;
+        $this->varIsDecl = false;
 
         $fragment = "assign(" . $assignVar . "," . $assignExpr . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -257,72 +245,72 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintBitwiseAndAssignOpExpr(\PhpParser\Node\Expr\AssignOp\BitwiseAnd $node)
+    public function pprintBitwiseAndAssignOpExpr(Node\Expr\AssignOp\BitwiseAnd $node)
     {
         return $this->handleAssignOpExpression($node, "bitwiseAnd");
     }
 
-    public function pprintBitwiseOrAssignOpExpr(\PhpParser\Node\Expr\AssignOp\BitwiseOr $node)
+    public function pprintBitwiseOrAssignOpExpr(Node\Expr\AssignOp\BitwiseOr $node)
     {
         return $this->handleAssignOpExpression($node, "bitwiseOr");
     }
 
-    public function pprintBitwiseXorAssignOpExpr(\PhpParser\Node\Expr\AssignOp\BitwiseXor $node)
+    public function pprintBitwiseXorAssignOpExpr(Node\Expr\AssignOp\BitwiseXor $node)
     {
         return $this->handleAssignOpExpression($node, "bitwiseXor");
     }
 
-    public function pprintConcatAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Concat $node)
+    public function pprintConcatAssignOpExpr(Node\Expr\AssignOp\Concat $node)
     {
         return $this->handleAssignOpExpression($node, "concat");
     }
 
-    public function pprintDivAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Div $node)
+    public function pprintDivAssignOpExpr(Node\Expr\AssignOp\Div $node)
     {
         return $this->handleAssignOpExpression($node, "div");
     }
 
-    public function pprintMinusAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Minus $node)
+    public function pprintMinusAssignOpExpr(Node\Expr\AssignOp\Minus $node)
     {
         return $this->handleAssignOpExpression($node, "minus");
     }
 
-    public function pprintModAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Mod $node)
+    public function pprintModAssignOpExpr(Node\Expr\AssignOp\Mod $node)
     {
         return $this->handleAssignOpExpression($node, "\\mod");
     }
 
-    public function pprintMulAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Mul $node)
+    public function pprintMulAssignOpExpr(Node\Expr\AssignOp\Mul $node)
     {
         return $this->handleAssignOpExpression($node, "mul");
     }
 
-    public function pprintPlusAssignOpExpr(\PhpParser\Node\Expr\AssignOp\Plus $node)
+    public function pprintPlusAssignOpExpr(Node\Expr\AssignOp\Plus $node)
     {
         return $this->handleAssignOpExpression($node, "plus");
     }
 
-    public function pprintShiftLeftAssignOpExpr(\PhpParser\Node\Expr\AssignOp\ShiftLeft $node)
+    public function pprintShiftLeftAssignOpExpr(Node\Expr\AssignOp\ShiftLeft $node)
     {
         return $this->handleAssignOpExpression($node, "leftShift");
     }
 
-    public function pprintShiftRightAssignOpExpr(\PhpParser\Node\Expr\AssignOp\ShiftRight $node)
+    public function pprintShiftRightAssignOpExpr(Node\Expr\AssignOp\ShiftRight $node)
     {
         return $this->handleAssignOpExpression($node, "rightShift");
     }
 
     /**
-     * @param \PhpParser\Node\Expr\AssignOp $node
+     * @param Node\Expr\AssignOp $node
      * @param string $operation
      * @return string
      */
-    private function handleAssignOpExpression(\PhpParser\Node\Expr\AssignOp $node, $operation)
+    private function handleAssignOpExpression(Node\Expr\AssignOp $node, $operation)
     {
         $assignExpr = $this->pprint($node->expr);
-        $this->inAssignExpr = true;
+        $this->varIsDecl = true;
         $assignVar = $this->pprint($node->var);
-        $this->inAssignExpr = false;
+        $this->varIsDecl = false;
 
         $fragment = "assignWOp(" . $assignVar . "," . $assignExpr . "," . $operation . "())";
         $fragment .= $this->annotateASTNode($node);
@@ -330,7 +318,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintAssignRefExpr(\PhpParser\Node\Expr\AssignRef $node)
+    public function pprintAssignRefExpr(Node\Expr\AssignRef $node)
     {
         $assignExpr = $this->pprint($node->expr);
         $assignVar = $this->pprint($node->var);
@@ -341,132 +329,132 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintBitwiseAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseAnd $node)
+    public function pprintBitwiseAndBinaryOpExpr(Node\Expr\BinaryOp\BitwiseAnd $node)
     {
         return $this->handleBinaryOpExpression($node, "bitwiseAnd");
     }
 
-    public function pprintBitwiseOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseOr $node)
+    public function pprintBitwiseOrBinaryOpExpr(Node\Expr\BinaryOp\BitwiseOr $node)
     {
         return $this->handleBinaryOpExpression($node, "bitwiseOr");
     }
 
-    public function pprintBitwiseXorBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BitwiseXor $node)
+    public function pprintBitwiseXorBinaryOpExpr(Node\Expr\BinaryOp\BitwiseXor $node)
     {
         return $this->handleBinaryOpExpression($node, "bitwiseXor");
     }
 
-    public function pprintBooleanAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BooleanAnd $node)
+    public function pprintBooleanAndBinaryOpExpr(Node\Expr\BinaryOp\BooleanAnd $node)
     {
         return $this->handleBinaryOpExpression($node, "booleanAnd");
     }
 
-    public function pprintBooleanOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\BooleanOr $node)
+    public function pprintBooleanOrBinaryOpExpr(Node\Expr\BinaryOp\BooleanOr $node)
     {
         return $this->handleBinaryOpExpression($node, "booleanOr");
     }
 
-    public function pprintConcatBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Concat $node)
+    public function pprintConcatBinaryOpExpr(Node\Expr\BinaryOp\Concat $node)
     {
         return $this->handleBinaryOpExpression($node, "concat");
     }
 
-    public function pprintDivBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Div $node)
+    public function pprintDivBinaryOpExpr(Node\Expr\BinaryOp\Div $node)
     {
         return $this->handleBinaryOpExpression($node, "div");
     }
 
-    public function pprintEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Equal $node)
+    public function pprintEqualBinaryOpExpr(Node\Expr\BinaryOp\Equal $node)
     {
         return $this->handleBinaryOpExpression($node, "equal");
     }
 
-    public function pprintGreaterBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Greater $node)
+    public function pprintGreaterBinaryOpExpr(Node\Expr\BinaryOp\Greater $node)
     {
         return $this->handleBinaryOpExpression($node, "gt");
     }
 
-    public function pprintGreaterOrEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\GreaterOrEqual $node)
+    public function pprintGreaterOrEqualBinaryOpExpr(Node\Expr\BinaryOp\GreaterOrEqual $node)
     {
         return $this->handleBinaryOpExpression($node, "geq");
     }
 
-    public function pprintLogicalAndBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalAnd $node)
+    public function pprintLogicalAndBinaryOpExpr(Node\Expr\BinaryOp\LogicalAnd $node)
     {
         return $this->handleBinaryOpExpression($node, "logicalAnd");
     }
 
-    public function pprintLogicalOrBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalOr $node)
+    public function pprintLogicalOrBinaryOpExpr(Node\Expr\BinaryOp\LogicalOr $node)
     {
         return $this->handleBinaryOpExpression($node, "logicalOr");
     }
 
-    public function pprintLogicalXorBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\LogicalXor $node)
+    public function pprintLogicalXorBinaryOpExpr(Node\Expr\BinaryOp\LogicalXor $node)
     {
         return $this->handleBinaryOpExpression($node, "logicalXor");
     }
 
-    public function pprintIdenticalBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Identical $node)
+    public function pprintIdenticalBinaryOpExpr(Node\Expr\BinaryOp\Identical $node)
     {
         return $this->handleBinaryOpExpression($node, "identical");
     }
 
-    public function pprintMinusBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Minus $node)
+    public function pprintMinusBinaryOpExpr(Node\Expr\BinaryOp\Minus $node)
     {
         return $this->handleBinaryOpExpression($node, "minus");
     }
 
-    public function pprintModBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Mod $node)
+    public function pprintModBinaryOpExpr(Node\Expr\BinaryOp\Mod $node)
     {
         return $this->handleBinaryOpExpression($node, "\\mod");
     }
 
-    public function pprintMulBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Mul $node)
+    public function pprintMulBinaryOpExpr(Node\Expr\BinaryOp\Mul $node)
     {
         return $this->handleBinaryOpExpression($node, "mul");
     }
 
-    public function pprintShiftLeftBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\ShiftLeft $node)
+    public function pprintShiftLeftBinaryOpExpr(Node\Expr\BinaryOp\ShiftLeft $node)
     {
         return $this->handleBinaryOpExpression($node, "leftShift");
     }
 
-    public function pprintShiftRightBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\ShiftRight $node)
+    public function pprintShiftRightBinaryOpExpr(Node\Expr\BinaryOp\ShiftRight $node)
     {
         return $this->handleBinaryOpExpression($node, "rightShift");
     }
 
-    public function pprintSmallerBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Smaller $node)
+    public function pprintSmallerBinaryOpExpr(Node\Expr\BinaryOp\Smaller $node)
     {
         return $this->handleBinaryOpExpression($node, "lt");
     }
 
-    public function pprintSmallerOrEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\SmallerOrEqual $node)
+    public function pprintSmallerOrEqualBinaryOpExpr(Node\Expr\BinaryOp\SmallerOrEqual $node)
     {
         return $this->handleBinaryOpExpression($node, "leq");
     }
 
-    public function pprintNotEqualBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\NotEqual $node)
+    public function pprintNotEqualBinaryOpExpr(Node\Expr\BinaryOp\NotEqual $node)
     {
         return $this->handleBinaryOpExpression($node, "notEqual");
     }
 
-    public function pprintNotIdenticalBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\NotIdentical $node)
+    public function pprintNotIdenticalBinaryOpExpr(Node\Expr\BinaryOp\NotIdentical $node)
     {
         return $this->handleBinaryOpExpression($node, "notIdentical");
     }
 
-    public function pprintPlusBinaryOpExpr(\PhpParser\Node\Expr\BinaryOp\Plus $node)
+    public function pprintPlusBinaryOpExpr(Node\Expr\BinaryOp\Plus $node)
     {
         return $this->handleBinaryOpExpression($node, "plus");
     }
 
     /**
-     * @param \PhpParser\Node\Expr\BinaryOp $node
+     * @param Node\Expr\BinaryOp $node
      * @param string $operation
      * @return string
      */
-    private function handleBinaryOpExpression(\PhpParser\Node\Expr\BinaryOp $node, $operation)
+    private function handleBinaryOpExpression(Node\Expr\BinaryOp $node, $operation)
     {
         $right = $this->pprint($node->right);
         $left = $this->pprint($node->left);
@@ -477,17 +465,17 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintBooleanNotExpr(\PhpParser\Node\Expr\BooleanNot $node)
+    public function pprintBooleanNotExpr(Node\Expr\BooleanNot $node)
     {
         return $this->handleUnaryOpExpression($node, "booleanNot");
     }
 
-    public function pprintBitwiseNotExpr(\PhpParser\Node\Expr\BitwiseNot $node)
+    public function pprintBitwiseNotExpr(Node\Expr\BitwiseNot $node)
     {
         return $this->handleUnaryOpExpression($node, "bitwiseNot");
     }
 
-    private function handleUnaryOpExpression(\PhpParser\Node\Expr $node, $operation)
+    private function handleUnaryOpExpression(Node\Expr $node, $operation)
     {
         $expr = $this->pprint($node->expr);
 
@@ -497,54 +485,54 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintArrayCastExpr(\PhpParser\Node\Expr\Cast\Array_ $node)
+    public function pprintArrayCastExpr(Node\Expr\Cast\Array_ $node)
     {
         return $this->handleCastExpression($node, "array");
     }
 
-    public function pprintBoolCastExpr(\PhpParser\Node\Expr\Cast\Bool $node)
+    public function pprintBoolCastExpr(Node\Expr\Cast\Bool $node)
     {
         return $this->handleCastExpression($node, "\\bool");
     }
 
-    public function pprintDoubleCastExpr(\PhpParser\Node\Expr\Cast\Double $node)
+    public function pprintDoubleCastExpr(Node\Expr\Cast\Double $node)
     {
         return $this->handleCastExpression($node, "float");
     }
 
-    public function pprintIntCastExpr(\PhpParser\Node\Expr\Cast\Int $node)
+    public function pprintIntCastExpr(Node\Expr\Cast\Int $node)
     {
         return $this->handleCastExpression($node, "\\int");
     }
 
-    public function pprintObjectCastExpr(\PhpParser\Node\Expr\Cast\Object $node)
+    public function pprintObjectCastExpr(Node\Expr\Cast\Object $node)
     {
         return $this->handleCastExpression($node, "object");
     }
 
-    public function pprintStringCastExpr(\PhpParser\Node\Expr\Cast\String $node)
+    public function pprintStringCastExpr(Node\Expr\Cast\String $node)
     {
         return $this->handleCastExpression($node, "string");
     }
 
-    public function pprintUnsetCastExpr(\PhpParser\Node\Expr\Cast\Unset_ $node)
+    public function pprintUnsetCastExpr(Node\Expr\Cast\Unset_ $node)
     {
         return $this->handleCastExpression($node, "unset");
     }
 
     /**
-     * @param \PhpParser\Node\Expr\Cast $node
+     * @param Node\Expr\Cast $node
      * @param string $type
      * @return string
      */
-    private function handleCastExpression(\PhpParser\Node\Expr\Cast $node, $type)
+    private function handleCastExpression(Node\Expr\Cast $node, $type)
     {
         $toCast = $this->pprint($node->expr);
         $fragment = "cast(" . $type . "()," . $toCast . ")";
         $fragment .= $this->annotateASTNode($node);
         return $fragment;
     }
-    public function pprintClassConstFetchExpr(\PhpParser\Node\Expr\ClassConstFetch $node)
+    public function pprintClassConstFetchExpr(Node\Expr\ClassConstFetch $node)
     {
         $className = $this->handleNameOrExpression($node->class);
 
@@ -555,14 +543,14 @@ class RascalPrinter extends BasePrinter
 
         return $fragment;
     }
-    public function pprintCloneExpr(\PhpParser\Node\Expr\Clone_ $node)
+    public function pprintCloneExpr(Node\Expr\Clone_ $node)
     {
         $fragment = "clone(" . $this->pprint($node->expr) . ")";
         $fragment .= $this->annotateASTNode($node);
         return $fragment;
     }
 
-    public function pprintClosureExpr(\PhpParser\Node\Expr\Closure $node)
+    public function pprintClosureExpr(Node\Expr\Closure $node)
     {
         $body = array();
         $params = array();
@@ -575,74 +563,65 @@ class RascalPrinter extends BasePrinter
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
 
+        $byRef = $node->byRef ? "true" : "false";
+        $static = $node->static ? "true" : "false";
+
         $fragment = "closure([" . implode(",", $body) . "],[";
         $fragment .= implode(",", $params) . "],[";
         $fragment .= implode(",", $uses) . "],";
-        if ($node->byRef)
-            $fragment .= "true,";
-        else
-            $fragment .= "false,";
-        if ($node->static)
-            $fragment .= "true";
-        else
-            $fragment .= "false";
-        $fragment .= ")";
+        $fragment .= $byRef . "," . $static . ")";
 
         $fragment .= $this->annotateASTNode($node);
         return $fragment;
     }
 
-    public function pprintClosureUseExpr(\PhpParser\Node\Expr\ClosureUse $node)
+    public function pprintClosureUseExpr(Node\Expr\ClosureUse $node)
     {
-        $fragment = "closureUse(" . $this->pprint($node->var) . ",";
-        if ($node->byRef)
-            $fragment .= "true";
-        else
-            $fragment .= "false";
-        $fragment .= ")";
+        $byRef = $node->byRef ? "true" : "false";
+
+        $fragment = "closureUse(" . $this->pprint($node->var) . "," . $byRef . ")";
         $fragment .= $this->annotateASTNode($node);
+
         return $fragment;
     }
 
-    public function pprintConstFetchExpr(\PhpParser\Node\Expr\ConstFetch $node)
+    public function pprintConstFetchExpr(Node\Expr\ConstFetch $node)
     {
         $fragment = "fetchConst(" . $this->pprint($node->name) . ")";
         $fragment .= $this->annotateASTNode($node);
         return $fragment;
     }
 
-    public function pprintEmptyExpr(\PhpParser\Node\Expr\Empty_ $node)
+    public function pprintEmptyExpr(Node\Expr\Empty_ $node)
     {
         $fragment = "empty(" . $this->pprint($node->expr) . ")";
         $fragment .= $this->annotateASTNode($node);
         return $fragment;
     }
 
-    public function pprintErrorSuppressExpr(\PhpParser\Node\Expr\ErrorSuppress $node)
+    public function pprintErrorSuppressExpr(Node\Expr\ErrorSuppress $node)
     {
         $fragment = "suppress(" . $this->pprint($node->expr) . ")";
         $fragment .= $this->annotateASTNode($node);
         return $fragment;
     }
-    public function pprintEvalExpr(\PhpParser\Node\Expr\Eval_ $node)
+    public function pprintEvalExpr(Node\Expr\Eval_ $node)
     {
         $fragment = "eval(" . $this->pprint($node->expr) . ")";
         $fragment .= $this->annotateASTNode($node);
         return $fragment;
     }
 
-    public function pprintExitExpr(\PhpParser\Node\Expr\Exit_ $node)
+    public function pprintExitExpr(Node\Expr\Exit_ $node)
     {
-        if (null != $node->expr)
-            $fragment = "someExpr(" . $this->pprint($node->expr) . ")";
-        else
-            $fragment = "noExpr()";
-        $fragment = "exit(" . $fragment . ")";
+        $expr = $this->handlePossibleExpression($node->expr);
+
+        $fragment = "exit(" . $expr . ")";
         $fragment .= $this->annotateASTNode($node);
         return $fragment;
     }
 
-    public function pprintFuncCallExpr(\PhpParser\Node\Expr\FuncCall $node)
+    public function pprintFuncCallExpr(Node\Expr\FuncCall $node)
     {
         $args = array();
         foreach ($node->args as $arg)
@@ -656,14 +635,14 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintIncludeExpr(\PhpParser\Node\Expr\Include_ $node)
+    public function pprintIncludeExpr(Node\Expr\Include_ $node)
     {
         $fragment = "include(" . $this->pprint($node->expr) . ",";
-        if (\PhpParser\Node\Expr\Include_::TYPE_INCLUDE == $node->type)
+        if (Node\Expr\Include_::TYPE_INCLUDE == $node->type)
             $fragment .= "include()";
-        elseif (\PhpParser\Node\Expr\Include_::TYPE_INCLUDE_ONCE == $node->type)
+        elseif (Node\Expr\Include_::TYPE_INCLUDE_ONCE == $node->type)
             $fragment .= "includeOnce()";
-        elseif (\PhpParser\Node\Expr\Include_::TYPE_REQUIRE == $node->type)
+        elseif (Node\Expr\Include_::TYPE_REQUIRE == $node->type)
             $fragment .= "require()";
         else
             $fragment .= "requireOnce()";
@@ -673,7 +652,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintInstanceofExpr(\PhpParser\Node\Expr\Instanceof_ $node)
+    public function pprintInstanceofExpr(Node\Expr\Instanceof_ $node)
     {
         $right = $this->handleNameOrExpression($node->class);
         $left = $this->pprint($node->expr);
@@ -683,7 +662,7 @@ class RascalPrinter extends BasePrinter
 
         return $fragment;
     }
-    public function pprintIssetExpr(\PhpParser\Node\Expr\Isset_ $node)
+    public function pprintIssetExpr(Node\Expr\Isset_ $node)
     {
         $exprs = array();
         foreach ($node->vars as $var)
@@ -695,14 +674,11 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintListExpr(\PhpParser\Node\Expr\List_ $node)
+    public function pprintListExpr(Node\Expr\List_ $node)
     {
         $exprs = array();
         foreach ($node->vars as $var)
-            if (null != $var)
-                $exprs[] = "someExpr(" . $this->pprint($var) . ")";
-            else
-                $exprs[] = "noExpr()";
+            $exprs[] = $this->handlePossibleExpression($var);
 
         $fragment = "listExpr([" . implode(",", $exprs) . "])";
         $fragment .= $this->annotateASTNode($node);
@@ -710,7 +686,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintMethodCallExpr(\PhpParser\Node\Expr\MethodCall $node)
+    public function pprintMethodCallExpr(Node\Expr\MethodCall $node)
     {
         $args = array();
         foreach ($node->args as $arg)
@@ -725,7 +701,7 @@ class RascalPrinter extends BasePrinter
 
         return $fragment;
     }
-    public function pprintNewExpr(\PhpParser\Node\Expr\New_ $node)
+    public function pprintNewExpr(Node\Expr\New_ $node)
     {
         $args = array();
         foreach ($node->args as $arg)
@@ -739,41 +715,41 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintPostDecExpr(\PhpParser\Node\Expr\PostDec $node)
+    public function pprintPostDecExpr(Node\Expr\PostDec $node)
     {
         return $this->handleIncreaseDecreaseVarExpression($node, "postDec");
     }
 
-    public function pprintPostIncExpr(\PhpParser\Node\Expr\PostInc $node)
+    public function pprintPostIncExpr(Node\Expr\PostInc $node)
     {
         return $this->handleIncreaseDecreaseVarExpression($node, "postInc");
     }
 
-    public function pprintPreDecExpr(\PhpParser\Node\Expr\PreDec $node)
+    public function pprintPreDecExpr(Node\Expr\PreDec $node)
     {
         return $this->handleIncreaseDecreaseVarExpression($node, "preDec");
     }
 
-    public function pprintPreIncExpr(\PhpParser\Node\Expr\PreInc $node)
+    public function pprintPreIncExpr(Node\Expr\PreInc $node)
     {
         return $this->handleIncreaseDecreaseVarExpression($node, "preInc");
     }
 
     /**
-     * @param \PhpParser\Node\Expr\PostDec $node
+     * @param Node\Expr\PostDec $node
      * @return string
      */
-    private function handleIncreaseDecreaseVarExpression(\PhpParser\Node\Expr $node, $operation)
+    private function handleIncreaseDecreaseVarExpression(Node\Expr $node, $operation)
     {
-        $this->inAssignExpr = true;
+        $this->varIsDecl = true;
         $operand = $this->pprint($node->var);
-        $this->inAssignExpr = false;
+        $this->varIsDecl = false;
         $fragment = "unaryOperation(" . $operand . ",".$operation."())";
         $fragment .= $this->annotateASTNode($node);
         return $fragment;
     }
 
-    public function pprintPrintExpr(\PhpParser\Node\Expr\Print_ $node)
+    public function pprintPrintExpr(Node\Expr\Print_ $node)
     {
         $operand = $this->pprint($node->expr);
         $fragment = "print(" . $operand . ")";
@@ -781,7 +757,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintPropertyFetchExpr(\PhpParser\Node\Expr\PropertyFetch $node)
+    public function pprintPropertyFetchExpr(Node\Expr\PropertyFetch $node)
     {
         $name = $this->handleNameOrExpression($node->name);
 
@@ -791,11 +767,11 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintShellExecExpr(\PhpParser\Node\Expr\ShellExec $node)
+    public function pprintShellExecExpr(Node\Expr\ShellExec $node)
     {
         $parts = array();
         foreach ($node->parts as $item) {
-            if ($item instanceof \PhpParser\Node\Expr) {
+            if ($item instanceof Node\Expr) {
                 $parts[] = $this->pprint($item);
             } else {
                 $parts[] = "scalar(string(\"" . $this->rascalizeString($item) . "\"))";
@@ -808,7 +784,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintStaticCallExpr(\PhpParser\Node\Expr\StaticCall $node)
+    public function pprintStaticCallExpr(Node\Expr\StaticCall $node)
     {
         $args = array();
         foreach ($node->args as $arg)
@@ -823,7 +799,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintStaticPropertyFetchExpr(\PhpParser\Node\Expr\StaticPropertyFetch $node)
+    public function pprintStaticPropertyFetchExpr(Node\Expr\StaticPropertyFetch $node)
     {
         $name = $this->handleNameOrExpression($node->name);
         $class = $this->handleNameOrExpression($node->class);
@@ -834,86 +810,74 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintTernaryExpr(\PhpParser\Node\Expr\Ternary $node)
+    public function pprintTernaryExpr(Node\Expr\Ternary $node)
     {
-        $else = $this->pprint($node->else);
-        if (null != $node->if)
-            $if = "someExpr(" . $this->pprint($node->if) . ")";
-        else
-            $if = "noExpr()";
         $cond = $this->pprint($node->cond);
+        $if = $this->handlePossibleExpression($node->if);
+        $else = $this->pprint($node->else);
 
         $fragment = "ternary({$cond},{$if},{$else})";
         $fragment .= $this->annotateASTNode($node);
-
         return $fragment;
     }
 
-    public function pprintUnaryMinusExpr(\PhpParser\Node\Expr\UnaryMinus $node)
+    public function pprintUnaryMinusExpr(Node\Expr\UnaryMinus $node)
     {
         $operand = $this->pprint($node->expr);
+
         $fragment = "unaryOperation(" . $operand . ",unaryMinus())";
         $fragment .= $this->annotateASTNode($node);
-
         return $fragment;
     }
 
-    public function pprintUnaryPlusExpr(\PhpParser\Node\Expr\UnaryPlus $node)
+    public function pprintUnaryPlusExpr(Node\Expr\UnaryPlus $node)
     {
         $operand = $this->pprint($node->expr);
+
         $fragment = "unaryOperation(" . $operand . ",unaryPlus())";
         $fragment .= $this->annotateASTNode($node);
-
         return $fragment;
     }
 
-    public function pprintVariableExpr(\PhpParser\Node\Expr\Variable $node)
+    public function pprintVariableExpr(Node\Expr\Variable $node)
     {
-        if ($node->name instanceof \PhpParser\Node\Expr) {
-            $prevInAssignExpr = $this->inAssignExpr;
-            $this->inAssignExpr = false;
+        if ($node->name instanceof Node\Expr) {
+            $prevInAssignExpr = $this->varIsDecl;
+            $this->varIsDecl = false;
             $name = $this->pprint($node->name);
             $name = "expr({$name})";
-            $this->inAssignExpr = $prevInAssignExpr;
+            $this->varIsDecl = $prevInAssignExpr;
         } else {
             $name = $this->pprint($node->name);
             $name = "name({$name})";
         }
+
         $fragment = "var({$name})";
         $fragment .= $this->annotateASTNode($node);
-
         return $fragment;
     }
 
-    public function pprintYieldExpr(\PhpParser\Node\Expr\Yield_ $node)
+    public function pprintYieldExpr(Node\Expr\Yield_ $node)
     {
-        if (null != $node->value)
-            $valuePart = "someExpr(" . $this->pprint($node->value) . ")";
-        else
-            $valuePart = "noExpr()";
-
-        if (null != $node->key)
-            $keyPart = "someExpr(" . $this->pprint($node->key) . ")";
-        else
-            $keyPart = "noExpr()";
+        $valuePart = $this->handlePossibleExpression($node->value);
+        $keyPart = $this->handlePossibleExpression($node->key);
 
         $fragment = "yield({$keyPart},{$valuePart})";
         $fragment .= $this->annotateASTNode($node);
-
         return $fragment;
     }
 
-    public function pprintFullyQualifiedName(\PhpParser\Node\Name\FullyQualified $node)
+    public function pprintFullyQualifiedName(Node\Name\FullyQualified $node)
     {
         return $this->pprintName($node, $prefix = "/");
     }
 
-    public function pprintRelativeName(\PhpParser\Node\Name\Relative $node)
+    public function pprintRelativeName(Node\Name\Relative $node)
     {
         return $this->pprintName($node);
     }
 
-    public function pprintName(\PhpParser\Node\Name $node, $prefix = "")
+    public function pprintName(Node\Name $node, $prefix = "")
     {
         $fragment = $this->implodeName($node);
         $fragment = "name(\"" . $prefix . $fragment . "\")";
@@ -922,37 +886,28 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintParam(\PhpParser\Node\Param $node)
+    public function pprintParam(Node\Param $node)
     {
         if (null == $node->type) {
             $type = "noName()";
         } else {
-            if ($node->type instanceof \PhpParser\Node\Name) {
+            if ($node->type instanceof Node\Name) {
                 $type = "someName(" . $this->pprint($node->type) . ")";
             } else {
                 $type = "someName(name(\"" . $node->type . "\"))";
             }
         }
 
-        if (null == $node->default) {
-            $default = "noExpr()";
-        } else {
-            $default = "someExpr(" . $this->pprint($node->default) . ")";
-        }
+        $default = $this->handlePossibleExpression($node->default);
+        $byRef = $node->byRef ? "true" : "false";
 
-        $fragment = "param(\"" . $node->name . "\"," . $default . "," . $type . ",";
-        if (false == $node->byRef)
-            $fragment .= "false";
-        else
-            $fragment .= "true";
-        $fragment .= ")";
-
+        $fragment = "param(\"" . $node->name . "\"," . $default . "," . $type . "," . $byRef . ")";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
     }
 
-    public function pprintDNumberScalar(\PhpParser\Node\Scalar\DNumber $node)
+    public function pprintDNumberScalar(Node\Scalar\DNumber $node)
     {
     	if (is_infinite($node->value)) {
 	        $fragment = "fetchConst(name(\"INF\"))";
@@ -965,11 +920,11 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintEncapsedScalar(\PhpParser\Node\Scalar\Encapsed $node)
+    public function pprintEncapsedScalar(Node\Scalar\Encapsed $node)
     {
         $parts = array();
         foreach ($node->parts as $item) {
-            if ($item instanceof \PhpParser\Node\Expr) {
+            if ($item instanceof Node\Expr) {
                 $parts[] = $this->pprint($item);
             } else {
                 $parts[] = "scalar(string(\"" . $this->rascalizeString($item) . "\"))";
@@ -981,7 +936,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintLNumberScalar(\PhpParser\Node\Scalar\LNumber $node)
+    public function pprintLNumberScalar(Node\Scalar\LNumber $node)
     {
         $fragment = "integer(" . sprintf('%d', $node->value) . ")";
         $fragment = "scalar(" . $fragment . ")";
@@ -990,7 +945,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintClassMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Class_ $node)
+    public function pprintClassMagicConstScalar(Node\Scalar\MagicConst\Class_ $node)
     {
         // If we are inside a trait and find __CLASS__, we have no clue what it should
         // be, so leave it unresolved for now; else tag it with the class we are actually
@@ -1008,49 +963,49 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintDirMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Dir $node)
+    public function pprintDirMagicConstScalar(Node\Scalar\MagicConst\Dir $node)
     {
         return $this->handleMagicConstExpression($node, "dirConstant", dirname($this->filename));
     }
 
-    public function pprintFileMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\File $node)
+    public function pprintFileMagicConstScalar(Node\Scalar\MagicConst\File $node)
     {
         return $this->handleMagicConstExpression($node, "fileConstant", $this->filename);
     }
 
-    public function pprintFunctionMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Function_ $node)
+    public function pprintFunctionMagicConstScalar(Node\Scalar\MagicConst\Function_ $node)
     {
         return $this->handleMagicConstExpression($node, "funcConstant", $this->currentFunction);
     }
 
-    public function pprintLineMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Line $node)
+    public function pprintLineMagicConstScalar(Node\Scalar\MagicConst\Line $node)
     {
         return $this->handleMagicConstExpression($node, "lineConstant", $node->getLine());
     }
 
-    public function pprintMethodMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Method $node)
+    public function pprintMethodMagicConstScalar(Node\Scalar\MagicConst\Method $node)
     {
         return $this->handleMagicConstExpression($node, "methodConstant",
             $this->currentMethod ? $this->currentClass . "::" . $this->currentMethod : "");
     }
 
-    public function pprintNamespaceMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Namespace_ $node)
+    public function pprintNamespaceMagicConstScalar(Node\Scalar\MagicConst\Namespace_ $node)
     {
         return $this->handleMagicConstExpression($node, "namespaceConstant", $this->currentNamespace);
     }
 
-    public function pprintTraitMagicConstScalar(\PhpParser\Node\Scalar\MagicConst\Trait_ $node)
+    public function pprintTraitMagicConstScalar(Node\Scalar\MagicConst\Trait_ $node)
     {
         return $this->handleMagicConstExpression($node, "traitConstant", $this->currentTrait);
     }
 
     /**
-     * @param \PhpParser\Node\Scalar\MagicConst $node
+     * @param Node\Scalar\MagicConst $node
      * @param $name
      * @param $value
      * @return string
      */
-    private function handleMagicConstExpression(\PhpParser\Node\Scalar\MagicConst $node, $name, $value)
+    private function handleMagicConstExpression(Node\Scalar\MagicConst $node, $name, $value)
     {
         $fragment = "{$name}()[@actualValue=\"{$value}\"]";
         $fragment = "scalar(" . $fragment . ")";
@@ -1059,7 +1014,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintStringScalar(\PhpParser\Node\Scalar\String $node)
+    public function pprintStringScalar(Node\Scalar\String $node)
     {
         $fragment = "string(\"" . $this->rascalizeString($node->value) . "\")";
         $fragment = "scalar(" . $fragment . ")";
@@ -1068,25 +1023,19 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintBreakStmt(\PhpParser\Node\Stmt\Break_ $node)
+    public function pprintBreakStmt(Node\Stmt\Break_ $node)
     {
-        if (null != $node->num)
-            $fragment = "someExpr(" . $this->pprint($node->num) . ")";
-        else
-            $fragment = "noExpr()";
+        $num = $this->handlePossibleExpression($node->num);
 
-        $fragment = "\\break(" . $fragment . ")";
+        $fragment = "\\break(" . $num . ")";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
     }
 
-    public function pprintCaseStmt(\PhpParser\Node\Stmt\Case_ $node)
+    public function pprintCaseStmt(Node\Stmt\Case_ $node)
     {
-        if (null != $node->cond)
-            $cond = "someExpr(" . $this->pprint($node->cond) . ")";
-        else
-            $cond = "noExpr()";
+        $cond = $this->handlePossibleExpression($node->cond);
 
         $body = array();
         foreach ($node->stmts as $stmt)
@@ -1098,7 +1047,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintCatchStmt(\PhpParser\Node\Stmt\Catch_ $node)
+    public function pprintCatchStmt(Node\Stmt\Catch_ $node)
     {
         $body = array();
         foreach ($node->stmts as $stmt)
@@ -1113,7 +1062,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintClassStmt(\PhpParser\Node\Stmt\Class_ $node)
+    public function pprintClassStmt(Node\Stmt\Class_ $node)
     {
         $priorClass = $this->currentClass;
         $this->currentClass = $node->name;
@@ -1132,9 +1081,9 @@ class RascalPrinter extends BasePrinter
             $extends = "noName()";
 
         $modifiers = array();
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_ABSTRACT)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_ABSTRACT)
             $modifiers[] = "abstract()";
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_FINAL)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_FINAL)
             $modifiers[] = "final()";
 
         $fragment = "class(\"" . $node->name . "\",{" . implode(",", $modifiers) . "}," . $extends . ",";
@@ -1153,7 +1102,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintClassConstStmt(\PhpParser\Node\Stmt\ClassConst $node)
+    public function pprintClassConstStmt(Node\Stmt\ClassConst $node)
     {
         $consts = array();
         foreach ($node->consts as $const)
@@ -1165,7 +1114,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintClassMethodStmt(\PhpParser\Node\Stmt\ClassMethod $node)
+    public function pprintClassMethodStmt(Node\Stmt\ClassMethod $node)
     {
         $priorMethod = $this->currentMethod;
         $this->currentMethod = $node->name;
@@ -1183,22 +1132,20 @@ class RascalPrinter extends BasePrinter
             $params[] = $this->pprint($param);
 
         $modifiers = array();
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_PUBLIC)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_PUBLIC)
             $modifiers[] = "\\public()";
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_PROTECTED)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_PROTECTED)
             $modifiers[] = "protected()";
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_PRIVATE)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_PRIVATE)
             $modifiers[] = "\\private()";
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_ABSTRACT)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_ABSTRACT)
             $modifiers[] = "abstract()";
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_FINAL)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_FINAL)
             $modifiers[] = "final()";
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_STATIC)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_STATIC)
             $modifiers[] = "static()";
 
-        $byRef = "false";
-        if ($node->byRef)
-            $byRef = "true";
+        $byRef = $node->byRef ? "true" : "false";
 
         $fragment = "method(\"" . $node->name . "\",{" . implode(",", $modifiers) . "}," . $byRef . ",[" . implode(",", $params) . "],[" . implode(",", $body) . "])";
         $fragment .= $this->annotateASTNode($node);
@@ -1209,7 +1156,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintConstStmt(\PhpParser\Node\Stmt\Const_ $node)
+    public function pprintConstStmt(Node\Stmt\Const_ $node)
     {
         $consts = array();
         foreach ($node->consts as $const)
@@ -1221,20 +1168,17 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintContinueStmt(\PhpParser\Node\Stmt\Continue_ $node)
+    public function pprintContinueStmt(Node\Stmt\Continue_ $node)
     {
-        if (null != $node->num)
-            $fragment = "someExpr(" . $this->pprint($node->num) . ")";
-        else
-            $fragment = "noExpr()";
+        $num = $this->handlePossibleExpression($node->num);
 
-        $fragment = "\\continue(" . $fragment . ")";
+        $fragment = "\\continue(" . $num . ")";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
     }
 
-    public function pprintDeclareStmt(\PhpParser\Node\Stmt\Declare_ $node)
+    public function pprintDeclareStmt(Node\Stmt\Declare_ $node)
     {
         $body = array();
         foreach ($node->stmts as $stmt)
@@ -1250,7 +1194,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintDeclareDeclareStmt(\PhpParser\Node\Stmt\DeclareDeclare $node)
+    public function pprintDeclareDeclareStmt(Node\Stmt\DeclareDeclare $node)
     {
         $fragment = "declaration(\"" . $node->key . "\", " . $this->pprint($node->value) . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -1258,7 +1202,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintDoStmt(\PhpParser\Node\Stmt\Do_ $node)
+    public function pprintDoStmt(Node\Stmt\Do_ $node)
     {
         $stmts = array();
         foreach ($node->stmts as $stmt)
@@ -1270,7 +1214,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintEchoStmt(\PhpParser\Node\Stmt\Echo_ $node)
+    public function pprintEchoStmt(Node\Stmt\Echo_ $node)
     {
         $parts = array();
         foreach ($node->exprs as $expr)
@@ -1282,7 +1226,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintElseStmt(\PhpParser\Node\Stmt\Else_ $node)
+    public function pprintElseStmt(Node\Stmt\Else_ $node)
     {
         $body = array();
         foreach ($node->stmts as $stmt)
@@ -1294,7 +1238,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintElseIfStmt(\PhpParser\Node\Stmt\ElseIf_ $node)
+    public function pprintElseIfStmt(Node\Stmt\ElseIf_ $node)
     {
         $body = array();
         foreach ($node->stmts as $stmt)
@@ -1306,7 +1250,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintExprStmt(\PhpParser\Node\Stmt\Expr $node)
+    public function pprintExprStmt(Node\Stmt\Expr $node)
     {
         $fragment = "exprstmt(" . $this->pprint($node->expr) . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -1314,7 +1258,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintForStmt(\PhpParser\Node\Stmt\For_ $node)
+    public function pprintForStmt(Node\Stmt\For_ $node)
     {
         $stmts = array();
         foreach ($node->stmts as $stmt)
@@ -1338,29 +1282,25 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintForeachStmt(\PhpParser\Node\Stmt\Foreach_ $node)
+    public function pprintForeachStmt(Node\Stmt\Foreach_ $node)
     {
         $valueVar = $this->pprint($node->valueVar);
         $expr = $this->pprint($node->expr);
-        $byRef = "false";
-        if ($node->byRef)
-            $byRef = "true";
+        $byRef = $node->byRef ? "true" : "false";
 
         $stmts = array();
         foreach ($node->stmts as $stmt)
             $stmts[] = $this->pprint($stmt);
 
-        $keyvar = "noExpr()";
-        if (null != $node->keyVar)
-            $keyvar = "someExpr(" . $this->pprint($node->keyVar) . ")";
+        $keyVar = $this->handlePossibleExpression($node->keyVar);
 
-        $fragment = "foreach(" . $expr . "," . $keyvar . "," . $byRef . "," . $valueVar . ",[" . implode(",", $stmts) . "])";
+        $fragment = "foreach(" . $expr . "," . $keyVar . "," . $byRef . "," . $valueVar . ",[" . implode(",", $stmts) . "])";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
     }
 
-    public function pprintFunctionStmt(\PhpParser\Node\Stmt\Function_ $node)
+    public function pprintFunctionStmt(Node\Stmt\Function_ $node)
     {
         $priorFunction = $this->currentFunction;
         $this->currentFunction = $node->name;
@@ -1376,9 +1316,7 @@ class RascalPrinter extends BasePrinter
         foreach ($node->params as $param)
             $params[] = $this->pprint($param);
 
-        $byRef = "false";
-        if ($node->byRef)
-            $byRef = "true";
+        $byRef = $node->byRef ? "true" : "false";
 
         $fragment = "function(\"" . $node->name . "\"," . $byRef . ",[" . implode(",", $params) . "],[" . implode(",", $body) . "])";
         $fragment .= $this->annotateASTNode($node);
@@ -1389,7 +1327,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintGlobalStmt(\PhpParser\Node\Stmt\Global_ $node)
+    public function pprintGlobalStmt(Node\Stmt\Global_ $node)
     {
         $vars = array();
         foreach ($node->vars as $var)
@@ -1401,7 +1339,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintGotoStmt(\PhpParser\Node\Stmt\Goto_ $node)
+    public function pprintGotoStmt(Node\Stmt\Goto_ $node)
     {
         $fragment = "goto(" . $this->pprint($node->name) . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -1409,7 +1347,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintHaltCompilerStmt(\PhpParser\Node\Stmt\HaltCompiler $node)
+    public function pprintHaltCompilerStmt(Node\Stmt\HaltCompiler $node)
     {
         $fragment = "haltCompiler(\"" . $this->rascalizeString($node->remaining) . "\")";
         $fragment .= $this->annotateASTNode($node);
@@ -1417,7 +1355,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintIfStmt(\PhpParser\Node\Stmt\If_ $node)
+    public function pprintIfStmt(Node\Stmt\If_ $node)
     {
         $cond = $this->pprint($node->cond);
 
@@ -1440,7 +1378,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintInlineHTMLStmt(\PhpParser\Node\Stmt\InlineHTML $node)
+    public function pprintInlineHTMLStmt(Node\Stmt\InlineHTML $node)
     {
         $fragment = "inlineHTML(\"" . $this->rascalizeString($node->value) . "\")";
         $fragment .= $this->annotateASTNode($node);
@@ -1448,7 +1386,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintInterfaceStmt(\PhpParser\Node\Stmt\Interface_ $node)
+    public function pprintInterfaceStmt(Node\Stmt\Interface_ $node)
     {
         $priorInterface = $this->currentInterface;
         $this->currentInterface = $node->name;
@@ -1477,7 +1415,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintLabelStmt(\PhpParser\Node\Stmt\Label $node)
+    public function pprintLabelStmt(Node\Stmt\Label $node)
     {
         $fragment = "label(\"" . $node->name . "\")";
         $fragment .= $this->annotateASTNode($node);
@@ -1485,7 +1423,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintNamespaceStmt(\PhpParser\Node\Stmt\Namespace_ $node)
+    public function pprintNamespaceStmt(Node\Stmt\Namespace_ $node)
     {
 // If we have a non-null name, set this to the namespace name; if we
 // don't, this is a global namespace declaration, like
@@ -1533,24 +1471,24 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintPropertyStmt(\PhpParser\Node\Stmt\Property $node)
+    public function pprintPropertyStmt(Node\Stmt\Property $node)
     {
         $props = array();
         foreach ($node->props as $prop)
             $props[] = $this->pprint($prop);
 
         $modifiers = array();
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_PUBLIC)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_PUBLIC)
             $modifiers[] = "\\public()";
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_PROTECTED)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_PROTECTED)
             $modifiers[] = "protected()";
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_PRIVATE)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_PRIVATE)
             $modifiers[] = "\\private()";
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_ABSTRACT)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_ABSTRACT)
             $modifiers[] = "abstract()";
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_FINAL)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_FINAL)
             $modifiers[] = "final()";
-        if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_STATIC)
+        if ($node->type & Node\Stmt\Class_::MODIFIER_STATIC)
             $modifiers[] = "static()";
 
         $fragment = "property({" . implode(",", $modifiers) . "},[" . implode(",", $props) . "])";
@@ -1559,33 +1497,27 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintPropertyPropertyStmt(\PhpParser\Node\Stmt\PropertyProperty $node)
+    public function pprintPropertyPropertyStmt(Node\Stmt\PropertyProperty $node)
     {
-        if (null != $node->default) {
-            $fragment = "someExpr(" . $this->pprint($node->default) . ")";
-        } else {
-            $fragment = "noExpr()";
-        }
+        $default = $this->handlePossibleExpression($node->default);
 
-        $fragment = "property(\"" . $node->name . "\"," . $fragment . ")";
+        $fragment = "property(\"" . $node->name . "\"," . $default . ")";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
     }
 
-    public function pprintReturnStmt(\PhpParser\Node\Stmt\Return_ $node)
+    public function pprintReturnStmt(Node\Stmt\Return_ $node)
     {
-        if (null != $node->expr)
-            $fragment = "someExpr(" . $this->pprint($node->expr) . ")";
-        else
-            $fragment = "noExpr()";
-        $fragment = "\\return(" . $fragment . ")";
+        $expr = $this->handlePossibleExpression($node->expr);
+
+        $fragment = "\\return(" . $expr . ")";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
     }
 
-    public function pprintStaticStmt(\PhpParser\Node\Stmt\Static_ $node)
+    public function pprintStaticStmt(Node\Stmt\Static_ $node)
     {
         $staticVars = array();
         foreach ($node->vars as $var)
@@ -1597,11 +1529,9 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintStaticVarStmt(\PhpParser\Node\Stmt\StaticVar $node)
+    public function pprintStaticVarStmt(Node\Stmt\StaticVar $node)
     {
-        $default = "noExpr()";
-        if (null != $node->default)
-            $default = "someExpr(" . $this->pprint($node->default) . ")";
+        $default = $this->handlePossibleExpression($node->default);
 
         $fragment = "staticVar(\"" . $node->name . "\"," . $default . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -1609,7 +1539,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintSwitchStmt(\PhpParser\Node\Stmt\Switch_ $node)
+    public function pprintSwitchStmt(Node\Stmt\Switch_ $node)
     {
         $cases = array();
         foreach ($node->cases as $case)
@@ -1621,7 +1551,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintThrowStmt(\PhpParser\Node\Stmt\Throw_ $node)
+    public function pprintThrowStmt(Node\Stmt\Throw_ $node)
     {
         $fragment = "\\throw(" . $this->pprint($node->expr) . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -1629,7 +1559,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintTraitStmt(\PhpParser\Node\Stmt\Trait_ $node)
+    public function pprintTraitStmt(Node\Stmt\Trait_ $node)
     {
         $body = array();
 
@@ -1655,7 +1585,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintTraitUseStmt(\PhpParser\Node\Stmt\TraitUse $node)
+    public function pprintTraitUseStmt(Node\Stmt\TraitUse $node)
     {
         $adaptations = array();
         foreach ($node->adaptations as $adaptation)
@@ -1671,7 +1601,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintAliasTraitUseAdaptationStmt(\PhpParser\Node\Stmt\TraitUseAdaptation\Alias $node)
+    public function pprintAliasTraitUseAdaptationStmt(Node\Stmt\TraitUseAdaptation\Alias $node)
     {
         if (null != $node->newName) {
             $newName = "someName(" . $this->pprint($node->newName) . "))";
@@ -1681,17 +1611,17 @@ class RascalPrinter extends BasePrinter
 
         if (null != $node->newModifier) {
             $modifiers = array();
-            if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_PUBLIC)
+            if ($node->type & Node\Stmt\Class_::MODIFIER_PUBLIC)
                 $modifiers[] = "\\public()";
-            if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_PROTECTED)
+            if ($node->type & Node\Stmt\Class_::MODIFIER_PROTECTED)
                 $modifiers[] = "protected()";
-            if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_PRIVATE)
+            if ($node->type & Node\Stmt\Class_::MODIFIER_PRIVATE)
                 $modifiers[] = "\\private()";
-            if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_ABSTRACT)
+            if ($node->type & Node\Stmt\Class_::MODIFIER_ABSTRACT)
                 $modifiers[] = "abstract()";
-            if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_FINAL)
+            if ($node->type & Node\Stmt\Class_::MODIFIER_FINAL)
                 $modifiers[] = "final()";
-            if ($node->type & \PhpParser\Node\Stmt\Class_::MODIFIER_STATIC)
+            if ($node->type & Node\Stmt\Class_::MODIFIER_STATIC)
                 $modifiers[] = "static()";
             $newModifier = "{ " . implode(",", $modifiers) . " }";
         } else {
@@ -1712,7 +1642,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintPrecedenceTraitUseAdaptationStmt(\PhpParser\Node\Stmt\TraitUseAdaptation\Precedence $node)
+    public function pprintPrecedenceTraitUseAdaptationStmt(Node\Stmt\TraitUseAdaptation\Precedence $node)
     {
         $insteadOf = array();
         foreach ($node->insteadof as $item)
@@ -1730,7 +1660,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintTryCatchStmt(\PhpParser\Node\Stmt\TryCatch $node)
+    public function pprintTryCatchStmt(Node\Stmt\TryCatch $node)
     {
         $finallyBody = array();
         if (null != $node->finallyStmts)
@@ -1753,7 +1683,7 @@ class RascalPrinter extends BasePrinter
 
         return $fragment;
     }
-    public function pprintUnsetStmt(\PhpParser\Node\Stmt\Unset_ $node)
+    public function pprintUnsetStmt(Node\Stmt\Unset_ $node)
     {
         $vars = array();
         foreach ($node->vars as $var)
@@ -1765,7 +1695,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintUseStmt(\PhpParser\Node\Stmt\Use_ $node)
+    public function pprintUseStmt(Node\Stmt\Use_ $node)
     {
         $uses = array();
         foreach ($node->uses as $use)
@@ -1778,7 +1708,7 @@ class RascalPrinter extends BasePrinter
     }
 
 
-    public function pprintUseUseStmt(\PhpParser\Node\Stmt\UseUse $node)
+    public function pprintUseUseStmt(Node\Stmt\UseUse $node)
     {
         $name = $this->pprint($node->name);
         if (null != $node->alias)
@@ -1792,7 +1722,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
 
-    public function pprintWhileStmt(\PhpParser\Node\Stmt\While_ $node)
+    public function pprintWhileStmt(Node\Stmt\While_ $node)
     {
         $stmts = array();
         foreach ($node->stmts as $stmt)
@@ -1804,7 +1734,7 @@ class RascalPrinter extends BasePrinter
         return $fragment;
     }
     /**
-     * @param string|\PhpParser\Node\Name $node
+     * @param string|Node\Name $node
      * @return string
      */
     public function implodeName($node)
@@ -1820,22 +1750,36 @@ class RascalPrinter extends BasePrinter
     }
 
     /**
-     * @param \PhpParser\Node\Expr|\PhpParser\Node\Name $node
-     * @throws \Exception
+     * @param Node\Expr|Node\Name $node
+     * @throws Exception
      * @return string
      */
-    private function handleNameOrExpression(\PhpParser\Node $node)
+    private function handleNameOrExpression(Node $node)
     {
         $name = $this->pprint($node);
-        if ($node instanceof \PhpParser\Node\Expr) {
-            $name = "expr({$name})";
-            return $name;
-        } else if ($node instanceof \PhpParser\Node\Name) {
-            $name = "name({$name})";
-            return $name;
-        } else {
-            var_dump($node);
-            throw new \Exception("Node " . get_class($node) . " not supported. " . __METHOD__ . "::" . __LINE__);
+        if ($node instanceof Node\Expr) {
+            return "expr({$name})";
+        } else if ($node instanceof Node\Name) {
+            return "name({$name})";
         }
+
+        throw new Exception("Node " . get_class($node) . " not supported. " . __METHOD__ . "::" . __LINE__);
+    }
+
+    /**
+     * @param Node\Expr|null $value
+     * @throws Exception
+     * @return string
+     */
+    private function handlePossibleExpression($value)
+    {
+        if (is_null($value)) {
+            return "noExpr()";
+        } else if ($value instanceOf Node\Expr) {
+            $val = $this->pprint($value);
+            return "someExpr({$val})";
+        }
+
+        throw new Exception("Invalid input, must be Expr or null. " . __METHOD__ . "::" . __LINE__);
     }
 }
