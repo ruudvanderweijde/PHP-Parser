@@ -546,11 +546,7 @@ class RascalPrinter extends BasePrinter
     }
     public function pprintClassConstFetchExpr(\PhpParser\Node\Expr\ClassConstFetch $node)
     {
-        $className = $this->pprint($node->class);
-        if ($node->class instanceof \PhpParser\Node\Name)
-            $className = "name({$className})";
-        else
-            $className = "expr({$className})";
+        $className = $this->handleNameOrExpression($node->class);
 
         $constName = $this->pprint($node->name);
 
@@ -652,11 +648,7 @@ class RascalPrinter extends BasePrinter
         foreach ($node->args as $arg)
             $args[] = $this->pprint($arg);
 
-        $name = $this->pprint($node->name);
-        if ($node->name instanceof \PhpParser\Node\Name)
-            $name = "name({$name})";
-        else
-            $name = "expr({$name})";
+        $name = $this->handleNameOrExpression($node->name);
 
         $fragment = "call(" . $name . ",[" . implode(",", $args) . "])";
         $fragment .= $this->annotateASTNode($node);
@@ -683,12 +675,7 @@ class RascalPrinter extends BasePrinter
 
     public function pprintInstanceofExpr(\PhpParser\Node\Expr\Instanceof_ $node)
     {
-        $right = $this->pprint($node->class);
-        if ($node->class instanceof \PhpParser\Node\Name)
-            $right = "name({$right})";
-        else
-            $right = "expr({$right})";
-
+        $right = $this->handleNameOrExpression($node->class);
         $left = $this->pprint($node->expr);
 
         $fragment = "instanceOf(" . $left . "," . $right . ")";
@@ -729,14 +716,7 @@ class RascalPrinter extends BasePrinter
         foreach ($node->args as $arg)
             $args[] = $this->pprint($arg);
 
-        $name = $this->pprint($node->name);
-        if ($node->name instanceof \PhpParser\Node\Expr) {
-            $name = "expr({$name})";
-        } else if ($node->name instanceof \PhpParser\Node\Name) {
-            $name = "name({$name})";
-        } else {
-            throw new \Exception(__CLASS__ . "::" . __METHOD__ . "::" . __LINE__);
-        }
+        $name = $this->handleNameOrExpression($node->name);
 
         $target = $this->pprint($node->var);
 
@@ -751,12 +731,7 @@ class RascalPrinter extends BasePrinter
         foreach ($node->args as $arg)
             $args[] = $this->pprint($arg);
 
-        $name = $this->pprint($node->class);
-
-        if ($node->class instanceof \PhpParser\Node\Expr)
-            $name = "expr({$name})";
-        else
-            $name = "name({$name})";
+        $name = $this->handleNameOrExpression($node->class);
 
         $fragment = "new(" . $name . ",[" . implode(",", $args) . "])";
         $fragment .= $this->annotateASTNode($node);
@@ -808,15 +783,9 @@ class RascalPrinter extends BasePrinter
 
     public function pprintPropertyFetchExpr(\PhpParser\Node\Expr\PropertyFetch $node)
     {
-        if ($node->name instanceof \PhpParser\Node\Expr) {
-            $fragment = "expr(" . $this->pprint($node->name) . ")";
-        } else if ($node->name instanceof \PhpParser\Node\Name) {
-            $fragment = "name(" . $this->pprint($node->name) . ")";
-        } else {
-            throw new \Exception("Name of PropertyFetch is no Name or Expr");
-        }
+        $name = $this->handleNameOrExpression($node->name);
 
-        $fragment = "propertyFetch(" . $this->pprint($node->var) . "," . $fragment . ")";
+        $fragment = "propertyFetch(" . $this->pprint($node->var) . "," . $name . ")";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
@@ -845,16 +814,8 @@ class RascalPrinter extends BasePrinter
         foreach ($node->args as $arg)
             $args[] = $this->pprint($arg);
 
-        if ($node->name instanceof \PhpParser\Node\Expr)
-            $name = "expr(" . $this->pprint($node->name) . ")";
-        else
-            $name = "name(name(\"" . $node->name . "\"))";
-
-        if ($node->class instanceof \PhpParser\Node\Expr) {
-            $class = "expr(" . $this->pprint($node->class) . ")";
-        } else {
-            $class = "name(" . $this->pprint($node->class) . ")";
-        }
+        $name = $this->handleNameOrExpression($node->name);
+        $class = $this->handleNameOrExpression($node->class);
 
         $fragment = "staticCall({$class},{$name},[" . implode(",", $args) . "])";
         $fragment .= $this->annotateASTNode($node);
@@ -864,17 +825,8 @@ class RascalPrinter extends BasePrinter
 
     public function pprintStaticPropertyFetchExpr(\PhpParser\Node\Expr\StaticPropertyFetch $node)
     {
-        if ($node->name instanceof \PhpParser\Node\Expr) {
-            $name = "expr(" . $this->pprint($node->name) . ")";
-        } else {
-            $name = "name(name(\"" . $node->name . "\"))";
-        }
-
-        if ($node->class instanceof \PhpParser\Node\Expr) {
-            $class = "expr(" . $this->pprint($node->class) . ")";
-        } else {
-            $class = "name(" . $this->pprint($node->class) . ")";
-        }
+        $name = $this->handleNameOrExpression($node->name);
+        $class = $this->handleNameOrExpression($node->class);
 
         $fragment = "staticPropertyFetch({$class},{$name})";
         $fragment .= $this->annotateASTNode($node);
@@ -920,12 +872,14 @@ class RascalPrinter extends BasePrinter
         if ($node->name instanceof \PhpParser\Node\Expr) {
             $prevInAssignExpr = $this->inAssignExpr;
             $this->inAssignExpr = false;
-            $fragment = "expr(" . $this->pprint($node->name) . ")";
+            $name = $this->pprint($node->name);
+            $name = "expr({$name})";
             $this->inAssignExpr = $prevInAssignExpr;
         } else {
-            $fragment = "name(name(\"" . $node->name . "\"))";
+            $name = $this->pprint($node->name);
+            $name = "name({$name})";
         }
-        $fragment = "var(" . $fragment . ")";
+        $fragment = "var({$name})";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
@@ -1863,5 +1817,25 @@ class RascalPrinter extends BasePrinter
             $fragment = $node->parts;
 
         return $fragment;
+    }
+
+    /**
+     * @param \PhpParser\Node\Expr|\PhpParser\Node\Name $node
+     * @throws \Exception
+     * @return string
+     */
+    private function handleNameOrExpression(\PhpParser\Node $node)
+    {
+        $name = $this->pprint($node);
+        if ($node instanceof \PhpParser\Node\Expr) {
+            $name = "expr({$name})";
+            return $name;
+        } else if ($node instanceof \PhpParser\Node\Name) {
+            $name = "name({$name})";
+            return $name;
+        } else {
+            var_dump($node);
+            throw new \Exception("Node " . get_class($node) . " not supported. " . __METHOD__ . "::" . __LINE__);
+        }
     }
 }

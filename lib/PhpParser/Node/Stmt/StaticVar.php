@@ -3,6 +3,7 @@
 namespace PhpParser\Node\Stmt;
 
 use PhpParser\Node;
+use PhpParser\Node\Name;
 
 /**
  * @property string         $name    Name
@@ -13,11 +14,11 @@ class StaticVar extends Node\Stmt
     /**
      * Constructs a static variable node.
      *
-     * @param string         $name       Name
-     * @param null|Node\Expr $default    Default value
-     * @param array          $attributes Additional attributes
+     * @param Name $name Name
+     * @param null|Node\Expr $default Default value
+     * @param array $attributes Additional attributes
      */
-    public function __construct($name, Node\Expr $default = null, array $attributes = array()) {
+    public function __construct(Name $name, Node\Expr $default = null, array $attributes = array()) {
         parent::__construct(
             array(
                 'name'    => $name,

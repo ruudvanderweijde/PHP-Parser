@@ -4,6 +4,7 @@ namespace PhpParser\Node\Expr;
 
 use PhpParser\Node\Name;
 use PhpParser\Node\Expr;
+use PhpParser\Node;
 
 /**
  * @property Expr $expr  Expression
@@ -18,7 +19,7 @@ class Instanceof_ extends Expr
      * @param Name|Expr $class      Class name
      * @param array     $attributes Additional attributes
      */
-    public function __construct(Expr $expr, $class, array $attributes = array()) {
+    public function __construct(Expr $expr, Node $class, array $attributes = array()) {
         parent::__construct(
             array(
                 'expr'  => $expr,
