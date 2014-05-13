@@ -153,10 +153,12 @@ class RascalPrinter extends BasePrinter
         if ($node instanceof Node\Stmt\Class_ ||
             $node instanceof Node\Stmt\Interface_ ||
             $node instanceof Node\Expr\Variable
-        )
-            if ($doc = $node->getDocComment())
+        ) {
+            if ($doc = $node->getDocComment()) {
                 return sprintf($docString, $this->rascalizeString($doc));
-        return sprintf($docString, null);
+            }
+        }
+        return null;
     }
 
     private function annotateASTNode(Node $node)
@@ -166,13 +168,16 @@ class RascalPrinter extends BasePrinter
             $tagsToAdd[] = $this->addLocationTag($node);
         if ($this->addDeclarations) {
             if ($decl = $this->addDeclaration($node)) {
-            $tagsToAdd[] = $decl;
+                $tagsToAdd[] = $decl;
             }
         }
         if ($this->addIds)
             $tagsToAdd[] = $this->addUniqueId();
-        if ($this->addPhpDocs)
-            $tagsToAdd[] = $this->addPhpDocForNode($node);
+        if ($this->addPhpDocs) {
+            if ($phpdoc = $this->addPhpDocForNode($node)) {
+                $tagsToAdd[] = $phpdoc;
+            }
+        }
 
         if (count($tagsToAdd) > 0)
             return "[" . implode(",", $tagsToAdd) . "]";
