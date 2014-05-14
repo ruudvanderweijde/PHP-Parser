@@ -960,6 +960,7 @@ class RascalPrinter extends BasePrinter
         } else {
             $ns = $this->currentNamespace;
             $currentClass = strlen($ns) > 0 ? $ns . "\\" . $this->currentClass : $this->currentClass;
+            $currentClass = $this->rascalizeString($currentClass);
             $fragment = "classConstant()[@actualValue=\"{$currentClass}\"]";
         }
         $fragment = "scalar(" . $fragment . ")";
