@@ -18,7 +18,7 @@ namespace Animal { class Ape {} }
 namespace Animal { class Bear {} }
 namespace Animal\Bear { class Panda extends \Animal\Bear {} }
 
-namespace City { class Bear {} }
+namespace City { /** phpdoc */ class Bear {} }
 
 namespace Car { class Panda {} }
 
