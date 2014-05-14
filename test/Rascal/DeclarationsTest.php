@@ -2,11 +2,6 @@
 
 namespace Rascal;
 
-
-use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitor\NameResolver;
-use Rascal\NodeVisitor\NameResolver as NameResolverRascal;
-
 class DeclarationsTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -459,11 +454,6 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
     private function codeToRascalAST($code)
     {
         $parseTree = $this->parser->parse($code);
-
-        $traverser = new NodeTraverser;
-        $traverser->addVisitor(new NameResolver);
-        $traverser->addVisitor(new NameResolverRascal);
-        $traverser->traverse($parseTree);
 
         $stmtStr = '';
         foreach ($parseTree as $node) {

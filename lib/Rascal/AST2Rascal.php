@@ -2,9 +2,6 @@
 
 namespace Rascal;
 
-use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitor\NameResolver;
-use Rascal\NodeVisitor\NameResolver as NameResolverRascal;
 use PhpParser\Parser;
 use PhpParser\Lexer;
 
@@ -28,7 +25,6 @@ if (!isset($opts))
         "relativeLocations",
         "prefix:",
         "phpdocs",
-        "resolveNames"
     ));
 
 if (isset($opts["f"]))
@@ -90,20 +86,11 @@ else
         exit(-1);
     }
 
-$resolveNames = isset($opts['resolveNames']) ? true : false;
-
 $parser = new Parser(new Lexer\Emulative);
 $printer = new RascalPrinter($file, $enableLocations, $relativeLocations, $uniqueIds, $prefix, $addPHPDocs, $addDeclarations);
 
 try {
     $parseTree = $parser->parse($inputCode);
-
-    if ($resolveNames) {
-        $traverser = new NodeTraverser;
-        $traverser->addVisitor(new NameResolver);
-        $traverser->addVisitor(new NameResolverRascal);
-        $traverser->traverse($parseTree);
-    }
 
     $stmts = array();
 

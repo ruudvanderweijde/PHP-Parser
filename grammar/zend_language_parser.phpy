@@ -150,9 +150,9 @@ use_declarations:
 ;
 
 use_declaration:
-      namespace_name no_use_alias                           { $$ = Stmt\UseUse[$1, $2]; }
+      namespace_name                                        { $$ = Stmt\UseUse[$1, null]; }
     | namespace_name T_AS use_alias                         { $$ = Stmt\UseUse[$1, $3]; }
-    | T_NS_SEPARATOR namespace_name no_use_alias            { $$ = Stmt\UseUse[$2, $3]; }
+    | T_NS_SEPARATOR namespace_name                         { $$ = Stmt\UseUse[$2, null]; }
     | T_NS_SEPARATOR namespace_name T_AS use_alias          { $$ = Stmt\UseUse[$2, $4]; }
 ;
 
@@ -981,10 +981,6 @@ func_call_name:
 
 use_alias:
     T_STRING                                                { $$ = Name[$1]; }
-;
-
-no_use_alias:
-    /* empty */                                             { $$ = Name[null]; }
 ;
 
 %%
