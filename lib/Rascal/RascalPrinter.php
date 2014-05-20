@@ -1740,9 +1740,9 @@ class RascalPrinter extends BasePrinter
     {
         $name = $this->pprint($node);
         if ($node instanceof Node\Expr) {
-            return "expr({$name})";
+            return "expr({$name})" . $this->annotateASTNode($node);
         } else if ($node instanceof Node\Name) {
-            return "name({$name})";
+            return "name({$name})" . $this->annotateASTNode($node);
         }
 
         throw new Exception("Node " . get_class($node) . " not supported. " . __METHOD__ . "::" . __LINE__);
@@ -1759,7 +1759,7 @@ class RascalPrinter extends BasePrinter
             return "noExpr()";
         } else if ($node instanceOf Node\Expr) {
             $value = $this->pprint($node);
-            return "someExpr({$value})";
+            return "someExpr({$value})" . $this->annotateASTNode($node);
         }
 
         throw new Exception("Invalid input, must be Expr or null. " . __METHOD__ . "::" . __LINE__);
