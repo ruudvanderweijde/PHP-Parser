@@ -217,9 +217,10 @@ class RascalPrinter extends BasePrinter
 
     public function pprintArrayDimFetchExpr(Node\Expr\ArrayDimFetch $node)
     {
+        $var = $this->pprint($node->var);
         $dim = $this->handlePossibleExpression($node->dim);
 
-        $fragment = "fetchArrayDim(" . $this->pprint($node->var) . "," . $dim . ")";
+        $fragment = "fetchArrayDim(" . $var . "," . $dim . ")";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
@@ -326,7 +327,9 @@ class RascalPrinter extends BasePrinter
     public function pprintAssignRefExpr(Node\Expr\AssignRef $node)
     {
         $assignExpr = $this->pprint($node->expr);
+        $this->varIsDecl = true;
         $assignVar = $this->pprint($node->var);
+        $this->varIsDecl = false;
 
         $fragment = "refAssign(" . $assignVar . "," . $assignExpr . ")";
         $fragment .= $this->annotateASTNode($node);
@@ -1605,17 +1608,17 @@ class RascalPrinter extends BasePrinter
 
         if (null != $node->newModifier) {
             $modifiers = array();
-            if ($node->type & Node\Stmt\Class_::MODIFIER_PUBLIC)
+            if ($node->newModifier & Node\Stmt\Class_::MODIFIER_PUBLIC)
                 $modifiers[] = "\\public()";
-            if ($node->type & Node\Stmt\Class_::MODIFIER_PROTECTED)
+            if ($node->newModifier & Node\Stmt\Class_::MODIFIER_PROTECTED)
                 $modifiers[] = "protected()";
-            if ($node->type & Node\Stmt\Class_::MODIFIER_PRIVATE)
+            if ($node->newModifier & Node\Stmt\Class_::MODIFIER_PRIVATE)
                 $modifiers[] = "\\private()";
-            if ($node->type & Node\Stmt\Class_::MODIFIER_ABSTRACT)
+            if ($node->newModifier & Node\Stmt\Class_::MODIFIER_ABSTRACT)
                 $modifiers[] = "abstract()";
-            if ($node->type & Node\Stmt\Class_::MODIFIER_FINAL)
+            if ($node->newModifier & Node\Stmt\Class_::MODIFIER_FINAL)
                 $modifiers[] = "final()";
-            if ($node->type & Node\Stmt\Class_::MODIFIER_STATIC)
+            if ($node->newModifier & Node\Stmt\Class_::MODIFIER_STATIC)
                 $modifiers[] = "static()";
             $newModifier = "{ " . implode(",", $modifiers) . " }";
         } else {
@@ -1638,8 +1641,9 @@ class RascalPrinter extends BasePrinter
             $insteadOf[] = $this->pprint($item);
 
         $trait = $this->handlePossibleName($node->trait);
+        $method = $this->pprint($node->method);
 
-        $fragment = "traitPrecedence(" . $trait . ",\"" . $node->method . "\",{" . implode(",", $insteadOf) . "})";
+        $fragment = "traitPrecedence(" . $trait . "," . $method . ",{" . implode(",", $insteadOf) . "})";
         $fragment .= $this->annotateASTNode($node);
 
         return $fragment;
@@ -1660,7 +1664,7 @@ class RascalPrinter extends BasePrinter
         foreach ($node->stmts as $stmt)
             $body[] = $this->pprint($stmt);
 
-        if (null != $node->finallyStmts)
+        if (null !== $node->finallyStmts)
             $fragment = "tryCatchFinally([" . implode(",", $body) . "],[" . implode(",", $catches) . "],[" . implode(",", $finallyBody) . "])";
         else
             $fragment = "tryCatch([" . implode(",", $body) . "],[" . implode(",", $catches) . "])";
