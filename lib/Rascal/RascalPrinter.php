@@ -859,6 +859,7 @@ class RascalPrinter extends BasePrinter
             $name = $this->pprint($node->name);
             $name = "name({$name})";
         }
+        $name .= $this->annotateASTNode($node->name);
 
         $fragment = "var({$name})";
         $fragment .= $this->annotateASTNode($node);
