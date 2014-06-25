@@ -109,8 +109,7 @@ class RascalPrinter extends BasePrinter
             return $this->rascalizeString(sprintf($decl, "method", $ns . $class . "/" . $method));
         else if ($node instanceof Node\Stmt\Function_)
             return $this->rascalizeString(sprintf($decl, "function", $ns . $function));
-        else if ($node instanceof Node\Stmt\StaticVar
-                || ($node instanceof Node\Expr\Variable && $this->varIsDecl)) {
+        else if ($node instanceof Node\Stmt\StaticVar || ($node instanceof Node\Expr\Variable && $this->varIsDecl)) {
             $prefix = ($node->name instanceof Node\Expr) ? "unresolved+" : "";
             $name = ($node->name instanceof Node\Expr) ? "" : $node->name;
             // only declare variables that are inside an assign expression, and the name must not be an expression
@@ -145,13 +144,17 @@ class RascalPrinter extends BasePrinter
      *
      * Restriction: only for Class, Interface and Variable.
      *
-     * @return string
+     * @param \PhpParser\Node $node
+     * @return string|null
      */
     private function addPhpDocForNode(Node $node)
     {
         $docString = "@phpdoc=\"%s\"";
         if ($node instanceof Node\Stmt\Class_ ||
             $node instanceof Node\Stmt\Interface_ ||
+            $node instanceof Node\Stmt\ClassMethod ||
+            $node instanceof Node\Stmt\Function_ ||
+            $node instanceof Node\Stmt\Property ||
             $node instanceof Node\Expr\Variable
         ) {
             if ($doc = $node->getDocComment()) {
@@ -851,6 +854,7 @@ class RascalPrinter extends BasePrinter
     {
         if ($node->name instanceof Node\Expr) {
             $prevInAssignExpr = $this->varIsDecl;
+
             $this->varIsDecl = false;
             $name = $this->pprint($node->name);
             $name = "expr({$name})";
