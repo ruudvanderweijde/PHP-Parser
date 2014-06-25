@@ -401,6 +401,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                 'code' => '<?php $$$a = 1; $b++;',
                 array(
                     '@decl=|php+unresolved+globalVar:///|',
+                    '@decl=|php+unresolved+globalVar:///|', // extra annotation added: on var and expr
                     '@decl=|php+globalVar:///b|',
                 )
             ),
@@ -408,6 +409,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                 'code' => '<?php $$$a = 1;',
                 array(
                     '@decl=|php+unresolved+globalVar:///|', // this is not right
+                    '@decl=|php+unresolved+globalVar:///|', // extra annotation added: on var and expr
                 )
             ),
 
@@ -463,4 +465,3 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
         return $stmtStr;
     }
 }
- 
