@@ -1508,11 +1508,11 @@ class Parser extends ParserAbstract
     }
 
     protected function reduceRule130($attributes) {
-         $this->semValue = 'array'; 
+         $this->semValue = new Node\Name('array', $attributes); 
     }
 
     protected function reduceRule131($attributes) {
-         $this->semValue = 'callable'; 
+         $this->semValue = new Node\Name('callable', $attributes); 
     }
 
     protected function reduceRule132($attributes) {

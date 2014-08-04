@@ -393,8 +393,8 @@ parameter:
 optional_class_type:
       /* empty */                                           { $$ = null; }
     | name                                                  { $$ = $1; }
-    | T_ARRAY                                               { $$ = 'array'; }
-    | T_CALLABLE                                            { $$ = 'callable'; }
+    | T_ARRAY                                               { $$ = Name['array']; }
+    | T_CALLABLE                                            { $$ = Name['callable']; }
 ;
 
 argument_list:
