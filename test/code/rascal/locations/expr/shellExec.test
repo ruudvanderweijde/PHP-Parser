@@ -9,6 +9,6 @@ Shell execution
 -----
 script([exprstmt(shellExec([])[@at=|file:///tmp/ShellExecution.php|(6,2,<2,0>,<2,0>)])[@at=|file:///tmp/ShellExecution.php|(6,3,<2,0>,<2,0>)],
 exprstmt(shellExec([scalar(string("test"))])[@at=|file:///tmp/ShellExecution.php|(10,6,<3,0>,<3,0>)])[@at=|file:///tmp/ShellExecution.php|(10,7,<3,0>,<3,0>)],
-exprstmt(shellExec([scalar(string("test ")),var(name(name("A")[@at=|file:///tmp/ShellExecution.php|(24,2,<4,0>,<4,0>)]))[@at=|file:///tmp/ShellExecution.php|(24,2,<4,0>,<4,0>)]])[@at=|file:///tmp/ShellExecution.php|(18,9,<4,0>,<4,0>)])[@at=|file:///tmp/ShellExecution.php|(18,10,<4,0>,<4,0>)],
+exprstmt(shellExec([scalar(string("test ")),var(name(name("A")[@at=|file:///tmp/ShellExecution.php|(24,2,<4,0>,<4,0>)])[@at=|file:///tmp/ShellExecution.php|(24,2,<4,0>,<4,0>)])[@at=|file:///tmp/ShellExecution.php|(24,2,<4,0>,<4,0>)]])[@at=|file:///tmp/ShellExecution.php|(18,9,<4,0>,<4,0>)])[@at=|file:///tmp/ShellExecution.php|(18,10,<4,0>,<4,0>)],
 exprstmt(shellExec([scalar(string("test `"))])[@at=|file:///tmp/ShellExecution.php|(29,9,<5,0>,<5,0>)])[@at=|file:///tmp/ShellExecution.php|(29,10,<5,0>,<5,0>)],
 exprstmt(shellExec([scalar(string("test \\\""))])[@at=|file:///tmp/ShellExecution.php|(40,9,<6,0>,<6,0>)])[@at=|file:///tmp/ShellExecution.php|(40,10,<6,0>,<6,0>)]])

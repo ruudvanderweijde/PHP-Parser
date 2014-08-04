@@ -22,4 +22,4 @@ finally { }
 -----
 script([tryCatchFinally([exprstmt(call(name(name("doTry")),[]))],[\catch(name("A"),var(name(name("b"))),[exprstmt(call(name(name("doCatchA")),[]))]),\catch(name("B"),var(name(name("c"))),[exprstmt(call(name(name("doCatchB")),[]))])],[exprstmt(call(name(name("doFinally")),[]))]),
 tryCatch([],[\catch(name("A"),var(name(name("b"))),[])]),
-tryCatch([],[])])
+tryCatchFinally([],[],[])])

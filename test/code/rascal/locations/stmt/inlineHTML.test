@@ -10,7 +10,8 @@ $c;
 <?php
 $d;
 -----
-script([exprstmt(var(name(name("a")[@at=|file:///tmp/InlineHtml.php|(6,2,<2,0>,<2,0>)]))[@at=|file:///tmp/InlineHtml.php|(6,2,<2,0>,<2,0>)])[@at=|file:///tmp/InlineHtml.php|(6,3,<2,0>,<2,0>)],
+script([exprstmt(var(name(name("a")[@at=|file:///tmp/InlineHtml.php|(6,2,<2,0>,<2,0>)])[@at=|file:///tmp/InlineHtml.php|(6,2,<2,0>,<2,0>)])[@at=|file:///tmp/InlineHtml.php|(6,2,<2,0>,<2,0>)])[@at=|file:///tmp/InlineHtml.php|(6,3,<2,0>,<2,0>)],
 inlineHTML("B\n")[@at=|file:///tmp/InlineHtml.php|(13,2,<4,0>,<4,0>)],
-exprstmt(var(name(name("c")[@at=|file:///tmp/InlineHtml.php|(21,2,<6,0>,<6,0>)]))[@at=|file:///tmp/InlineHtml.php|(21,2,<6,0>,<6,0>)])[@at=|file:///tmp/InlineHtml.php|(21,3,<6,0>,<6,0>)],
-exprstmt(var(name(name("d")[@at=|file:///tmp/InlineHtml.php|(34,2,<9,0>,<9,0>)]))[@at=|file:///tmp/InlineHtml.php|(34,2,<9,0>,<9,0>)])[@at=|file:///tmp/InlineHtml.php|(34,3,<9,0>,<9,0>)]])
+exprstmt(var(name(name("c")[@at=|file:///tmp/InlineHtml.php|(21,2,<6,0>,<6,0>)])[@at=|file:///tmp/InlineHtml.php|(21,2,<6,0>,<6,0>)])[@at=|file:///tmp/InlineHtml.php|(21,2,<6,0>,<6,0>)])[@at=|file:///tmp/InlineHtml.php|(21,3,<6,0>,<6,0>)],
+exprstmt(var(name(name("d")[@at=|file:///tmp/InlineHtml.php|(34,2,<9,0>,<9,0>)])[@at=|file:///tmp/InlineHtml.php|(34,2,<9,0>,<9,0>)])[@at=|file:///tmp/InlineHtml.php|(34,2,<9,0>,<9,0>)])[@at=|file:///tmp/InlineHtml.php|(34,3,<9,0>,<9,0>)]])
+

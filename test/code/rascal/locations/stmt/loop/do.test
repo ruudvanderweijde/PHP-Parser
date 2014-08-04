@@ -6,4 +6,4 @@ do {
 
 } while ($a);
 -----
-script([\do(var(name(name("a")[@at=|file:///tmp/DoLoop.php|(22,2,<5,0>,<5,0>)]))[@at=|file:///tmp/DoLoop.php|(22,2,<5,0>,<5,0>)],[])[@at=|file:///tmp/DoLoop.php|(7,19,<3,0>,<3,0>)]])
+script([\do(var(name(name("a")[@at=|file:///tmp/DoLoop.php|(22,2,<5,0>,<5,0>)])[@at=|file:///tmp/DoLoop.php|(22,2,<5,0>,<5,0>)])[@at=|file:///tmp/DoLoop.php|(22,2,<5,0>,<5,0>)],[])[@at=|file:///tmp/DoLoop.php|(7,19,<3,0>,<3,0>)]])
