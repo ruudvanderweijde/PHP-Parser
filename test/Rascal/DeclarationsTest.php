@@ -2,18 +2,10 @@
 
 namespace Rascal;
 
-class DeclarationsTest extends \PHPUnit_Framework_TestCase
+require_once __DIR__ . '/AnnotationTestAbstract.php';
+
+class DeclarationsTest extends AnnotationTestAbstract
 {
-    /**
-     * @var \PhpParser\Parser $parser
-     */
-    private $parser;
-
-    /**
-     * @var \Rascal\RascalPrinter
-     */
-    private $printer;
-
     public function setUp()
     {
         $this->parser = new \PhpParser\Parser(new \PhpParser\Lexer);
@@ -26,20 +18,7 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
             $addPhpDocs = false,
             $addDeclarations = true
         );
-    }
-
-    /**
-     * @dataProvider getTestCode
-     */
-    public function testClassDeclarations($code, $expectedDeclarations)
-    {
-        try {
-            $this->parseAndValidateResults($code, $expectedDeclarations);
-        } catch (\PhpParser\Error $e) {
-            $this->fail("Error in parsing: " . $e->getMessage());
-        } catch (\Exception $e) {
-            $this->fail("General error: " . $e->getMessage());
-        }
+        $this->setRegex('/(@decl=\|([^|]*)?\|)/');
     }
 
     /**
@@ -422,46 +401,5 @@ class DeclarationsTest extends \PHPUnit_Framework_TestCase
                 )
             ),
         );
-    }
-
-    /**
-     * @param string $code
-     * @param array $expectedDeclarations
-     */
-    private function parseAndValidateResults($code, array $expectedDeclarations)
-    {
-        $stmtStr = $this->codeToRascalAST($code);
-        $stmtStr = stripslashes($stmtStr);
-
-        if (preg_match_all('/(@decl=\|([^|]*)?\|)/', $stmtStr, $matches)) {
-            $declarations = $matches[1];
-            $this->assertEquals(count($declarations), count($expectedDeclarations));
-
-            foreach ($declarations as $declaration) {
-                $this->assertContains($declaration, $expectedDeclarations);
-            }
-            foreach ($expectedDeclarations as $declaration) {
-                $this->assertContains($declaration, $declarations);
-            }
-
-        } else {
-            $this->fail("No declarations found in code: " . $code);
-        }
-    }
-
-    /**
-     * @param string $code
-     * @return string
-     */
-    private function codeToRascalAST($code)
-    {
-        $parseTree = $this->parser->parse($code);
-
-        $stmtStr = '';
-        foreach ($parseTree as $node) {
-            $stmtStr .= $this->printer->pprint($node);
-        }
-
-        return $stmtStr;
     }
 }
