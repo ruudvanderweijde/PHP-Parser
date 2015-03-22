@@ -158,7 +158,7 @@ class RascalPrinter extends BasePrinter
             $node instanceof Node\Expr\Variable
         ) {
             if ($doc = $node->getDocComment()) {
-                return sprintf($docString, $this->rascalizeString($doc));
+                return sprintf($docString, $this->rascalizeString($doc->getReformattedText()));
             }
         }
         return null;
